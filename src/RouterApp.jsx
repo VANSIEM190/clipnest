@@ -1,8 +1,6 @@
 import {Routes,Route} from "react-router-dom";
 
 
-
-
 const RouterApp = () => {
   return (
     <>
