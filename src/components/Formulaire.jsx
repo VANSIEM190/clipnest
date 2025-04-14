@@ -1,11 +1,11 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { auth, db } from "./services/firebaseconfig";
+import { auth, db } from "../services/firebaseconfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import { useDarkMode } from "./Context/DarkModeContext";
+import { useDarkMode } from "../Context/DarkModeContext";
 
 const validationSchema = Yup.object({
   nom: Yup.string()

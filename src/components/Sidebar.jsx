@@ -7,8 +7,8 @@ import {
   FaChevronLeft,
   FaChevronRight,
 } from 'react-icons/fa';
-import { useUser } from './Context/UserContext';
-import { useDarkMode } from './Context/DarkModeContext';
+import { useUser } from '../Context/UserContext';
+import { useDarkMode } from '../Context/DarkModeContext';
 import React, { useState } from 'react';
 
 const Sidebar = () => {

@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FiBell, FiSun, FiMoon } from "react-icons/fi";
-import { useUser } from "./Context/UserContext";
-import { useDarkMode } from "./Context/DarkModeContext";
+import { useUser } from "../Context/UserContext";
+import { useDarkMode } from "../Context/DarkModeContext";
 
 const Options = ()=> {
   const { isDarkMode, toggleDarkMode } = useDarkMode();

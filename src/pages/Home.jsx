@@ -1,7 +1,7 @@
-import Navbar from "./Navbar";
-import Sidebar from "./Sidebar"
-import { UserProvider } from "./Context/UserContext";
-import { useDarkMode } from "./Context/DarkModeContext";
+import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar"
+import { UserProvider } from "../Context/UserContext";
+import { useDarkMode } from "../Context/DarkModeContext";
 
 const Home = () => {
   const { isDarkMode } = useDarkMode();

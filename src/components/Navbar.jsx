@@ -1,9 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
 import { FiBell, FiSun, FiMoon } from "react-icons/fi";
-import { useUser } from "./Context/UserContext";
-import { useDarkMode } from "./Context/DarkModeContext";
-import useStateScreen from "./hooks/UseSizeScreen";
-import Options from "./SidebarPortable";
+import { useUser } from "../Context/UserContext";
+import { useDarkMode } from "../Context/DarkModeContext";
+import useStateScreen from "../hooks/UseSizeScreen";
+import Options from "./Options";
 
 const Navbar = () => {
   const { initials } = useUser();
