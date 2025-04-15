@@ -1,9 +1,22 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDarkMode } from "../Context/DarkModeContext";
+import { useUser } from "../Context/UserContext";
 
 const Apropos = () => {
   const { isDarkMode } = useDarkMode();
+  const {user} = useUser();
+  const navigate = useNavigate();
+
+  const redirigerUserPage = () => {
+    if (user === undefined) return; 
+  
+    if (user) {
+      navigate("/salon");
+    } else {
+      navigate("/");
+    }
+  }
+  
   return (
     <div className={`bg-white min-h-screen px-6 py-12 md:px-16 ${isDarkMode ? "dark:bg-gray-900" : ""}`}>
       <div className="max-w-4xl mx-auto text-center">
@@ -57,9 +70,14 @@ const Apropos = () => {
         <p className="text-gray-700 text-lg">
           Rejoins ClipNest et participe à la construction d’un monde où l’apprentissage est ouvert, libre et collaboratif 📖✨
         </p>
-        <Link to="/salon" className="mt-4 inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition">
-          retour  à mon salon
-        </Link>
+
+        <button type="button" 
+        className="mt-4 inline-block bg-indigo-600 text-white
+        px-6 py-3 rounded-lg hover:bg-indigo-700 transition"
+        onClick={redirigerUserPage}
+        >
+          Retour 
+        </button>
       </div>
     </div>
   );
