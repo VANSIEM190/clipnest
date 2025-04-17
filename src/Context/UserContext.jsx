@@ -20,7 +20,7 @@ export const UserProvider = ({ children }) => {
           if (userSnap.exists()) {
             const { nom = "", prenom = "" } = userSnap.data();
             const init = `${prenom.charAt(0)}${nom.charAt(0)}`.toUpperCase();
-            const userName = `${prenom} ${nom}`;
+            const userName = prenom+nom;
             setUser(userName);
             setInitials(init);
           } else {

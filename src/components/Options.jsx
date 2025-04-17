@@ -3,12 +3,16 @@ import { Link } from 'react-router-dom'
 import { FiBell, FiSun, FiMoon } from "react-icons/fi";
 import { useUser } from "../Context/UserContext";
 import { useDarkMode } from "../Context/DarkModeContext";
+import { stringToColor } from '../utils/StringToColor';
 
 const Options = ()=> {
+  
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   const { initials , user } = useUser();
+  const bgColor = stringToColor(user);
   const [isOpen, setIsOpen] = useState(false)
-  const toggleDropdown = () => setIsOpen(!isOpen)
+  const toggleDropdown = () => setIsOpen(!isOpen);
+
   return (
     <div as="div" className="relative inline-block text-left">
       <div>
@@ -74,7 +78,9 @@ const Options = ()=> {
             </button>
               </div>
               <div className="flex items-center gap-x-2 px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
-                <div className='w-8 h-8 px-4 rounded-full bg-gray-300 dark:bg-gray-700 flex items-center justify-center text-white font-semibold'>
+                <div className='w-8 h-8 px-4 rounded-full  flex items-center justify-center text-white font-semibold'
+                style={{ backgroundColor: bgColor }}
+                >
                 {initials}
                 </div>
                 <span>{user}</span>
