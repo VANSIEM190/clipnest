@@ -14,12 +14,12 @@ import useStateScreen from '../hooks/UseSizeScreen';
 import { stringToColor } from '../utils/StringToColor';
 
 const Sidebar = ({ onNavigate }) => {
-  const { initials, user } = useUser();
+  const {  user } = useUser();
   const { isDarkMode } = useDarkMode();
   const isSmallScreen = useStateScreen(); // Ex: return window.innerWidth < 640;
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const bgColor = stringToColor(user);
+  const bgColor = stringToColor(user?.fullName);
 
   const sidebarClass = isDarkMode
     ? 'bg-gray-900 text-gray-200'
@@ -88,10 +88,10 @@ const Sidebar = ({ onNavigate }) => {
               <div className="w-8 h-8 rounded-full  text-white flex items-center justify-center text-sm"
               style={{ backgroundColor: bgColor }}
               >
-                {initials}
+                {user?.initials}
               </div>
               {!shouldCollapse && (
-                <span className="text-sm truncate">{user}</span>
+                <span className="text-sm truncate">{user?.fullName}</span>
               )}
             </div>
           </div>
@@ -99,8 +99,8 @@ const Sidebar = ({ onNavigate }) => {
           {/* Navigation */}
           <div className="space-y-2 flex-1 mt-4">
             <NavItem icon={<FaHome size={20} />} label="Accueil" isCollapsed={shouldCollapse} onClick={() => onNavigate("home")} />
-            <NavItem icon={<FaQuestionCircle size={20} />} label="Questions" isCollapsed={shouldCollapse} onClick={() => onNavigate("questionsUsers")} />
-            <NavItem icon={<FaCommentDots size={20} />} label="Réponses" isCollapsed={shouldCollapse} onClick={() => onNavigate("questions")} />
+            <NavItem icon={<FaQuestionCircle size={20} />} label="Mes Questions" isCollapsed={shouldCollapse} onClick={() => onNavigate("questionsUsers")} />
+            <NavItem icon={<FaCommentDots size={20} />} label="Posez une Question" isCollapsed={shouldCollapse} onClick={() => onNavigate("questions")} />
             <NavItem icon={<FaUsers size={20} />} label="Utilisateurs" isCollapsed={shouldCollapse} onClick={() => onNavigate("users")} />
             <NavItem icon={<FaUser size={20} />} label="Profil" isCollapsed={shouldCollapse} onClick={() => onNavigate("profil")} />
           </div>

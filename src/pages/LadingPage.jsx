@@ -31,7 +31,7 @@ const LandingPage = () => {
       if (initials) {
         navigate("/salon");
       } else {
-        navigate("/inscription");
+        navigate("/connexion");
       }
   };
 

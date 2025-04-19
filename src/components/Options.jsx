@@ -8,8 +8,8 @@ import { stringToColor } from '../utils/StringToColor';
 const Options = ()=> {
   
   const { isDarkMode, toggleDarkMode } = useDarkMode();
-  const { initials , user } = useUser();
-  const bgColor = stringToColor(user);
+  const { user } = useUser();
+  const bgColor = stringToColor(user.fullName);
   const [isOpen, setIsOpen] = useState(false)
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -81,9 +81,9 @@ const Options = ()=> {
                 <div className='w-8 h-8 px-4 rounded-full  flex items-center justify-center text-white font-semibold'
                 style={{ backgroundColor: bgColor }}
                 >
-                {initials}
+                {user.initials}
                 </div>
-                <span>{user}</span>
+                <span>{user.fullName}</span>
             </div>
         </div>
       </div>}

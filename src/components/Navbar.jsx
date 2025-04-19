@@ -7,11 +7,11 @@ import Options from "./Options";
 import { stringToColor } from "../utils/StringToColor";
 
 const Navbar = () => {
-  const { initials , user } = useUser();
+  const { user } = useUser();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   const location = useLocation();
   const isSmallScreen = useStateScreen();
-  const bgColor = stringToColor(user);
+  const bgColor = stringToColor(user?.fullName);
 
   const isRoot = location.pathname === "/";
 
@@ -30,7 +30,7 @@ const Navbar = () => {
           <div className="w-8 h-8 rounded-full  flex items-center justify-center text-white font-semibold"
           style={{ backgroundColor: bgColor }}
           >
-            {initials}
+            {user?.initials}
           </div>
         </nav>
 
