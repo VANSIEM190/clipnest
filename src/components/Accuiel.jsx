@@ -1,22 +1,33 @@
-import React, { useEffect, useState } from "react";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { db } from "../services/firebaseconfig";
-import Loader from "./Loader";
+import React, { useState, useEffect } from "react";
+import {
+  collection,
+  doc,
+  setDoc,
+  updateDoc,
+  onSnapshot, // ✅ Correction ici
+} from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import { stringToColor } from "../utils/StringToColor";
+import { db } from "../services/firebaseconfig";
 import { useUser } from "../Context/UserContext";
-import DOMPurify from "dompurify";
 import { useDarkMode } from "../Context/DarkModeContext";
-import usePagination from "../hooks/Pagination"; // 👈 import du hook
+import { stringToColor } from "../utils/StringToColor";
+import Loader from "./Loader";
+import usePagination from "../hooks/Pagination";
+
 
 const MessageList = () => {
-  const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const {  user } = useUser();
+  const [messageList, setMessageList] = useState([]);
+  const [localVotes, setLocalVotes] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+
+  const { user } = useUser();
   const { isDarkMode } = useDarkMode();
   const auth = getAuth();
-  const userProfil = auth.currentUser;
-  const bgColor = stringToColor(user?.fullName,);
+  const currentUser = auth.currentUser;
+
+  const userColor = stringToColor(user?.fullName);
+  const maxMessagesPerPage = 3;
+  const minLengthToPaginate = 6;
 
   const {
     currentPage,
@@ -24,68 +35,147 @@ const MessageList = () => {
     currentData: paginatedMessages,
     goToNextPage,
     goToPreviousPage,
-  } = usePagination(messages, 3); // 👈 par exemple 4 messages par page
+  } = usePagination(messageList, maxMessagesPerPage);
+
+  const fetchMessages = () => {
+    if (!currentUser) return;
+
+    const messagesRef = collection(db, "messages");
+
+    const unsubscribe = onSnapshot(messagesRef, (snapshot) => {
+      const updatedMessages = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      const votesFromDB = {};
+      updatedMessages.forEach((msg) => {
+        votesFromDB[msg.id] = {
+          votesUp: msg.votesUp || 0,
+          votesDown: msg.votesDown || 0,
+        };
+      });
+
+      setMessageList(updatedMessages);
+      setLocalVotes(votesFromDB);
+      setIsLoading(false);
+    });
+
+    return unsubscribe;
+  };
 
   useEffect(() => {
-    const fetchMessages = async () => {
-      if (!userProfil) return;
+    let unsubscribe;
 
-      try {
-        const q = query(
-          collection(db, "messages"),
-          where("email", "==", userProfil.email)
-        );
-        const querySnapshot = await getDocs(q);
-        const data = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setMessages(data);
-      } catch (error) {
-        console.error("Erreur lors de la récupération des messages :", error);
-      } finally {
-        setLoading(false);
-      }
+    if (navigator.onLine) {
+      unsubscribe = fetchMessages(); // Appel immédiat si en ligne
+    }
+
+    const handleOnline = () => {
+      unsubscribe = fetchMessages(); // Reconnexion détectée
     };
 
-    fetchMessages();
-  }, [userProfil]);
+    window.addEventListener("online", handleOnline);
 
-  if (loading) return <Loader />;
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      if (unsubscribe) unsubscribe();
+    };
+  }, [currentUser]);
+
+  const handleVoteMessage = async (messageId, voteType) => {
+    if (!currentUser) return;
+
+    const currentVotes = localVotes[messageId] || { votesUp: 0, votesDown: 0 };
+    const voteField = voteType === "up" ? "votesUp" : "votesDown";
+
+    setLocalVotes((prevVotes) => ({
+      ...prevVotes,
+      [messageId]: {
+        ...currentVotes,
+        [voteField]: currentVotes[voteField] + 1,
+      },
+    }));
+
+    try {
+      const messageRef = doc(db, "messages", messageId);
+      await updateDoc(messageRef, {
+        [voteField]: currentVotes[voteField] + 1,
+      });
+
+      const voteRef = doc(db, "messages", messageId, "votes", currentUser.uid);
+      await setDoc(voteRef, {
+        type: voteType,
+        votedAt: new Date(),
+      });
+    } catch (error) {
+      console.error("Erreur lors du vote :", error);
+      setLocalVotes((prevVotes) => ({
+        ...prevVotes,
+        [messageId]: currentVotes,
+      }));
+    }
+  };
+
+  if (isLoading) return <Loader />;
 
   return (
     <div className="p-6 max-w-4xl mx-auto space-y-4">
       {paginatedMessages.length === 0 ? (
         <p className="text-center text-gray-500">Aucun message trouvé.</p>
       ) : (
-        paginatedMessages.map((msg) => (
-          <div
-            key={msg.id}
-            className={`flex items-start gap-4 flex-col rounded-xl shadow p-4 border max-sm:flex-col 
-              ${isDarkMode ? "bg-gray-900 text-gray-300" : "bg-gray-200 text-gray-900"}`}
-          >
-            <div className="flex justify-center gap-2">
-              <div
-                className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-lg"
-                style={{ backgroundColor: bgColor }}
-              >
-                {user?.initials}
+        paginatedMessages.map((message) => {
+          const votes = localVotes[message.id] || { votesUp: 0, votesDown: 0 };
+          const hasGoodReputation = votes.votesUp > votes.votesDown;
+          const reputationLabel = hasGoodReputation ? "Bonne réputation" : "Mauvaise réputation";
+
+          return (
+            <div
+              key={message.id}
+              className={`flex flex-col gap-2 rounded-xl shadow p-4 border ${
+                isDarkMode ? "bg-gray-900 text-gray-300" : "bg-gray-200 text-gray-900"
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <div
+                  className=" w-12 h-12 rounded-full flex items-center justify-center font-bold text-white"
+                  style={{ backgroundColor: userColor }}
+                >
+                  {user?.initials}
+                </div>
+                <div className="font-semibold">{user?.fullName}</div>
               </div>
-              <div className="text-base font-semibold ">{user?.fullName}</div>
-            </div>
-            <div className="flex-1">
+
               <div
-                className="text-sm mt-1"
+                className="text-sm"
                 dangerouslySetInnerHTML={{
-                  __html: DOMPurify.sanitize(msg.message),
+                  __html: message.message,
                 }}
               ></div>
+
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => handleVoteMessage(message.id, "up")}
+                    className="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600"
+                  >
+                    👍 {votes.votesUp}
+                  </button>
+                  <button
+                    onClick={() => handleVoteMessage(message.id, "down")}
+                    className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                  >
+                    👎 {votes.votesDown}
+                  </button>
+                  <span className="text-xs italic ml-2">{reputationLabel}</span>
+                </div>
+              </div>
             </div>
-          </div>
-        ))
+          );
+        })
       )}
 
-      {messages.length > 6 && (
+      {messageList.length > minLengthToPaginate && (
         <div className="flex justify-center items-center gap-4 mt-6">
           <button
             onClick={goToPreviousPage}

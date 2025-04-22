@@ -1,13 +1,24 @@
-import { useState } from 'react';
+import { useState , useEffect } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { db } from '../services/firebaseconfig';
 import { addDoc, collection } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+import Loader from './Loader';
 
 export default function RichTextEditor() {
   const [content, setContent] = useState('');
+  const [loading , setLoading] = useState(true);
   const auth = getAuth();
   const user = auth.currentUser;
+
+  useEffect(() => {
+    const miliSecond = 3000;
+    const timer = setTimeout(() => {
+      setLoading(false); // Après 1 seconde, on affiche l'éditeur
+    }, miliSecond);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleEditorChange = (content) => {
     setContent(content);
@@ -23,19 +34,28 @@ export default function RichTextEditor() {
       // Enregistrer le message dans Firestore avec les informations de l'utilisateur
       await addDoc(collection(db, "messages"), {
         userId: user.uid,
-        name: user.displayName,  // Nom de l'utilisateur
-        email: user.email,        // Email de l'utilisateur
-        message: content,         // Message de l'utilisateur
-        timestamp: new Date(),    // Date et heure d'envoi
+        name: user.displayName,  
+        email: user.email,        
+        message: content,         
+        timestamp: new Date(),   
       });
       alert('Message envoyé avec succès!');
       setContent(''); // Réinitialiser l'éditeur
+      setLoading(false);
     } catch (error) {
       console.error("Erreur lors de l'envoi du message : ", error);
     }
   };
 
+  if (loading) {
+    return <Loader />;
+  }
+
+
   return (
+    loading? 
+    <Loader/>
+    :
     <div className="max-w-4xl mx-auto my-8 p-4 bg-white rounded-lg shadow-md">
       <h2 className="text-xl font-bold mb-4 text-center">Éditeur de texte</h2>
       <Editor
@@ -58,6 +78,7 @@ export default function RichTextEditor() {
           branding: false,
         }}
         onEditorChange={handleEditorChange}
+        className="bg-gray-800"
       />
 
       <div className="flex justify-center mt-4">
