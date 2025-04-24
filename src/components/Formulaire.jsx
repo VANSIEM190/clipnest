@@ -6,6 +6,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { useDarkMode } from "../Context/DarkModeContext";
+import Seo from "./Seo";
 
 const validationSchema = Yup.object({
   nom: Yup.string()
@@ -78,6 +79,7 @@ const FormulaireInscription = () => {
   };
 
   return (
+    <>
     <div className={`flex items-center justify-center min-h-screen ${isDarkMode ? "dark:bg-gray-900" : "bg-gray-200"}`}>
     <div className="w-2/4 max-sm:w-5/6 mx-auto mt-10 p-6 bg-white rounded-xl shadow-md">
       <h2 className="text-2xl font-bold text-center mb-6 text-indigo-600">Inscription</h2>
@@ -104,6 +106,13 @@ const FormulaireInscription = () => {
       </Formik>
     </div>
     </div>
+    <Seo
+      title="Inscription - ClipNest"
+      description="Créez un compte sur ClipNest pour commencer à apprendre et échanger."
+      url="https://tonsite.com/inscription"
+    />
+  
+    </>
   );
 };
 

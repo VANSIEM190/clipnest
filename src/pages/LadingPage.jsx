@@ -4,6 +4,7 @@ import Typed from "typed.js";
 import Navbar from "../components/Navbar";
 import { useDarkMode } from "../Context/DarkModeContext";
 import { UserProvider , useUser} from "../Context/UserContext";
+import Seo from "../components/Seo";
 
 const LandingPage = () => {
   const { isDarkMode } = useDarkMode();
@@ -58,6 +59,11 @@ const LandingPage = () => {
           </button>
         </div>
       </main>
+      <Seo
+        title="ClipNest - Apprentissage collaboratif"
+        description="Bienvenue sur ClipNest, le forum éducatif pour poser des questions et partager vos connaissances."
+        url="https://clipnest-zeta.vercel.app"
+      />
     </>
   );
 };

@@ -4,6 +4,7 @@ import { auth } from "../services/firebaseconfig";
 import { useNavigate } from "react-router-dom";
 import { useDarkMode } from "../Context/DarkModeContext";
 import { Link } from "react-router-dom";
+import Seo from "./Seo";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -30,6 +31,7 @@ const LoginForm = () => {
   };
 
   return (
+    <>
     <div className={`flex items-center justify-center min-h-screen ${isDarkMode ? "dark:bg-gray-900" : "bg-gray-200"}`}>
       <div className="w-2/4 max-sm:w-5/6 mx-auto mt-10 p-6 bg-white rounded-xl shadow-md">
         <h2 className="text-2xl font-bold text-center mb-6 text-indigo-600">Connexion</h2>
@@ -79,6 +81,13 @@ const LoginForm = () => {
         </p>
       </div>
     </div>
+        <Seo
+        title="Connexion - ClipNest"
+        description="Connectez-vous à votre compte ClipNest pour participer aux discussions."
+        url="https://tonsite.com/connexion"
+      />
+  
+    </>
   );
 };
 

@@ -8,6 +8,7 @@ import ContactCard from "../components/Users";
 import RichTextEditor from "../components/QuestionsUsers";
 import MessageCard from "../components/Accuiel";
 import UserProfil from "../components/userProfil";
+import Seo from "../components/Seo";
 
 const Home = () => {
   const { isDarkMode } = useDarkMode();
@@ -37,6 +38,12 @@ const Home = () => {
           </div>
         </div>
       </UserProvider>
+      <Seo
+          title="Salon - Discussions éducatives sur ClipNest"
+          description="Rejoignez les discussions dans le salon de ClipNest, un lieu d'échange d'idées éducatives."
+          url="https://clipnest-zeta.vercel.app/salon"
+        />
+
     </div>
   );
 };

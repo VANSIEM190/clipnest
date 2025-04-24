@@ -14,7 +14,7 @@ export default function RichTextEditor() {
   useEffect(() => {
     const miliSecond = 3000;
     const timer = setTimeout(() => {
-      setLoading(false); // Après 1 seconde, on affiche l'éditeur
+      setLoading(false);
     }, miliSecond);
 
     return () => clearTimeout(timer);
@@ -40,7 +40,7 @@ export default function RichTextEditor() {
         timestamp: new Date(),   
       });
       alert('Message envoyé avec succès!');
-      setContent(''); // Réinitialiser l'éditeur
+      setContent('');
       setLoading(false);
     } catch (error) {
       console.error("Erreur lors de l'envoi du message : ", error);

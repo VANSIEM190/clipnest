@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useDarkMode } from "../Context/DarkModeContext";
 import { useUser } from "../Context/UserContext";
+import Seo from "../components/Seo";
 
 const Apropos = () => {
   const { isDarkMode } = useDarkMode();
@@ -18,6 +19,7 @@ const Apropos = () => {
   }
   
   return (
+    <>
     <div className={`bg-white min-h-screen px-6 py-12 md:px-16 ${isDarkMode ? "dark:bg-gray-900" : ""}`}>
       <div className="max-w-4xl mx-auto text-center">
         <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
@@ -80,6 +82,13 @@ const Apropos = () => {
         </button>
       </div>
     </div>
+    <Seo
+      title="À propos de ClipNest"
+      description="ClipNest est un espace communautaire d'entraide éducative, gratuit et accessible à tous."
+      url="https://clipnest-zeta.vercel.app/Àpropos"
+    />
+
+    </>
   );
 };
 
