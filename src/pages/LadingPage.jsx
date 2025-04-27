@@ -16,7 +16,6 @@ const LandingPage = () => {
     const typed = new Typed(typedElement.current, {
       strings: [
         "Posez vos questions, partagez vos idées 💬",
-        "Organisez et gérez vos vidéos simplement 📂",
         "Collaborez avec une communauté créative 🌟",
       ],
       typeSpeed: 50,

@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
+// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBgEJuuO5CR5nPoyD8ga_8CVq9dNHaX54g",
   authDomain: "reseau-social-64426.firebaseapp.com",
@@ -15,7 +16,10 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
+// Initialize services
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// Export them
 export { auth, createUserWithEmailAndPassword, db };

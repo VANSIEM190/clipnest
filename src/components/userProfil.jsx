@@ -7,6 +7,8 @@ import { signOut } from "firebase/auth";
 import { auth } from "../services/firebaseconfig"; 
 import usePagination from "../hooks/Pagination"; 
 import { useNavigate } from "react-router-dom";
+import useSortedQuestions from "../hooks/useSortedQuestions";
+import ButtonPagination from "./ButtonPagination";
 
 const QUESTIONS_PER_PAGE = 5;
 
@@ -16,6 +18,7 @@ const UserProfil = () => {
   const { questions, loading } = useUserQuestions();
   const bgColor = stringToColor(user?.fullName);
   const navigation = useNavigate();
+  const sortedQuestions = useSortedQuestions(questions);
 
   // la pagination
   const {
@@ -24,7 +27,8 @@ const UserProfil = () => {
     currentData: paginatedQuestions,
     goToNextPage,
     goToPreviousPage,
-  } = usePagination(questions, QUESTIONS_PER_PAGE);
+    goToPage
+  } = usePagination(sortedQuestions, QUESTIONS_PER_PAGE);
 
   const handleLogout = async () => {
     try {
@@ -37,13 +41,13 @@ const UserProfil = () => {
 
   return (
     <div
-      className={`min-h-screen p-4 sm:p-6 flex flex-col items-center gap-6 ${
-        isDarkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"
+      className={`min-h-screen p-4 sm:p-6 flex flex-col items-center gap-6 z-index-1 ${
+        isDarkMode ? "bg-gray-900 text-white" : " text-gray-900"
       }` }
       translate="no"
     >
       {/* Carte Profil */}
-      <div className="w-full max-w-2xl bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 sm:p-8 relative">
+      <div className={`w-full max-w-2xl  rounded-2xl shadow-lg p-6 sm:p-8 relative ${isDarkMode? "bg-gray-800" : "bg-white"}`}>
 
         <div className="flex flex-col sm:flex-row items-center sm:items-start sm:space-x-6 space-y-4 sm:space-y-0">
           <div
@@ -101,7 +105,7 @@ const UserProfil = () => {
               {paginatedQuestions.map((q) => (
                 <li
                   key={q.id}
-                  className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow flex flex-col md:flex-row justify-between"
+                  className={` p-4 rounded-xl shadow flex flex-col md:flex-row justify-between ${isDarkMode? "bg-gray-800" : "bg-white"}`}
                 >
                   <span
                     className="font-medium text-base break-words"
@@ -117,38 +121,19 @@ const UserProfil = () => {
             </ul>
 
             {/* Pagination */}
-            <div className="mt-6 flex justify-center gap-2">
-              <button
-                onClick={goToPreviousPage}
-                className={`px-3 py-1 rounded-md text-sm font-medium ${
-                  currentPage === 1
-                    ? "bg-gray-300 dark:bg-gray-700 dark:text-white cursor-not-allowed"
-                    : "bg-gray-300 dark:bg-gray-700 dark:text-white"
-                }`}
-                disabled={currentPage === 1}
-              >
-                Preview
-              </button>
-
-              <span className="px-3 py-1 text-sm">{`Page ${currentPage} sur ${totalPages}`}</span>
-
-              <button
-                onClick={goToNextPage}
-                className={`px-3 py-1 rounded-md text-sm font-medium ${
-                  currentPage === totalPages
-                    ? "bg-gray-300 dark:bg-gray-700 dark:text-white cursor-not-allowed"
-                    : "bg-gray-300 dark:bg-gray-700 dark:text-white"
-                }`}
-                disabled={currentPage === totalPages}
-              >
-                Next
-              </button>
-            </div>
-          </>
+            <ButtonPagination 
+            goToPreviousPage ={goToPreviousPage}
+            goToPage ={goToPage}
+            currentPage = {currentPage}
+            goToNextPage={goToNextPage}
+            totalPages = {totalPages}
+            />
+        </>
         ) : (
           <p className="text-sm text-gray-500">Aucune question posée.</p>
         )}
-      </div>
+
+    </div>
     </div>
   );
 };

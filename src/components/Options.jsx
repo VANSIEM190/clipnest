@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { FiBell, FiSun, FiMoon } from "react-icons/fi";
+import { FiBell, FiSun, FiMoon, FiMenu } from "react-icons/fi";
 import { useUser } from "../Context/UserContext";
 import { useDarkMode } from "../Context/DarkModeContext";
 import { stringToColor } from '../utils/StringToColor';
 
-const Options = ()=> {
-  
+
+const Options = () => {
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   const { user } = useUser();
   const bgColor = stringToColor(user.fullName);
@@ -14,79 +14,73 @@ const Options = ()=> {
   const toggleDropdown = () => setIsOpen(!isOpen);
 
   return (
-    <div as="div" className="relative inline-block text-left">
+    <div className="relative inline-block text-left">
       <div>
         <button 
-        className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white
-        px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset
-    hover:bg-gray-50"
-        type="button"
-        onClick={toggleDropdown}
-    >
-          Options
+          className={`flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50 ${isDarkMode ? "bg-gray-900  text-white" : "bg-gray-200 text-gray-900"}`}
+          type="button"
+          onClick={toggleDropdown}
+        >
+          <FiMenu className="text-2xl" />
         </button>
       </div>
 
-      {isOpen&&
+      {isOpen && (
         <div
-        className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
-      >
-        <div className="'flex items-center gap-x-2 px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
-          <div className='flex items-center gap-x-2 px-4  text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden'>
-            <Link
-              to="/"
-              className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden"
-            >
-              Accuiel
-            </Link>
-          </div>
-          <div className='flex items-center gap-x-2 px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden'>
-            <Link
-              to="/Àpropos"
-              href="#"
-              className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden"
-            >
-              À propos
-            </Link>
-          </div>
-          <div className='flex items-center gap-x-2 px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden'>
-            <FiBell className="text-2xl" />
-            <span className="text-sm">
-              notification
-            </span>
-          </div>
-          <div className='flex items-center gap-x-2 px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden'>
-          <button onClick={toggleDarkMode} className="text-xl focus:outline-none cursor-pointer"> 
-            {isDarkMode ? 
-              (
-              <div className='flex items-center gap-x-2'>
-              <FiSun />
-              <span className='text-sm'>
-                {isDarkMode ? "Mode clair" : "Mode sombre"}
-              </span>
+          className="z-100 absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
+          role="menu"
+        >
+          <div className={`py-1 rounded-sm shadow-sm shadow-gray-700 ${isDarkMode ? "bg-gray-900 text-white " : "bg-white text-gray-900"}`} >
+            {/* Accueil */}
+            <div className="w-full text-center py-2 text-sm  hover:bg-gray-100">
+              <Link to="/" className="block">
+                Accueil
+              </Link>
             </div>
-            ) : 
-            (
-            <div className='flex items-center gap-x-2'>
-              <FiMoon />
-              <span className='text-sm'>
-                {isDarkMode ? "Mode clair" : "Mode sombre"}
-              </span>
+
+            {/* À propos */}
+            <div className="w-full text-center py-2 text-sm  hover:bg-gray-100">
+              <Link to="/Àpropos" className="block">
+                À propos
+              </Link>
             </div>
-            )
-                }
-            </button>
-              </div>
-              <div className="flex items-center gap-x-2 px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
-                <div className='w-8 h-8 px-4 rounded-full  flex items-center justify-center text-white font-semibold'
+
+            {/* Notifications */}
+            <div className="flex items-center justify-center gap-x-2 py-2 text-sm  hover:bg-gray-100">
+              <FiBell className="text-xl" />
+              <span>Notifications</span>
+            </div>
+
+            {/* Mode sombre/clair */}
+            <div className="w-full text-center py-2 text-sm  hover:bg-gray-100">
+              <button onClick={toggleDarkMode} className="flex items-center justify-center gap-x-2 w-full">
+                {isDarkMode ? (
+                  <>
+                    <FiSun className="text-xl" />
+                    <span>Mode clair</span>
+                  </>
+                ) : (
+                  <>
+                    <FiMoon className="text-xl" />
+                    <span>Mode sombre</span>
+                  </>
+                )}
+              </button>
+            </div>
+
+            {/* Profil utilisateur */}
+            <div className="flex items-center justify-center gap-x-2 py-2 text-sm  hover:bg-gray-100">
+              <div
+                className="w-8 h-8 rounded-full flex items-center justify-center text-white font-semibold"
                 style={{ backgroundColor: bgColor }}
-                >
+              >
                 {user.initials}
-                </div>
-                <span>{user.fullName}</span>
+              </div>
+              <span>{user.fullName}</span>
             </div>
+          </div>
         </div>
-      </div>}
+      )}
     </div>
   )
 }

@@ -1,33 +1,22 @@
-import React, { useState, useEffect } from "react";
-import {
-  collection,
-  doc,
-  setDoc,
-  updateDoc,
-  onSnapshot, // ✅ Correction ici
-} from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import React, { useEffect, useState } from "react";
+import { collection, onSnapshot, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../services/firebaseconfig";
-import { useUser } from "../Context/UserContext";
 import { useDarkMode } from "../Context/DarkModeContext";
 import { stringToColor } from "../utils/StringToColor";
 import Loader from "./Loader";
+import { useUser } from "../Context/UserContext";
 import usePagination from "../hooks/Pagination";
-
+import ButtonPagination from "./ButtonPagination";
+import { FaTrash } from "react-icons/fa"; // Importer l'icône de suppression
 
 const MessageList = () => {
   const [messageList, setMessageList] = useState([]);
-  const [localVotes, setLocalVotes] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-
-  const { user } = useUser();
   const { isDarkMode } = useDarkMode();
-  const auth = getAuth();
-  const currentUser = auth.currentUser;
+  const { user } = useUser();
 
-  const userColor = stringToColor(user?.fullName);
-  const maxMessagesPerPage = 3;
-  const minLengthToPaginate = 6;
+  const maxMessagesPerPage = 20;
+  const minLengthToPaginate = 20;
 
   const {
     currentPage,
@@ -37,163 +26,224 @@ const MessageList = () => {
     goToPreviousPage,
   } = usePagination(messageList, maxMessagesPerPage);
 
-  const fetchMessages = () => {
-    if (!currentUser) return;
+  const [localVotes, setLocalVotes] = useState(() => {
+    const saved = localStorage.getItem(`votes_${user?.uid}`);
+    return saved ? JSON.parse(saved) : {};
+  });
+
+  const [reputations, setReputations] = useState({});
+
+  useEffect(() => {
+    if (!user?.uid) return;
 
     const messagesRef = collection(db, "messages");
-
     const unsubscribe = onSnapshot(messagesRef, (snapshot) => {
       const updatedMessages = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-
-      const votesFromDB = {};
-      updatedMessages.forEach((msg) => {
-        votesFromDB[msg.id] = {
-          votesUp: msg.votesUp || 0,
-          votesDown: msg.votesDown || 0,
-        };
-      });
-
       setMessageList(updatedMessages);
-      setLocalVotes(votesFromDB);
       setIsLoading(false);
     });
 
-    return unsubscribe;
-  };
+    return () => unsubscribe();
+  }, [user?.uid]);
 
   useEffect(() => {
-    let unsubscribe;
-
-    if (navigator.onLine) {
-      unsubscribe = fetchMessages(); // Appel immédiat si en ligne
+    const saved = localStorage.getItem(`votes_${user?.uid}`);
+    if (saved) {
+      setLocalVotes(JSON.parse(saved));
+    } else {
+      setLocalVotes({});
     }
+  }, [user?.uid]);
 
-    const handleOnline = () => {
-      unsubscribe = fetchMessages(); // Reconnexion détectée
-    };
+  useEffect(() => {
+    const updatedReputations = {};
+    messageList.forEach((message) => {
+      const vote = localVotes[message.id] || { liked: false, disliked: false };
+      if (vote.liked && !vote.disliked) {
+        updatedReputations[message.id] = "Bonne";
+      } else if (vote.disliked) {
+        updatedReputations[message.id] = "Mauvaise";
+      } else {
+        updatedReputations[message.id] = "Moyenne";
+      }
+    });
+    setReputations(updatedReputations);
+  }, [localVotes, messageList]);
 
-    window.addEventListener("online", handleOnline);
+  const saveVotes = (votes) => {
+    setLocalVotes(votes);
+    localStorage.setItem(`votes_${user?.uid}`, JSON.stringify(votes));
+  };
 
-    return () => {
-      window.removeEventListener("online", handleOnline);
-      if (unsubscribe) unsubscribe();
-    };
-  }, [currentUser]);
+  const handleLike = (messageId) => {
+    if (!user?.uid) return;
 
-  const handleVoteMessage = async (messageId, voteType) => {
-    if (!currentUser) return;
+    const votes = { ...localVotes };
 
-    const currentVotes = localVotes[messageId] || { votesUp: 0, votesDown: 0 };
-    const voteField = voteType === "up" ? "votesUp" : "votesDown";
+    if (votes[messageId]?.liked) return;
 
-    setLocalVotes((prevVotes) => ({
-      ...prevVotes,
-      [messageId]: {
-        ...currentVotes,
-        [voteField]: currentVotes[voteField] + 1,
-      },
-    }));
+    votes[messageId] = { liked: true, disliked: false };
+    saveVotes(votes);
+  };
 
+  const handleDislike = (messageId) => {
+    if (!user?.uid) return;
+
+    const votes = { ...localVotes };
+
+    if (votes[messageId]?.disliked) return;
+
+    votes[messageId] = { liked: false, disliked: true };
+    saveVotes(votes);
+  };
+
+  const handleDelete = async (messageId) => {
+    const confirmDelete = window.confirm("Es-tu sûr de vouloir supprimer ce message ?");
+    if (!confirmDelete) return;
+
+    const messageRef = doc(db, "messages", messageId);
     try {
-      const messageRef = doc(db, "messages", messageId);
-      await updateDoc(messageRef, {
-        [voteField]: currentVotes[voteField] + 1,
-      });
-
-      const voteRef = doc(db, "messages", messageId, "votes", currentUser.uid);
-      await setDoc(voteRef, {
-        type: voteType,
-        votedAt: new Date(),
-      });
+      await deleteDoc(messageRef);
     } catch (error) {
-      console.error("Erreur lors du vote :", error);
-      setLocalVotes((prevVotes) => ({
-        ...prevVotes,
-        [messageId]: currentVotes,
-      }));
+      console.error("Erreur lors de la suppression :", error);
+    }
+  };
+
+  const formatDate = (timestamp) => {
+    if (!timestamp?.toDate) return "";
+    const date = new Date(timestamp.toDate());
+    const now = new Date();
+
+    const isToday = date.toDateString() === now.toDateString();
+    const yesterday = new Date(now);
+    yesterday.setDate(now.getDate() - 1);
+    const isYesterday = date.toDateString() === yesterday.toDateString();
+
+    if (isToday) {
+      return `Aujourd'hui à ${date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
+    } else if (isYesterday) {
+      return `Hier à ${date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
+    } else {
+      return date.toLocaleString();
     }
   };
 
   if (isLoading) return <Loader />;
 
   return (
-    <div className="p-6 max-w-4xl mx-auto space-y-4">
+    <div className="p-4 sm:p-6 max-w-4xl mx-auto space-y-6">
       {paginatedMessages.length === 0 ? (
         <p className="text-center text-gray-500">Aucun message trouvé.</p>
       ) : (
-        paginatedMessages.map((message) => {
-          const votes = localVotes[message.id] || { votesUp: 0, votesDown: 0 };
-          const hasGoodReputation = votes.votesUp > votes.votesDown;
-          const reputationLabel = hasGoodReputation ? "Bonne réputation" : "Mauvaise réputation";
+        <>
+          {paginatedMessages.map((message) => {
+            const vote = localVotes[message.id] || { liked: false, disliked: false };
+            const reputation = reputations[message.id] ;
 
-          return (
-            <div
-              key={message.id}
-              className={`flex flex-col gap-2 rounded-xl shadow p-4 border ${
-                isDarkMode ? "bg-gray-900 text-gray-300" : "bg-gray-200 text-gray-900"
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <div
-                  className=" w-12 h-12 rounded-full flex items-center justify-center font-bold text-white"
-                  style={{ backgroundColor: userColor }}
-                >
-                  {user?.initials}
-                </div>
-                <div className="font-semibold">{user?.fullName}</div>
-              </div>
-
+            return (
               <div
-                className="text-sm"
-                dangerouslySetInnerHTML={{
-                  __html: message.message,
-                }}
-              ></div>
+                key={message.id}
+                className={`flex flex-col gap-3 rounded-2xl p-5 border shadow-md transition-all duration-300 
+                  ${
+                    isDarkMode
+                      ? "bg-gradient-to-br from-gray-800 via-gray-900 to-black text-gray-200"
+                      : "bg-gradient-to-br from-white via-gray-100 to-gray-200 text-gray-900"
+                  }
+                  hover:shadow-2xl
+                `}
+              >
+                <div className="flex items-center gap-4 sm:gap-6">
+                  <div
+                    className="w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center font-bold text-white text-xl sm:text-2xl shadow-inner"
+                    style={{ backgroundColor: stringToColor(message?.name) }}
+                    translate="no"
+                  >
+                    {message?.nameProfil}
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-semibold text-base sm:text-lg md:text-xl">{message?.name}</span>
+                    <div className="text-xs sm:text-sm text-gray-400">
+                      {formatDate(message?.timestamp)}
+                    </div>
+                    <div className="text-xs sm:text-sm mt-1 font-medium">
+                      Réputation :{" "}
+                      <span
+                        className={`${
+                          reputation === "Bonne"
+                            ? "text-green-500"
+                            : reputation === "Mauvaise"
+                            ? "text-red-500"
+                            : "text-yellow-500"
+                        }`}
+                      >
+                        {reputation}
+                      </span>
+                    </div>
+                  </div>
+                </div>
 
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => handleVoteMessage(message.id, "up")}
-                    className="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600"
-                  >
-                    👍 {votes.votesUp}
-                  </button>
-                  <button
-                    onClick={() => handleVoteMessage(message.id, "down")}
-                    className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                  >
-                    👎 {votes.votesDown}
-                  </button>
-                  <span className="text-xs italic ml-2">{reputationLabel}</span>
+                <div
+                  className="text-sm sm:text-base leading-relaxed mt-2 whitespace-pre-wrap break-words"
+                  dangerouslySetInnerHTML={{ __html: message.message }}
+                />
+
+                <div className="flex justify-between items-center gap-3 mt-3">
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => handleLike(message.id)}
+                      disabled={vote.liked}
+                      className={`flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm rounded-full transition 
+                        ${
+                          vote.liked
+                            ? "bg-green-400 text-white cursor-not-allowed"
+                            : "bg-green-100 text-green-700 hover:bg-green-200"
+                        }
+                      `}
+                    >
+                      👍 {vote.liked ? 1 : 0}
+                    </button>
+
+                    <button
+                      onClick={() => handleDislike(message.id)}
+                      disabled={vote.disliked}
+                      className={`flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm rounded-full transition 
+                        ${
+                          vote.disliked
+                            ? "bg-red-400 text-white cursor-not-allowed"
+                            : "bg-red-100 text-red-700 hover:bg-red-200"
+                        }
+                      `}
+                    >
+                      👎 {vote.disliked ? 1 : 0}
+                    </button>
+                  </div>
+
+                  {user?.fullName === message?.name && (
+                    <button
+                      onClick={() => handleDelete(message.id)}
+                      className="px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm bg-red-500 text-white rounded-full hover:bg-red-600 transition"
+                    >
+                      <FaTrash /> {/* Ajouter l'icône ici */}
+                    </button>
+                  )}
                 </div>
               </div>
-            </div>
-          );
-        })
+            );
+          })}
+        </>
       )}
 
       {messageList.length > minLengthToPaginate && (
-        <div className="flex justify-center items-center gap-4 mt-6">
-          <button
-            onClick={goToPreviousPage}
-            disabled={currentPage === 1}
-            className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50"
-          >
-            Précédent
-          </button>
-          <span className="text-sm text-gray-700 dark:text-gray-300">
-            Page {currentPage} sur {totalPages}
-          </span>
-          <button
-            onClick={goToNextPage}
-            disabled={currentPage === totalPages}
-            className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50"
-          >
-            Suivant
-          </button>
+        <div className="flex justify-center mt-6">
+          <ButtonPagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            goToNextPage={goToNextPage}
+            goToPreviousPage={goToPreviousPage}
+          />
         </div>
       )}
     </div>

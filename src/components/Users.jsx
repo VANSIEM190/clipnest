@@ -5,6 +5,8 @@ import Loader from "./Loader";
 import { useDarkMode } from "../Context/DarkModeContext";
 import usePagination from "../hooks/Pagination";
 import { stringToColor } from "../utils/StringToColor";
+import ButtonPagination from "./ButtonPagination";
+import useSortedQuestions from "../hooks/useSortedQuestions";
 
 const ContactCard = () => {
   const [users, setUsers] = useState([]);
@@ -12,6 +14,7 @@ const ContactCard = () => {
   const [loading, setLoading] = useState(true);
   const { isDarkMode } = useDarkMode();
   const usersPerPage = 9;
+
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -48,14 +51,14 @@ const ContactCard = () => {
     user.fullName.toLowerCase().includes(usersSearch.toLowerCase())
   );
 
-  const pagination = usePagination(filteredUsers, usersPerPage);
+  const pagination = usePagination(useSortedQuestions(filteredUsers), usersPerPage);
 
   return (
     <>
       {loading ? (
         <Loader />
       ) : (
-        <div className="min-h-screen p-6">
+        <div className="min-h-screen p-6 ">
           <h1 className="text-2xl font-bold mb-6 text-center text-gray-800 dark:text-gray-400">
             Cartes de contact
           </h1>
@@ -105,39 +108,13 @@ const ContactCard = () => {
           </div>
 
           {/* Pagination */}
-          <div className="flex justify-center items-center mt-6 space-x-2 flex-wrap">
-            <button
-              onClick={pagination.goToPreviousPage}
-              disabled={pagination.currentPage === 1}
-              className="px-3 py-1 bg-blue-500 text-white rounded disabled:opacity-50"
-            >
-              Précédent
-            </button>
-            {/* creation d'un tableau avec le total page  */}
-            {Array.from({ length: pagination.totalPages }, (_, index) => index + 1).map(
-              (pageNumber) => (
-                <button
-                  key={pageNumber}
-                  onClick={() => pagination.goToPage(pageNumber)}
-                  className={`px-3 py-1 rounded ${
-                    pagination.currentPage === pageNumber
-                      ? "bg-blue-700 text-white"
-                      : "bg-gray-200 text-gray-800 dark:bg-gray-600 dark:text-white"
-                  }`}
-                >
-                  {pageNumber}
-                </button>
-              )
-            )}
-
-            <button
-              onClick={pagination.goToNextPage}
-              disabled={pagination.currentPage === pagination.totalPages}
-              className="px-3 py-1 bg-blue-500 text-white rounded disabled:opacity-50"
-            >
-              Suivant
-            </button>
-          </div>
+          <ButtonPagination 
+          goToPreviousPage ={pagination.goToPreviousPage}
+          goToPage ={pagination.goToPage}
+          currentPage = {pagination.currentPage}
+          goToNextPage={pagination.goToNextPage}
+          totalPages = {pagination.totalPages}
+          />
         </div>
       )}
     </>

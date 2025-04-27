@@ -5,7 +5,7 @@ const useStateScreen = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsSmallScreen(window.innerWidth <= 640);
+      setIsSmallScreen(window.innerWidth <= 700);
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
