@@ -1,9 +1,10 @@
 import { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 import { DarkModeProvider } from "../Context/DarkModeContext";
-import { UserProvider } from "../Context/UserContext";
+import {  UserProvider} from "../Context/UserContext";
 import Loader from "../components/Loader"; 
-import useNotificationListener from "../hooks/notification";
+
+
 
 const LadingPage = lazy(() => import("../pages/LadingPage"));
 const Apropos = lazy(() => import("../pages/Apropos"));
@@ -13,8 +14,6 @@ const Home = lazy(() => import("../pages/Home"));
 const ErrorPage = lazy(() => import("../pages/ErrorPage"));
 
 const RouterApp = () => {
-  
-  useNotificationListener();
   return (
     <DarkModeProvider>
       <UserProvider>
