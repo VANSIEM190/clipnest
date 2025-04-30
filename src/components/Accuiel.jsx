@@ -7,16 +7,20 @@ import Loader from "./Loader";
 import { useUser } from "../Context/UserContext";
 import usePagination from "../hooks/Pagination";
 import ButtonPagination from "./ButtonPagination";
-import { FaTrash } from "react-icons/fa"; // Importer l'icône de suppression
+import { FaTrash } from "react-icons/fa"; 
+import useSortedQuestions from "../hooks/useSortedQuestions";
+import useNotificationListener from "../hooks/notification";
 
 const MessageList = () => {
   const [messageList, setMessageList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { isDarkMode } = useDarkMode();
   const { user } = useUser();
+  const sortedMessages = useSortedQuestions(messageList);
 
   const maxMessagesPerPage = 20;
-  const minLengthToPaginate = 20;
+  const minLengthToPaginate = 6;
+  useNotificationListener(user?.fullName);
 
   const {
     currentPage,
@@ -24,7 +28,7 @@ const MessageList = () => {
     currentData: paginatedMessages,
     goToNextPage,
     goToPreviousPage,
-  } = usePagination(messageList, maxMessagesPerPage);
+  } = usePagination(sortedMessages, maxMessagesPerPage);
 
   const [localVotes, setLocalVotes] = useState(() => {
     const saved = localStorage.getItem(`votes_${user?.uid}`);
@@ -145,92 +149,92 @@ const MessageList = () => {
 
             return (
               <div
-                key={message.id}
-                className={`flex flex-col gap-3 rounded-2xl p-5 border shadow-md transition-all duration-300 
-                  ${
-                    isDarkMode
-                      ? "bg-gradient-to-br from-gray-800 via-gray-900 to-black text-gray-200"
-                      : "bg-gradient-to-br from-white via-gray-100 to-gray-200 text-gray-900"
-                  }
-                  hover:shadow-2xl
-                `}
-              >
-                <div className="flex items-center gap-4 sm:gap-6">
-                  <div
-                    className="w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center font-bold text-white text-xl sm:text-2xl shadow-inner"
-                    style={{ backgroundColor: stringToColor(message?.name) }}
-                    translate="no"
-                  >
-                    {message?.nameProfil}
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="font-semibold text-base sm:text-lg md:text-xl">{message?.name}</span>
-                    <div className="text-xs sm:text-sm text-gray-400">
-                      {formatDate(message?.timestamp)}
-                    </div>
-                    <div className="text-xs sm:text-sm mt-1 font-medium">
-                      Réputation :{" "}
-                      <span
-                        className={`${
-                          reputation === "Bonne"
-                            ? "text-green-500"
-                            : reputation === "Mauvaise"
-                            ? "text-red-500"
-                            : "text-yellow-500"
-                        }`}
-                      >
-                        {reputation}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
+              key={message.id}
+              className={`flex flex-col gap-3 rounded-2xl p-2 sm:p-5 border shadow-md transition-all duration-300 w-full min-w-[100px]
+                ${
+                  isDarkMode
+                    ? "bg-gradient-to-br from-gray-800/90 via-gray-900/90 to-black/90 text-gray-100 backdrop-blur-sm"
+                    : "bg-white/80 backdrop-blur-sm text-gray-900"
+                }
+                hover:shadow-xl
+              `}
+            >
+              <div className="flex items-center gap-3 sm:gap-5">
                 <div
-                  className="text-sm sm:text-base leading-relaxed mt-2 whitespace-pre-wrap break-words"
-                  dangerouslySetInnerHTML={{ __html: message.message }}
-                />
-
-                <div className="flex justify-between items-center gap-3 mt-3">
-                  <div className="flex gap-3">
-                    <button
-                      onClick={() => handleLike(message.id)}
-                      disabled={vote.liked}
-                      className={`flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm rounded-full transition 
-                        ${
-                          vote.liked
-                            ? "bg-green-400 text-white cursor-not-allowed"
-                            : "bg-green-100 text-green-700 hover:bg-green-200"
-                        }
-                      `}
-                    >
-                      👍 {vote.liked ? 1 : 0}
-                    </button>
-
-                    <button
-                      onClick={() => handleDislike(message.id)}
-                      disabled={vote.disliked}
-                      className={`flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm rounded-full transition 
-                        ${
-                          vote.disliked
-                            ? "bg-red-400 text-white cursor-not-allowed"
-                            : "bg-red-100 text-red-700 hover:bg-red-200"
-                        }
-                      `}
-                    >
-                      👎 {vote.disliked ? 1 : 0}
-                    </button>
+                  className="w-10 h-10 sm:w-14 sm:h-14 rounded-full flex items-center justify-center font-bold text-white text-sm sm:text-xl shadow-inner shrink-0"
+                  style={{ backgroundColor: stringToColor(message?.name) }}
+                  translate="no"
+                >
+                  {message?.nameProfil}
+                </div>
+                <div className="flex flex-col overflow-hidden">
+                  <span className="font-semibold text-sm sm:text-base truncate">{message?.name}</span>
+                  <div className="text-[10px] sm:text-xs text-gray-400 truncate">
+                    {formatDate(message?.timestamp)}
                   </div>
-
-                  {user?.fullName === message?.name && (
-                    <button
-                      onClick={() => handleDelete(message.id)}
-                      className="px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm bg-red-500 text-white rounded-full hover:bg-red-600 transition"
+                  <div className="text-[11px] sm:text-sm mt-1 font-medium">
+                    Réputation :{" "}
+                    <span
+                      className={`${
+                        reputation === "Bonne"
+                          ? "text-green-500"
+                          : reputation === "Mauvaise"
+                          ? "text-red-500"
+                          : "text-yellow-500"
+                      }`}
                     >
-                      <FaTrash /> {/* Ajouter l'icône ici */}
-                    </button>
-                  )}
+                      {reputation}
+                    </span>
+                  </div>
                 </div>
               </div>
+            
+              <div
+                className="text-xs sm:text-sm leading-relaxed mt-1 text-wrap break-words whitespace-pre-wrap"
+                dangerouslySetInnerHTML={{ __html: message.message }}
+              />
+            
+              <div className="flex justify-between items-center gap-2 mt-2 flex-wrap">
+                <div className="flex gap-2 flex-wrap">
+                  <button
+                    onClick={() => handleLike(message.id)}
+                    disabled={vote.liked}
+                    className={`flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5 text-[10px] sm:text-sm rounded-full transition 
+                      ${
+                        vote.liked
+                          ? "bg-green-500 text-white cursor-not-allowed"
+                          : "bg-green-100 text-green-700 hover:bg-green-200"
+                      }
+                    `}
+                  >
+                    👍 {vote.liked ? 1 : 0}
+                  </button>
+            
+                  <button
+                    onClick={() => handleDislike(message.id)}
+                    disabled={vote.disliked}
+                    className={`flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5 text-[10px] sm:text-sm rounded-full transition 
+                      ${
+                        vote.disliked
+                          ? "bg-red-500 text-white cursor-not-allowed"
+                          : "bg-red-100 text-red-700 hover:bg-red-200"
+                      }
+                    `}
+                  >
+                    👎 {vote.disliked ? 1 : 0}
+                  </button>
+                </div>
+            
+                {user?.fullName === message?.name && (
+                  <button
+                    onClick={() => handleDelete(message.id)}
+                    className="px-2 py-1 sm:px-3 sm:py-1.5 text-[10px] sm:text-sm bg-red-500 text-white rounded-full hover:bg-red-600 transition"
+                  >
+                    <FaTrash />
+                  </button>
+                )}
+              </div>
+            </div>            
             );
           })}
         </>

@@ -13,6 +13,7 @@ const Home = lazy(() => import("../pages/Home"));
 const ErrorPage = lazy(() => import("../pages/ErrorPage"));
 
 const RouterApp = () => {
+  
   useNotificationListener();
   return (
     <DarkModeProvider>

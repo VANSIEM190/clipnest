@@ -79,7 +79,14 @@ const Sidebar = ({ onNavigate }) => {
           `}
         >
           {!shouldCollapse && (
-            <div className="text-xl font-bold mb-4 p-4">MaBarre</div>
+            <div className="text-xl font-bold mb-4 p-4">Mon Menu
+            <button
+              onClick={toggleMenu}
+              className="text-sm p-2  rounded-full shadow"
+            >
+          {shouldCollapse ? <FaChevronRight /> : <FaChevronLeft />}
+        </button>
+      </div>
           )}
 
           {/* Profil utilisateur */}

@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Typed from "typed.js";
 import Navbar from "../components/Navbar";
 import { useDarkMode } from "../Context/DarkModeContext";
-import { UserProvider , useUser} from "../Context/UserContext";
+import { UserProvider, useUser } from "../Context/UserContext";
 import Seo from "../components/Seo";
 
 const LandingPage = () => {
@@ -13,6 +13,11 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!typedElement.current) {
+      console.warn("typedElement is null");
+      return;
+    }
+  
     const typed = new Typed(typedElement.current, {
       strings: [
         "Posez vos questions, partagez vos idées 💬",
@@ -23,41 +28,46 @@ const LandingPage = () => {
       backDelay: 2000,
       loop: true,
     });
-
+  
     return () => typed.destroy();
   }, []);
+  
 
-  const handleClick = async () => {
-      if (initials) {
-        navigate("/salon");
-      } else {
-        navigate("/connexion");
-      }
+  const handleClick = () => {
+    navigate(initials ? "/salon" : "/connexion");
   };
 
   return (
     <>
-    <UserProvider>
-      <Navbar />
-    </UserProvider>
+      <UserProvider>
+        <Navbar />
+      </UserProvider>
 
-      <main className={`flex md:flex-row items-center justify-between px-8 md:px-20 py-16 h-[93%] gap-16  ${isDarkMode? "dark:bg-gray-900" : "bg-gray-200"}`}>
-        <div className="md:w-1/2 space-y-6">
-          <h3 className={`text-4xl md:text-5xl font-bold ${isDarkMode? "dark:text-gray-200" : "text-gray-800"}`} >
+      <main className={`flex items-center justify-center min-h-screen px-2 sm:px-6 py-10 
+        ${isDarkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"}`}>
+        
+        <div className="max-w-3xl w-full text-center space-y-6">
+          <h1
+            className={`text-2xl sm:text-3xl md:text-5xl font-extrabold leading-tight break-words`}
+          >
             <span ref={typedElement}></span>
-          </h3>
-          <p className={`text-gray-600  text-lg leading-relaxed ${isDarkMode ? 'dark:text-gray-200' : ""}`}>
+          </h1>
+          
+          <p className="text-sm sm:text-base md:text-lg  text-wrap break-words px-2 sm:px-6">
             Vous avez une question technique, créative ou stratégique ? Posez-la sur ClipNest.
-            Notre communauté de passionnés et d’experts est là pour vous aider à apprendre, progresser et partager votre savoir.
+            Notre communauté de passionnés et d’experts est là pour vous aider à apprendre,
+            progresser et partager votre savoir.
           </p>
+
           <button
-            className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition cursor-pointer"
+            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 sm:px-6 rounded-xl transition duration-200"
             onClick={handleClick}
           >
-            Commencer maintenant
+            {initials ? "Accéder au salon" : "Rejoindre la communauté"}
           </button>
         </div>
       </main>
+
       <Seo
         title="ClipNest - Apprentissage collaboratif"
         description="Bienvenue sur ClipNest, le forum éducatif pour poser des questions et partager vos connaissances."

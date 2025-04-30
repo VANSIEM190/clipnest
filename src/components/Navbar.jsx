@@ -18,7 +18,7 @@ const Navbar = () => {
   return (
     <>
       <header 
-      className={`${isDarkMode ? "dark:bg-gray-900" : "bg-gray-200"} shadow-md py-4 px-8 flex justify-between items-center max-sm[290px]:flex-col max-sm[290px]:gap-4l`}
+      className={`${isDarkMode ? "dark:bg-gray-900" : "bg-gray-200"} shadow-md py-4 px-8 flex justify-between items-center max-sm:flex-wrap max-sm:items-start max-sm:gap-4`}
       translate="no"
       >
         <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400">ClipNest</h3>
@@ -38,7 +38,7 @@ const Navbar = () => {
         </nav>
 
         {isSmallScreen && !isRoot && (
-          <Options />
+          <Options  />
         )}
       </header>
       

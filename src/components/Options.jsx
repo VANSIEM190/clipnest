@@ -27,7 +27,7 @@ const Options = () => {
 
       {isOpen && (
         <div
-          className="z-100 absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
+          className="z-100 absolute max-xs:-right-30 right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
           role="menu"
         >
           <div className={`py-1 rounded-sm shadow-sm shadow-gray-700 ${isDarkMode ? "bg-gray-900 text-white " : "bg-white text-gray-900"}`} >
