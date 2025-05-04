@@ -1,123 +1,131 @@
 import React, { useEffect, useState } from "react";
-import { db } from "../services/firebaseconfig";
 import { collection, getDocs } from "firebase/firestore";
-import Loader from "./Loader";
-import { useDarkMode } from "../Context/DarkModeContext";
-import usePagination from "../hooks/Pagination";
+import { db, auth } from "../services/firebaseconfig";
+import { useNavigate } from "react-router-dom";
 import { stringToColor } from "../utils/StringToColor";
-import ButtonPagination from "./ButtonPagination";
-import useSortedQuestions from "../hooks/useSortedQuestions";
+import { useDarkMode } from "../Context/DarkModeContext";
+import Loader from "../components/Loader"
 
 const ContactCard = () => {
   const [users, setUsers] = useState([]);
-  const [usersSearch, setUsersSearch] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [connectedUserIds, setConnectedUserIds] = useState([]);
+  const [loading , setLoading] = useState(true);
+  const [search, setSearch] = useState("");
   const { isDarkMode } = useDarkMode();
-  const usersPerPage = 26;
+  const navigate = useNavigate();
+
+  const socket = new WebSocket("ws://localhost:3001");
+
+  useEffect(() => {
+    const user = auth.currentUser;
+
+    if (user) {
+      socket.onopen = () => {
+        socket.send(
+          JSON.stringify({
+            type: "login",
+            userId: user.uid,
+          })
+        );
+      };
+    }
+  }, []);
+
+  useEffect(() => {
+    socket.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      if (message.type === "userList") {
+        setConnectedUserIds(message.users);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const querySnapshot = await getDocs(collection(db, "users"));
-      const usersData = querySnapshot.docs.map((doc) => {
-        const data = doc.data();
-        const prenom = data.prenom || "";
-        const nom = data.nom || "";
-        const fullName = `${prenom} ${nom}`;
-        const initials = `${prenom.charAt(0)}${nom.charAt(0)}`.toUpperCase();
-        const bgColor = stringToColor(fullName);
-
-        return {
-          ...data,
-          fullName,
-          initials,
-          bgColor,
-        };
-      });
-
-      setUsers(usersData);
-      setLoading(false);
+      try {
+        const querySnapshot = await getDocs(collection(db, "users"));
+        const userList = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setUsers(userList);
+        setLoading(false)
+      } catch (error) {
+        console.error("Erreur lors de la récupération des utilisateurs :", error);
+      }
     };
 
     fetchUsers();
   }, []);
 
-  const handleChange = (e) => {
-    setUsersSearch(e.target.value);
-    pagination.goToPage(1);
+  const handleClick = (userId) => {
+    navigate(`/message/${userId}`);
   };
 
-  const filteredUsers = users.filter((user) =>
-    user.fullName.toLowerCase().includes(usersSearch.toLowerCase())
-  );
-
-  const pagination = usePagination(useSortedQuestions(filteredUsers), usersPerPage);
+  const filteredUsers = users.filter((user) => {
+    const fullName = `${user.prenom} ${user.nom}`.toLowerCase();
+    return fullName.includes(search.toLowerCase());
+  });
 
   return (
-    <>
-      {loading ? (
-        <Loader />
-      ) : (
-        <div className="min-h-screen p-4 sm:p-6">
-          <h1 className="text-xl sm:text-2xl font-bold mb-6 text-center text-gray-800 dark:text-gray-400">
-            Cartes de contact
-          </h1>
+    loading?
+    <Loader/> : 
+    <div className="container mx-auto p-2 sm:p-4">
+      <h2 className="text-lg sm:text-2xl font-bold mb-2 sm:mb-4">Liste des utilisateurs</h2>
+      <input
+        type="text"
+        placeholder="Recherche"
+        onChange={(e) => setSearch(e.target.value)}
+        value={search}
+        className={`w-full max-w-full sm:max-w-md rounded-md bg-transparent px-3.5 py-2 text-sm sm:text-base ${
+          isDarkMode ? "text-white" : "text-gray-900"
+        } outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-blue-500 mb-4`}
+      />
 
-          <div className="flex justify-center items-center my-4">
-            <input
-              type="text"
-              placeholder="Recherche"
-              onChange={handleChange}
-              value={usersSearch}
-              className={`w-full max-w-xs sm:max-w-md rounded-md bg-transparent px-3.5 py-2 text-sm sm:text-base ${
-                isDarkMode ? "text-white" : "text-gray-900"
-              } outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-blue-500`}
-            />
-          </div>
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(152px,1fr))] gap-4">
+        {filteredUsers.map((user) => {
+          const isOnline = connectedUserIds.includes(user.uid);
 
-          <div className="grid grid-cols-1 xl:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 px-2 sm:px-6 justify-center">
-            {pagination.currentData.map((user) => (
-              <div
-                key={user.email || `${user.prenom}-${user.nom}`}
-                className={`${
-                  isDarkMode ? "bg-gray-800" : "bg-white"
-                } flex flex-col items-center gap-2 p-3 rounded-2xl shadow-sm hover:shadow-md transition text-center text-xs sm:text-sm md:text-base w-full max-w-[100%] min-w-[80px]`}
-              >
+          return (
+            <div
+              key={user.id}
+              className={`p-2 sm:p-5 rounded shadow relative cursor-pointer hover:bg-gray-50 transition-all ${
+                isDarkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"
+              }`}
+              onClick={() => handleClick(user.id)}
+              translate="no"
+            >
+              <div className="flex items-center">
                 <div
-                  className="w-12 h-12 sm:w-14 sm:h-14 rounded-full mx-auto mb-1 text-white flex justify-center items-center font-semibold text-[10px] sm:text-base"
-                  style={{ backgroundColor: user.bgColor }}
+                  className="min-w-[40px] min-h-[40px] w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-xs sm:text-xl font-bold text-gray-700 mr-2 sm:mr-4"
+                  title={user.displayName || "Sans nom"}
+                  style={{
+                    backgroundColor: stringToColor(`${user.prenom} ${user.nom}`),
+                  }}
                   translate="no"
                 >
-                  {user.initials}
+                  {`${user.prenom.charAt(0)}${user.nom.charAt(0)}`.toUpperCase()}
                 </div>
-                <h5 className="font-medium text-gray-800 dark:text-gray-200 text-[10px] sm:text-sm break-words">
-                  {user.fullName}
-                </h5>
-                <span className="text-gray-500 text-[10px] sm:text-xs break-words whitespace-normal overflow-hidden text-center max-w-full">
-                  {user?.email}
-                </span>
-                <p className="text-gray-500 text-[10px] sm:text-xs">
-                  {user?.niveau}
-                </p>
-                <p className="text-gray-500 text-[10px] sm:text-xs mb-1">
-                  {user?.nationalite}
-                </p>
-                <span className="inline-block mt-2 px-2 py-0.5 text-[9px] bg-green-100 text-green-700 rounded-full">
-                  Admin
-                </span>
+                <div className="flex-1">
+                  <h3 className="text-sm sm:text-base font-semibold">
+                    {`${user.prenom} ${user.nom}`}
+                  </h3>
+                  <p className={`text-xs ${isOnline ? "text-green-600" : "text-red-500"}`}>
+                    {isOnline ? "En ligne" : "Hors ligne"}
+                  </p>
+                </div>
               </div>
-            ))}
-          </div>
-
-          <ButtonPagination
-            goToPreviousPage={pagination.goToPreviousPage}
-            goToPage={pagination.goToPage}
-            currentPage={pagination.currentPage}
-            goToNextPage={pagination.goToNextPage}
-            totalPages={pagination.totalPages}
-          />
-        </div>
-      )}
-    </>
+              <span
+                className={`absolute top-2 right-2 w-3 h-3 rounded-full ${
+                  isOnline ? "bg-green-500" : "bg-red-500"
+                }`}
+                title={isOnline ? "En ligne" : "Hors ligne"}
+              ></span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 };
 

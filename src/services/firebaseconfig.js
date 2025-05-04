@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { getMessaging } from "firebase/messaging";
+import { getMessaging, getToken } from "firebase/messaging";
 import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
@@ -24,4 +24,14 @@ const db = getFirestore(app);
 const messaging = getMessaging(app);
 
 // Export them
+export  const generateToken = async () =>{
+  const permission =  await Notification.requestPermission();
+  if(permission === "granted"){
+    const token = await getToken(messaging , {
+      vapidKey : "BIanCUYSecZqQYqqtVIq_nMZoc7_bRMaz-0DGVj-uCe49bbTrZ_N68T3Tgmh0KJ2rAktdWA-d_AeNYz0jJ3NB8s"
+    })
+    console.log(token)
+  }
+  
+}
 export { auth, createUserWithEmailAndPassword, db , messaging};;
