@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { stringToColor } from "../utils/StringToColor";
 import { useDarkMode } from "../Context/DarkModeContext";
 import Loader from "../components/Loader"
+import "../../../"
 
 const ContactCard = () => {
   const [users, setUsers] = useState([]);
