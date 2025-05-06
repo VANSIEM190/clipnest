@@ -13,6 +13,10 @@ const wss = new WebSocket.Server({ server });
 const clients = new Set();
 const connectedUsers = new Map(); // userId -> WebSocket
 
+app.get("/", (req, res) => {
+  res.send("WebSocket server is running.");
+});
+
 wss.on('connection', (ws) => {
   console.log('🟢 Client connecté');
   clients.add(ws);
