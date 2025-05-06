@@ -27,7 +27,7 @@ wss.on('connection', (ws) => {
       type: 'notification',
       title: 'Nouveau message',
       message: 'Quelqu’un vous a envoyé un message !',
-      img: 'http://localhost:5173/image.png',
+      img: '',
     };
     ws.send(JSON.stringify(notif));
   }, 500);

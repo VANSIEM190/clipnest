@@ -43,7 +43,9 @@ export default function RichTextEditor() {
       setDisable(true);
       setIsVisible(true);
 
-      const socket = new WebSocket('wss://clipnest-ugfj.onrender.com');
+      const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+      const socket = new WebSocket(`${protocol}://clipnest-ugfj.onrender.com`);
+
 
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
