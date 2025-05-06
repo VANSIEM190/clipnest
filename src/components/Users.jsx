@@ -35,7 +35,7 @@ const ContactCard = () => {
   }, []);
 
   const handleClick = (userId) => {
-    navigate(`/message/${userId}`);
+    navigate(`/profil/${userId}`);
   };
 
   const filteredUsers = users.filter((user) => {

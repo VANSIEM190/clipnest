@@ -12,6 +12,7 @@ const FormulaireInscription = lazy(() => import("../components/Formulaire"));
 const LoginForm = lazy(() => import("../components/ConnectionForm"));
 const Home = lazy(() => import("../pages/Home"));
 const ErrorPage = lazy(() => import("../pages/ErrorPage"));
+const UsersProfileDetails = lazy(() => import("../components/usersProfil"));
 
 const RouterApp = () => {
 
@@ -25,6 +26,7 @@ const RouterApp = () => {
             <Route path="/inscription" element={<FormulaireInscription />} />
             <Route path="/connexion" element={<LoginForm />} />
             <Route path="/salon" element={<Home />} />
+            <Route path="/profil/:id" element={<UsersProfileDetails />} />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </Suspense>
