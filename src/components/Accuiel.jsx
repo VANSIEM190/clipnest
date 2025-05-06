@@ -140,7 +140,7 @@ const MessageList = () => {
           {paginatedMessages.map((message) => {
             const vote = localVotes[message.id] || { liked: false, disliked: false };
             const reputation = reputations[message.id];
-            const isOnline = connectedUserIds.includes(user.uid);
+            const isOnline = connectedUserIds.includes(message.uid);
             return (
               <div
                 key={message.id}
