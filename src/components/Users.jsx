@@ -15,7 +15,7 @@ const ContactCard = () => {
   const { isDarkMode } = useDarkMode();
   const navigate = useNavigate();
 
-  const socket = new WebSocket("wss:https://clipnest-ugfj.onrender.com");
+  const socket = new WebSocket("ws:https://clipnest-ugfj.onrender.com");
 
   useEffect(() => {
     const user = auth.currentUser;
