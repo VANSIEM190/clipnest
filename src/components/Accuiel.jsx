@@ -9,6 +9,7 @@ import usePagination from "../hooks/Pagination";
 import ButtonPagination from "./ButtonPagination";
 import { FaTrash } from "react-icons/fa"; 
 import useSortedQuestions from "../hooks/useSortedQuestions";
+import useUsersAreConnected from "../hooks/UsersIsConnecd";
 
 const MessageList = () => {
   const [messageList, setMessageList] = useState([]);
@@ -16,6 +17,7 @@ const MessageList = () => {
   const { isDarkMode } = useDarkMode();
   const { user } = useUser();
   const sortedMessages = useSortedQuestions(messageList);
+  const connectedUserIds = useUsersAreConnected();
 
   const maxMessagesPerPage = 20;
   const minLengthToPaginate = 6;
@@ -138,7 +140,7 @@ const MessageList = () => {
           {paginatedMessages.map((message) => {
             const vote = localVotes[message.id] || { liked: false, disliked: false };
             const reputation = reputations[message.id];
-
+            const isOnline = connectedUserIds.includes(user.uid);
             return (
               <div
                 key={message.id}
@@ -157,6 +159,13 @@ const MessageList = () => {
                     style={{ backgroundColor: stringToColor(message?.name) }}
                     translate="no"
                   >
+                  <span
+                    className={`absolute top-2 right-2 w-3 h-3 rounded-full ${
+                    isOnline ? "bg-green-500" : "bg-red-500"
+                    }`}
+                  title={isOnline ? "En ligne" : "Hors ligne"}
+                  >
+                </span>
                     {message?.nameProfil}
                   </div>
                   <div className="flex flex-col overflow-hidden">

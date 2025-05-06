@@ -1,46 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
-import { db, auth } from "../services/firebaseconfig";
+import { db } from "../services/firebaseconfig";
 import { useNavigate } from "react-router-dom";
 import { stringToColor } from "../utils/StringToColor";
 import { useDarkMode } from "../Context/DarkModeContext";
 import Loader from "../components/Loader"
+import useUsersAreConnected from "../hooks/UsersIsConnecd";
 
 
 const ContactCard = () => {
   const [users, setUsers] = useState([]);
-  const [connectedUserIds, setConnectedUserIds] = useState([]);
   const [loading , setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const { isDarkMode } = useDarkMode();
+  const connectedUserIds = useUsersAreConnected();
   const navigate = useNavigate();
-
-  const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-  const socket = new WebSocket(`${protocol}://clipnest-ugfj.onrender.com`); 
-
-  useEffect(() => {
-    const user = auth.currentUser;
-
-    if (user) {
-      socket.onopen = () => {
-        socket.send(
-          JSON.stringify({
-            type: "login",
-            userId: user.uid,
-          })
-        );
-      };
-    }
-  }, []);
-
-  useEffect(() => {
-    socket.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      if (message.type === "userList") {
-        setConnectedUserIds(message.users);
-      }
-    };
-  }, []);
 
   useEffect(() => {
     const fetchUsers = async () => {
