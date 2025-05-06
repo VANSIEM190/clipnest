@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { stringToColor } from "../utils/StringToColor";
 import { useDarkMode } from "../Context/DarkModeContext";
 import Loader from "../components/Loader"
-import "../../../"
+
 
 const ContactCard = () => {
   const [users, setUsers] = useState([]);
@@ -15,7 +15,7 @@ const ContactCard = () => {
   const { isDarkMode } = useDarkMode();
   const navigate = useNavigate();
 
-  const socket = new WebSocket("ws://localhost:3001");
+  const socket = new WebSocket("wss:https://clipnest-ugfj.onrender.com");
 
   useEffect(() => {
     const user = auth.currentUser;
