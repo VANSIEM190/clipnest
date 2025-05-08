@@ -22,5 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-echo "../mon-porte-folio/Back-end/serviceAccountKey.json" >> .gitignore
+echo ".env" >> .gitignore
+
+
 

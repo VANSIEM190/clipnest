@@ -8,7 +8,7 @@ const app = express();
 app.use(cors());
 const wss = new WebSocket.Server({ noServer: true });
 
-const serviceAccount = require("./serviceAccountKey.json");
+const serviceAccount = require("./serviceAccountKey.js");
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
