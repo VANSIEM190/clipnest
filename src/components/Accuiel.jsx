@@ -9,7 +9,7 @@ import usePagination from "../hooks/Pagination";
 import ButtonPagination from "./ButtonPagination";
 import { FaTrash } from "react-icons/fa"; 
 import useSortedQuestions from "../hooks/useSortedQuestions";
-import useUsersAreConnected from "../hooks/UsersIsConnecd";
+import useUsersIsConnected from "../hooks/useUsersconnected";
 
 const MessageList = () => {
   const [messageList, setMessageList] = useState([]);
@@ -17,7 +17,7 @@ const MessageList = () => {
   const { isDarkMode } = useDarkMode();
   const { user } = useUser();
   const sortedMessages = useSortedQuestions(messageList);
-  const connectedUserIds = useUsersAreConnected();
+  const connectedUserIds = useUsersIsConnected();
 
   const maxMessagesPerPage = 20;
   const minLengthToPaginate = 6;

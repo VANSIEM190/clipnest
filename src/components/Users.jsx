@@ -4,17 +4,27 @@ import { db } from "../services/firebaseconfig";
 import { useNavigate } from "react-router-dom";
 import { stringToColor } from "../utils/StringToColor";
 import { useDarkMode } from "../Context/DarkModeContext";
-import Loader from "../components/Loader"
-import useUsersAreConnected from "../hooks/UsersIsConnecd";
-
+import Loader from "../components/Loader";
+import useUsersIsConnected from "../hooks/useUsersconnected";
+import usePagination from "../hooks/Pagination";
+import useSortedQuestions from "../hooks/useSortedQuestions";
+import ButtonPagination from "./ButtonPagination";
 
 const ContactCard = () => {
   const [users, setUsers] = useState([]);
-  const [loading , setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const { isDarkMode } = useDarkMode();
-  const connectedUserIds = useUsersAreConnected();
+  const connectedUserIds = useUsersIsConnected();
   const navigate = useNavigate();
+  const sortedQuestions = useSortedQuestions(users);
+  const maxMessagesPerPage = 50;
+  const {
+      currentPage,
+      totalPages,
+      goToNextPage,
+      goToPreviousPage,
+    } = usePagination(sortedQuestions, maxMessagesPerPage);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -25,7 +35,7 @@ const ContactCard = () => {
           ...doc.data(),
         }));
         setUsers(userList);
-        setLoading(false)
+        setLoading(false);
       } catch (error) {
         console.error("Erreur lors de la récupération des utilisateurs :", error);
       }
@@ -43,9 +53,9 @@ const ContactCard = () => {
     return fullName.includes(search.toLowerCase());
   });
 
-  return (
-    loading?
-    <Loader/> : 
+  return loading ? (
+    <Loader />
+  ) : (
     <div className="container mx-auto p-2 sm:p-4">
       <h2 className="text-lg sm:text-2xl font-bold mb-2 sm:mb-4">Liste des utilisateurs</h2>
       <input
@@ -60,13 +70,13 @@ const ContactCard = () => {
 
       <div className="grid grid-cols-[repeat(auto-fill,minmax(152px,1fr))] gap-4">
         {filteredUsers.map((user) => {
-          const isOnline = connectedUserIds.includes(user.uid);
+          const isOnline = connectedUserIds.includes(user.id);
 
           return (
             <div
               key={user.id}
-              className={`p-2 sm:p-5 rounded shadow relative cursor-pointer hover:bg-gray-50 transition-all ${
-                isDarkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"
+              className={`p-2 sm:p-5 rounded shadow relative cursor-pointer  transition-all ${
+                isDarkMode ? "bg-gray-800 text-white hover:bg-gray-700" : "bg-white text-gray-900 hover:bg-gray-100"
               }`}
               onClick={() => handleClick(user.id)}
               translate="no"
@@ -101,6 +111,16 @@ const ContactCard = () => {
           );
         })}
       </div>
+      {sortedQuestions.length > maxMessagesPerPage && (
+        <div className="flex justify-center mt-6">
+          <ButtonPagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            goToNextPage={goToNextPage}
+            goToPreviousPage={goToPreviousPage}
+          />
+        </div>
+      )}
     </div>
   );
 };

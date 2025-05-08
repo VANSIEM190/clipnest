@@ -9,6 +9,8 @@ import usePagination from "../hooks/Pagination";
 import { useNavigate } from "react-router-dom";
 import useSortedQuestions from "../hooks/useSortedQuestions";
 import ButtonPagination from "./ButtonPagination";
+import useUsersIsConnected from "../hooks/useUsersconnected";
+
 
 const QUESTIONS_PER_PAGE = 5;
 
@@ -19,6 +21,8 @@ const UserProfil = () => {
   const bgColor = stringToColor(user?.fullName);
   const navigation = useNavigate();
   const sortedQuestions = useSortedQuestions(questions);
+  const connectedUserIds = useUsersIsConnected();
+  const isOnline = connectedUserIds.includes(user?.uid);
 
   // la pagination
   const {
@@ -51,10 +55,17 @@ const UserProfil = () => {
 
         <div className="flex flex-col sm:flex-row items-center sm:items-start sm:space-x-6 space-y-4 sm:space-y-0">
           <div
-            className="w-20 h-20 rounded-full flex items-center justify-center text-2xl font-bold text-white shrink-0"
+            className="relative w-20 h-20 rounded-full flex items-center justify-center text-2xl font-bold text-white shrink-0"
             style={{ backgroundColor: bgColor }}
           >
             {initials || "?"}
+            <span
+                    className={`absolute bottom-1 right-1 w-3 h-3 rounded-full ${
+                    isOnline ? "bg-green-500" : "bg-red-500"
+                    }`}
+                  title={isOnline ? "En ligne" : "Hors ligne"}
+                  >
+                </span>
           </div>
           <div className="text-center sm:text-left">
             <h2 className="text-2xl font-semibold break-words">{user?.fullName}</h2>

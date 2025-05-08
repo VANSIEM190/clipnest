@@ -5,6 +5,7 @@ import { useDarkMode } from "../Context/DarkModeContext";
 import useStateScreen from "../hooks/UseSizeScreen";
 import Options from "./Options";
 import { stringToColor } from "../utils/StringToColor";
+import useUsersIsConnected from "../hooks/useUsersconnected";
 
 const Navbar = () => {
   const { user } = useUser();
@@ -12,6 +13,8 @@ const Navbar = () => {
   const location = useLocation();
   const isSmallScreen = useStateScreen();
   const bgColor = stringToColor(user?.fullName);
+  const connectedUserIds  = useUsersIsConnected();
+  const isOnline = connectedUserIds.includes(user?.uid)
 
   const isRoot = location.pathname === "/";
 
@@ -30,10 +33,17 @@ const Navbar = () => {
           <button onClick={toggleDarkMode} className="text-xl focus:outline-none cursor-pointer">
             {isDarkMode ? <FiSun /> : <FiMoon />}
           </button>
-          <div className="w-8 h-8 rounded-full  flex items-center justify-center text-white font-semibold"
+          <div className=" relative w-8 h-8 rounded-full  flex items-center justify-center text-white font-semibold"
           style={{ backgroundColor: bgColor }}
           >
             {user?.initials}
+            <span
+                    className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${
+                    isOnline ? "bg-green-500" : "bg-red-500"
+                    }`}
+                  title={isOnline ? "En ligne" : "Hors ligne"}
+                  >
+                </span>
           </div>
         </nav>
 

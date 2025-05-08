@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { collection, doc, getDoc, query, where, getDocs } from "firebase/firestore";
-import { db, auth } from "../services/firebaseconfig";
-import { signOut } from "firebase/auth";
+import { db } from "../services/firebaseconfig";
 import DOMPurify from "dompurify";
 import { stringToColor } from "../utils/StringToColor";
 import { useDarkMode } from "../Context/DarkModeContext";
@@ -10,6 +9,7 @@ import Loader from "./Loader";
 import useSortedQuestions from "../hooks/useSortedQuestions";
 import ButtonPagination from "./ButtonPagination";
 import usePagination from "../hooks/Pagination";
+import useUsersIsConnected from "../hooks/useUsersconnected";
 
 const QUESTIONS_PER_PAGE = 5;
 
@@ -20,6 +20,8 @@ const UsersProfileDetails = () => {
   const [userMessages, setUserMessages] = useState([]); // messages utilisateur
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const connectedUserIds = useUsersIsConnected(); // utilisateurs connectés
+  const isOnline = connectedUserIds.includes(id); // vérifier si l'utilisateur est en ligne
 
 
   const sortedMessages = useSortedQuestions(userMessages); // messages triés
@@ -67,14 +69,6 @@ const UsersProfileDetails = () => {
     fetchUserAndMessages();
   }, [id]);
 
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      // redirection ou autre action
-    } catch (error) {
-      console.error("Erreur de déconnexion :", error);
-    }
-  };
 
   if (loading) return <Loader />;
   if (!userData) return <p>Utilisateur introuvable.</p>;
@@ -86,12 +80,21 @@ const UsersProfileDetails = () => {
       {/* Carte Profil */}
       <div className={`w-full max-w-2xl rounded-2xl shadow-lg p-6 sm:p-8 ${isDarkMode ? "bg-gray-800" : "bg-white"}`}>
         <div className="flex items-center gap-4">
-          <div className="w-20 h-20 rounded-full flex items-center justify-center text-2xl font-bold text-white" style={{ backgroundColor: bgColor }}>
+          <div className="relative w-20 h-20 rounded-full flex items-center justify-center text-2xl font-bold text-white" style={{ backgroundColor: bgColor }}>
             {userData.prenom?.charAt(0).toUpperCase()}{userData.nom?.charAt(0).toUpperCase()}
+            <span 
+            className={`absolute bottom-1 right-1 w-3 h-3 rounded-full 
+            ${isOnline ? "bg-green-500" : "bg-red-500"}`} 
+            title={isOnline ? "En ligne" : "Hors ligne"}>
+              </span>
           </div>
           <div>
             <h2 className="text-2xl font-semibold">{`${userData.prenom} ${userData.nom}`}</h2>
             <p className="text-sm text-gray-500 dark:text-gray-300">@{userData.prenom} {userData.nom}</p>
+            <p className={`text-sm 
+              ${isOnline ? "text-green-500" : "text-red-500"}`}>
+                {isOnline? "En ligne" : "Hors ligne"}
+              </p>
           </div>
         </div>
         <div className="mt-4 space-y-2 text-sm sm:text-base">
@@ -101,12 +104,9 @@ const UsersProfileDetails = () => {
           <p><strong>Inscrit le :</strong> {userData.createdAt?.toDate().toLocaleString() || "Date inconnue"}</p>
         </div>
         <div className="mt-6 flex justify-end space-x-2">
-        <button onClick={handleLogout} className="mt-4 px-3 py-1 text-sm bg-red-500 hover:bg-red-600 text-white rounded-md">
-          Déconnexion
-        </button>
         <button
           onClick={() =>navigate(-1)} 
-          className="mt-4 px-3  text-sm bg-blue-500 hover:bg-blue-600 text-white rounded-md"
+          className="mt-4 px-3  text-sm bg-blue-500 hover:bg-blue-600 text-white rounded-md cursor-pointer"
         >
           Retour
         </button>

@@ -4,6 +4,7 @@ import { FiBell, FiSun, FiMoon, FiMenu } from "react-icons/fi";
 import { useUser } from "../Context/UserContext";
 import { useDarkMode } from "../Context/DarkModeContext";
 import { stringToColor } from '../utils/StringToColor';
+import useUsersIsConnected from '../hooks/useUsersconnected';
 
 
 const Options = () => {
@@ -12,6 +13,8 @@ const Options = () => {
   const bgColor = stringToColor(user.fullName);
   const [isOpen, setIsOpen] = useState(false)
   const toggleDropdown = () => setIsOpen(!isOpen);
+  const connectedUserIds = useUsersIsConnected();
+  const isOnline = connectedUserIds.includes(user?.uid);
 
   return (
     <div className="relative inline-block text-left">
@@ -71,10 +74,16 @@ const Options = () => {
             {/* Profil utilisateur */}
             <div className="flex items-center justify-center gap-x-2 py-2 text-sm  hover:bg-gray-100">
               <div
-                className="w-8 h-8 rounded-full flex items-center justify-center text-white font-semibold"
+                className=" relative w-8 h-8 rounded-full flex items-center justify-center text-white font-semibold"
                 style={{ backgroundColor: bgColor }}
               >
                 {user.initials}
+                <span
+                  className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${
+                    isOnline ? "bg-green-500" : "bg-red-500"
+                  }`}
+                  title={isOnline ? "En ligne" : "Hors ligne"}
+                ></span>
               </div>
               <span>{user.fullName}</span>
             </div>

@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { getMessaging, getToken } from "firebase/messaging";
+import { getMessaging, getToken , onMessage } from "firebase/messaging";
 import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
@@ -34,4 +34,4 @@ export  const generateToken = async () =>{
   }
   
 }
-export { auth, createUserWithEmailAndPassword, db , messaging};;
+export { auth, createUserWithEmailAndPassword, db , messaging , onMessage};;
