@@ -43,14 +43,11 @@ export default function RichTextEditor() {
       // 2. Connecter au WebSocket
       const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
       const socketUrl =
-  window.location.hostname === 'localhost'
-    ? `${protocol}://localhost:3000`
-    : `${protocol}://clipnest-ugfj.onrender.com`;
+      window.location.hostname === 'localhost'
+      ? `${protocol}://localhost:3000`
+      : `${protocol}://clipnest-ugfj.onrender.com`;
 
-const socket = new WebSocket(socketUrl);
-
-// Remplacez par l'URL de votre serveur WebSocket
-      //clipnest-ugfj.onrender.com
+      const socket = new WebSocket(socketUrl);
 
       socket.onopen = () => {
         console.log('Connecté au WebSocket');
