@@ -5,17 +5,16 @@ import { useNavigate } from "react-router-dom";
 import { stringToColor } from "../utils/StringToColor";
 import { useDarkMode } from "../Context/DarkModeContext";
 import Loader from "../components/Loader";
-import useUsersIsConnected from "../hooks/useUsersconnected";
 import usePagination from "../hooks/Pagination";
 import useSortedQuestions from "../hooks/useSortedQuestions";
 import ButtonPagination from "./ButtonPagination";
+import UserStatus from "./UsersStatut";
 
 const ContactCard = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const { isDarkMode } = useDarkMode();
-  const connectedUserIds = useUsersIsConnected();
   const navigate = useNavigate();
   const sortedQuestions = useSortedQuestions(users);
   const maxMessagesPerPage = 50;
@@ -70,8 +69,6 @@ const ContactCard = () => {
 
       <div className="grid grid-cols-[repeat(auto-fill,minmax(152px,1fr))] gap-4">
         {filteredUsers.map((user) => {
-          const isOnline = connectedUserIds.includes(user.id);
-
           return (
             <div
               key={user.id}
@@ -92,21 +89,13 @@ const ContactCard = () => {
                 >
                   {`${user.prenom.charAt(0)}${user.nom.charAt(0)}`.toUpperCase()}
                 </div>
-                <div className="flex-1">
-                  <h3 className="text-sm sm:text-base font-semibold">
+                <div className="flex-1 max-sm:overflow-hidden">
+                  <h3 className="text-sm sm:text-base font-semibold  truncate">
                     {`${user.prenom} ${user.nom}`}
                   </h3>
-                  <p className={`text-xs ${isOnline ? "text-green-600" : "text-red-500"}`}>
-                    {isOnline ? "En ligne" : "Hors ligne"}
-                  </p>
                 </div>
-              </div>
-              <span
-                className={`absolute top-2 right-2 w-3 h-3 rounded-full ${
-                  isOnline ? "bg-green-500" : "bg-red-500"
-                }`}
-                title={isOnline ? "En ligne" : "Hors ligne"}
-              ></span>
+              </div> 
+              <UserStatus uid={user.id}/>
             </div>
           );
         })}

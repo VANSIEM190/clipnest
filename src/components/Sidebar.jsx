@@ -12,7 +12,7 @@ import { useDarkMode } from '../Context/DarkModeContext';
 import React, { useEffect, useState } from 'react';
 import useStateScreen from '../hooks/UseSizeScreen'; 
 import { stringToColor } from '../utils/StringToColor';
-import useUsersIsConnected from '../hooks/useUsersconnected';
+import UserStatus from './UsersStatut';
 
 const Sidebar = ({ onNavigate }) => {
   const {  user } = useUser();
@@ -21,8 +21,6 @@ const Sidebar = ({ onNavigate }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const bgColor = stringToColor(user?.fullName);
-  const connectedUserIds = useUsersIsConnected();
-  const isOnline = connectedUserIds.includes(user?.uid);
 
   const sidebarClass = isDarkMode
     ? 'bg-gray-900 text-gray-200'
@@ -99,13 +97,9 @@ const Sidebar = ({ onNavigate }) => {
               style={{ backgroundColor: bgColor }}
               >
                 {user?.initials}
-                <span
-                    className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${
-                    isOnline ? "bg-green-500" : "bg-red-500"
-                    }`}
-                  title={isOnline ? "En ligne" : "Hors ligne"}
-                  >
-                </span>
+                <div className="absolute -bottom-1 right-1 translate-x-1/2 -translate-y-1/2">
+                    <UserStatus uid={user.uid} />
+                  </div>
               </div>
               {!shouldCollapse && (
                 <span className="text-sm truncate">{user?.fullName}</span>

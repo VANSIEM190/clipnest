@@ -1,8 +1,8 @@
 // public/firebase-messaging-sw.js
-importScripts("https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js");
-importScripts("https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js");
+importScripts("https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js");
+importScripts("https://www.gstatic.com/firebasejs/8.2.0/firebase-messaging.js");
 
-firebase.initializeApp({
+const firebaseConfig = {
   apiKey: "AIzaSyBgEJuuO5CR5nPoyD8ga_8CVq9dNHaX54g",
   authDomain: "reseau-social-64426.firebaseapp.com",
   projectId: "reseau-social-64426",
@@ -10,7 +10,9 @@ firebase.initializeApp({
   messagingSenderId: "967445960671",
   appId: "1:967445960671:web:94f40da4dfdf20ecf7966a",
   measurementId: "G-C0S8K660ZE"
-});
+};
+
+firebase.initializeApp(firebaseConfig);
 
 const messaging = firebase.messaging();
 

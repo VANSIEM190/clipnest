@@ -9,7 +9,7 @@ import usePagination from "../hooks/Pagination";
 import { useNavigate } from "react-router-dom";
 import useSortedQuestions from "../hooks/useSortedQuestions";
 import ButtonPagination from "./ButtonPagination";
-import useUsersIsConnected from "../hooks/useUsersconnected";
+import UserStatus from "./UsersStatut";
 
 
 const QUESTIONS_PER_PAGE = 5;
@@ -21,8 +21,6 @@ const UserProfil = () => {
   const bgColor = stringToColor(user?.fullName);
   const navigation = useNavigate();
   const sortedQuestions = useSortedQuestions(questions);
-  const connectedUserIds = useUsersIsConnected();
-  const isOnline = connectedUserIds.includes(user?.uid);
 
   // la pagination
   const {
@@ -59,13 +57,9 @@ const UserProfil = () => {
             style={{ backgroundColor: bgColor }}
           >
             {initials || "?"}
-            <span
-                    className={`absolute bottom-1 right-1 w-3 h-3 rounded-full ${
-                    isOnline ? "bg-green-500" : "bg-red-500"
-                    }`}
-                  title={isOnline ? "En ligne" : "Hors ligne"}
-                  >
-                </span>
+            <div className="absolute bottom-1 right-3 translate-x-1/2 -translate-y-1/2">
+              <UserStatus uid={user?.uid} />
+            </div>
           </div>
           <div className="text-center sm:text-left">
             <h2 className="text-2xl font-semibold break-words">{user?.fullName}</h2>

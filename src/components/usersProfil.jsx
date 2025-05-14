@@ -9,7 +9,7 @@ import Loader from "./Loader";
 import useSortedQuestions from "../hooks/useSortedQuestions";
 import ButtonPagination from "./ButtonPagination";
 import usePagination from "../hooks/Pagination";
-import useUsersIsConnected from "../hooks/useUsersconnected";
+import UserStatus from "./UsersStatut";
 
 const QUESTIONS_PER_PAGE = 5;
 
@@ -20,8 +20,6 @@ const UsersProfileDetails = () => {
   const [userMessages, setUserMessages] = useState([]); // messages utilisateur
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const connectedUserIds = useUsersIsConnected(); // utilisateurs connectés
-  const isOnline = connectedUserIds.includes(id); // vérifier si l'utilisateur est en ligne
 
 
   const sortedMessages = useSortedQuestions(userMessages); // messages triés
@@ -80,28 +78,38 @@ const UsersProfileDetails = () => {
       {/* Carte Profil */}
       <div className={`w-full max-w-2xl rounded-2xl shadow-lg p-6 sm:p-8 ${isDarkMode ? "bg-gray-800" : "bg-white"}`}>
         <div className="flex items-center gap-4">
-          <div className="relative w-20 h-20 rounded-full flex items-center justify-center text-2xl font-bold text-white" style={{ backgroundColor: bgColor }}>
+          <div className="relative w-10 h-10 sm:w-20 sm:h-20  max-sm:text-base rounded-full flex items-center justify-center text-2xl font-bold text-white shrink-0" style={{ backgroundColor: bgColor }}>
             {userData.prenom?.charAt(0).toUpperCase()}{userData.nom?.charAt(0).toUpperCase()}
-            <span 
-            className={`absolute bottom-1 right-1 w-3 h-3 rounded-full 
-            ${isOnline ? "bg-green-500" : "bg-red-500"}`} 
-            title={isOnline ? "En ligne" : "Hors ligne"}>
-              </span>
+            <div className="absolute -bottom-1 right-2 translate-x-1/2 -translate-y-1/2  sm:bottom-1 sm:right-3">
+              <UserStatus uid={userData?.id} />
+            </div>
           </div>
-          <div>
-            <h2 className="text-2xl font-semibold">{`${userData.prenom} ${userData.nom}`}</h2>
-            <p className="text-sm text-gray-500 dark:text-gray-300">@{userData.prenom} {userData.nom}</p>
-            <p className={`text-sm 
-              ${isOnline ? "text-green-500" : "text-red-500"}`}>
-                {isOnline? "En ligne" : "Hors ligne"}
-              </p>
+          <div className="overflow-hidden">
+            <h2 className="text-2xl font-semibold max-sm:text-base truncate">{`${userData.prenom} ${userData.nom}`}</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-300 sm:text-base truncate">@{userData.prenom} {userData.nom}</p>
           </div>
         </div>
-        <div className="mt-4 space-y-2 text-sm sm:text-base">
-          <p><strong>Email :</strong> {userData.email}</p>
-          <p><strong>Niveau :</strong> {userData.niveau || "Non renseigné"}</p>
-          <p><strong>Nationalité :</strong> {userData.nationalite || "Non renseignée"}</p>
-          <p><strong>Inscrit le :</strong> {userData.createdAt?.toDate().toLocaleString() || "Date inconnue"}</p>
+        <div className="mt-6 space-y-4 text-sm sm:text-base">
+          <div className="flex flex-col sm:flex-row justify-between gap-1 sm:gap-4">
+            <span className="font-medium">Email :</span>
+            <span className="text-right sm:text-left break-all">{userData?.email}</span>
+          </div>
+          <div className="flex flex-col sm:flex-row justify-between gap-1 sm:gap-4">
+            <span className="font-medium">Niveau d'étude :</span>
+            <span className="text-right sm:text-left">{userData?.niveau || "Non renseigné"}</span>
+          </div>
+          <div className="flex flex-col sm:flex-row justify-between gap-1 sm:gap-4">
+            <span className="font-medium">Nationalité :</span>
+            <span className="text-right sm:text-left">{userData?.nationalite || "Non renseignée"}</span>
+          </div>
+          <div className="flex flex-col sm:flex-row justify-between gap-1 sm:gap-4">
+            <span className="font-medium">Inscrit le :</span>
+            <span className="text-right sm:text-left">
+              {userData?.createdAt
+                ? userData?.createdAt.toDate().toLocaleString()
+                : "Date inconnue"}
+            </span>
+          </div>
         </div>
         <div className="mt-6 flex justify-end space-x-2">
         <button

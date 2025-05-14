@@ -5,7 +5,7 @@ import { useDarkMode } from "../Context/DarkModeContext";
 import useStateScreen from "../hooks/UseSizeScreen";
 import Options from "./Options";
 import { stringToColor } from "../utils/StringToColor";
-import useUsersIsConnected from "../hooks/useUsersconnected";
+import UserStatus from "./UsersStatut";
 
 const Navbar = () => {
   const { user } = useUser();
@@ -13,8 +13,7 @@ const Navbar = () => {
   const location = useLocation();
   const isSmallScreen = useStateScreen();
   const bgColor = stringToColor(user?.fullName);
-  const connectedUserIds  = useUsersIsConnected();
-  const isOnline = connectedUserIds.includes(user?.uid)
+
 
   const isRoot = location.pathname === "/";
 
@@ -37,13 +36,9 @@ const Navbar = () => {
           style={{ backgroundColor: bgColor }}
           >
             {user?.initials}
-            <span
-                    className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${
-                    isOnline ? "bg-green-500" : "bg-red-500"
-                    }`}
-                  title={isOnline ? "En ligne" : "Hors ligne"}
-                  >
-                </span>
+            <div className="absolute -bottom-1 right-1 translate-x-1/2 -translate-y-1/2">
+                    <UserStatus uid={user?.uid} />
+            </div>
           </div>
         </nav>
 

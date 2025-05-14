@@ -1,14 +1,10 @@
 // router/RouterApp.jsx
-import { Suspense, lazy, useEffect } from "react";
+import { Suspense, lazy, useEffect , useState} from "react";
 import { Routes, Route } from "react-router-dom";
 
 import Loader from "../components/Loader";
-import useOnlineStatus from "../hooks/useOnelineStatus";
+import { requestFCMToken , onMessageListener } from "../utils/firebase-utils.js";
 
-import { useUser } from '../Context/UserContext';
-import { RequestNotificationPermission } from '../utils/requestNotificationPermission';
-import { setDoc, doc } from 'firebase/firestore';
-import { db } from '../services/firebaseconfig';
 
 // Lazy loading des pages
 const LadingPage = lazy(() => import("../pages/LadingPage"));
@@ -20,21 +16,26 @@ const ErrorPage = lazy(() => import("../pages/ErrorPage"));
 const UsersProfileDetails = lazy(() => import("../components/usersProfil"));
 
 const RouterApp = () => {
-  useOnlineStatus();
-  const { user } = useUser();
+  
+  const [fcmToken , setFcmToken] = useState(null);  
 
   useEffect(() => {
-    if (user?.uid) {
-      RequestNotificationPermission().then((token) => {
-        if (token) {
-          setDoc(doc(db, 'tokens', user.uid), {
-            uid: user.uid,
-            token,
-          });
-        }
-      });
-    }
-  }, [user]);
+    const requestPermission = async () => {
+      const token = await requestFCMToken();
+      if (token) {
+        setFcmToken(token);
+      }
+    };
+    requestPermission();
+  }, []);
+
+onMessageListener()
+  .then((payload) => {
+    console.log("Message reçu :", payload)
+  })
+  .catch((err) => console.log("Erreur de réception du message :", err));
+
+  
 
   return (
     <Suspense fallback={<Loader />}>

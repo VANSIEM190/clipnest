@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { collection, onSnapshot, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../services/firebaseconfig";
 import { useDarkMode } from "../Context/DarkModeContext";
@@ -9,7 +9,6 @@ import usePagination from "../hooks/Pagination";
 import ButtonPagination from "./ButtonPagination";
 import { FaTrash } from "react-icons/fa"; 
 import useSortedQuestions from "../hooks/useSortedQuestions";
-import useUsersIsConnected from "../hooks/useUsersconnected";
 
 const MessageList = () => {
   const [messageList, setMessageList] = useState([]);
@@ -17,7 +16,6 @@ const MessageList = () => {
   const { isDarkMode } = useDarkMode();
   const { user } = useUser();
   const sortedMessages = useSortedQuestions(messageList);
-  const connectedUserIds = useUsersIsConnected();
 
   const maxMessagesPerPage = 20;
   const minLengthToPaginate = 6;
@@ -140,7 +138,6 @@ const MessageList = () => {
           {paginatedMessages.map((message) => {
             const vote = localVotes[message.id] || { liked: false, disliked: false };
             const reputation = reputations[message.id];
-            const isOnline = connectedUserIds.includes(message.userId);
             return (
               <div
                 key={message.id}
@@ -155,17 +152,10 @@ const MessageList = () => {
               >
                 <div className="flex items-center gap-3 sm:gap-5">
                   <div
-                    className="w-10 h-10 sm:w-14 sm:h-14 rounded-full flex items-center justify-center font-bold text-white text-sm sm:text-xl shadow-inner shrink-0"
+                    className="relative w-10 h-10 sm:w-14 sm:h-14 rounded-full flex items-center justify-center font-bold text-white text-sm sm:text-xl shadow-inner shrink-0"
                     style={{ backgroundColor: stringToColor(message?.name) }}
                     translate="no"
                   >
-                  <span
-                    className={`absolute top-2 right-2 w-3 h-3 rounded-full ${
-                    isOnline ? "bg-green-500" : "bg-red-500"
-                    }`}
-                  title={isOnline ? "En ligne" : "Hors ligne"}
-                  >
-                </span>
                     {message?.nameProfil}
                   </div>
                   <div className="flex flex-col overflow-hidden">
