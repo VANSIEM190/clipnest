@@ -78,7 +78,7 @@ const ContactCard = () => {
               onClick={() => handleClick(user.id)}
               translate="no"
             >
-              <div className="flex items-center">
+              <div className="flex">
                 <div
                   className="min-w-[40px] min-h-[40px] w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-xs sm:text-xl font-bold text-gray-700 mr-2 sm:mr-4"
                   title={user.displayName || "Sans nom"}
@@ -90,7 +90,7 @@ const ContactCard = () => {
                   {`${user.prenom.charAt(0)}${user.nom.charAt(0)}`.toUpperCase()}
                 </div>
                 <div className="flex-1 max-sm:overflow-hidden">
-                  <h3 className="text-sm sm:text-base font-semibold  truncate">
+                  <h3 className="text-sm sm:text-base font-semibold max-sm:truncate">
                     {`${user.prenom} ${user.nom}`}
                   </h3>
                 </div>
