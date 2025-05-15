@@ -49,7 +49,7 @@ export default function RichTextEditor() {
         body: content,
       });
 
-      await axios.post('http://localhost:3000/api/firebase/send-notification', {
+      await axios.post('https://clipnest-app.onrender.com/api/firebase/send-notification', {
         deviceToken: "cv10YCMGCXuMAYLQOz6OBg:APA91bHKmu462FdmXImoFYYWmejRKWEaHgAIkG_-GuO4msDzNm18waq-4F3bbuUXVDz7uKiFi25wwGaLt8owROsHVBC-1SQNCgneA61gEcHELptRCWFNFgw",
         title: user?.fullName,
         body: content,
