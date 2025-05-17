@@ -1,5 +1,6 @@
 import  { useEffect, useState } from "react";
-import { collection, onSnapshot, deleteDoc, doc } from "firebase/firestore";
+import {useNavigate} from "react-router-dom";
+import { collection, onSnapshot, deleteDoc, doc,getDocs, } from "firebase/firestore";
 import { db } from "../services/firebaseconfig";
 import { useDarkMode } from "../Context/DarkModeContext";
 import { stringToColor } from "../utils/StringToColor";
@@ -10,12 +11,16 @@ import ButtonPagination from "./ButtonPagination";
 import { FaTrash } from "react-icons/fa"; 
 import useSortedQuestions from "../hooks/useSortedQuestions";
 
+
 const MessageList = () => {
   const [messageList, setMessageList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { isDarkMode } = useDarkMode();
   const { user } = useUser();
+  const [responseCounts, setResponseCounts] = useState({});
+    const [expandedMessageId, setExpandedMessageId] = useState(null);
   const sortedMessages = useSortedQuestions(messageList);
+  const navigate = useNavigate();
 
   const maxMessagesPerPage = 20;
   const minLengthToPaginate = 6;
@@ -28,12 +33,6 @@ const MessageList = () => {
     goToPreviousPage,
   } = usePagination(sortedMessages, maxMessagesPerPage);
 
-  const [localVotes, setLocalVotes] = useState(() => {
-    const saved = localStorage.getItem(`votes_${user?.uid}`);
-    return saved ? JSON.parse(saved) : {};
-  });
-
-  const [reputations, setReputations] = useState({});
 
   useEffect(() => {
     if (!user?.uid) return;
@@ -51,51 +50,31 @@ const MessageList = () => {
     return () => unsubscribe();
   }, [user?.uid]);
 
-
   useEffect(() => {
-    const updatedReputations = {};
-    messageList.forEach((message) => {
-      const likes = message.likes || 0;
-      const dislikes = message.dislikes || 0;
-
-      if (likes > dislikes) {
-        updatedReputations[message.id] = "Bonne";
-      } else if (likes === dislikes) {
-        updatedReputations[message.id] = "Moyenne";
-      } else {
-        updatedReputations[message.id] = "Mauvaise";
+  const fetchResponseCounts = async () => {
+    const responsesRef = collection(db, "responses");
+    const snapshot = await getDocs(responsesRef);
+    const counts = {};
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      if (data.messageId) {
+        counts[data.messageId] = (counts[data.messageId] || 0) + 1;
       }
     });
-    setReputations(updatedReputations);
-  }, [messageList]);
-
-  const saveVotes = (votes) => {
-    setLocalVotes(votes);
-    localStorage.setItem(`votes_${user?.uid}`, JSON.stringify(votes));
+    setResponseCounts(counts); 
   };
 
-  const handleLike = (messageId) => {
-    if (!user?.uid) return;
+  fetchResponseCounts();
+}, [messageList]);
 
-    const votes = { ...localVotes };
 
-    if (votes[messageId]?.liked) return;
-
-    votes[messageId] = { liked: true, disliked: false };
-    saveVotes(votes);
+  const toggleResponseView = (messageId) => {
+    setExpandedMessageId(messageId);
+    navigate(`/message/${messageId}`);
   };
 
-  const handleDislike = (messageId) => {
-    if (!user?.uid) return;
 
-    const votes = { ...localVotes };
-
-    if (votes[messageId]?.disliked) return;
-
-    votes[messageId] = { liked: false, disliked: true };
-    saveVotes(votes);
-  };
-
+//supression du message
   const handleDelete = async (messageId) => {
     const confirmDelete = window.confirm("Es-tu sûr de vouloir supprimer ce message ?");
     if (!confirmDelete) return;
@@ -108,6 +87,7 @@ const MessageList = () => {
     }
   };
 
+  // Affiche la date au format "Aujourd'hui à HH:mm" ou "Hier à HH:mm" ou "JJ/MM/AAAA HH:mm"
   const formatDate = (timestamp) => {
     if (!timestamp?.toDate) return "";
     const date = new Date(timestamp.toDate());
@@ -136,8 +116,6 @@ const MessageList = () => {
       ) : (
         <>
           {paginatedMessages.map((message) => {
-            const vote = localVotes[message.id] || { liked: false, disliked: false };
-            const reputation = reputations[message.id];
             return (
               <div
                 key={message.id}
@@ -163,58 +141,54 @@ const MessageList = () => {
                     <div className="text-[10px] sm:text-xs text-gray-400 truncate">
                       {formatDate(message?.timestamp)}
                     </div>
-                    <div className="text-[11px] sm:text-sm mt-1 font-medium">
-                      Réputation :{" "}
-                      <span
-                        className={`${
-                          reputation === "Bonne"
-                            ? "text-green-500"
-                            : reputation === "Mauvaise"
-                            ? "text-red-500"
-                            : "text-yellow-500"
-                        }`}
-                      >
-                        {reputation}
-                      </span>
-                    </div>
                   </div>
                 </div>
-
                 <div
                   className="text-xs sm:text-sm leading-relaxed mt-1 text-wrap break-words whitespace-pre-wrap"
                   dangerouslySetInnerHTML={{ __html: message.message }}
                 />
 
+                {/* deux button de réponse avec email ou sans email */}
                 <div className="flex justify-between items-center gap-2 mt-2 flex-wrap">
-                  <div className="flex gap-2 flex-wrap">
-                    <button
-                      onClick={() => handleLike(message.id)}
-                      disabled={vote.liked}
-                      className={`flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5 text-[10px] sm:text-sm rounded-full transition 
-                        ${
-                          vote.liked
-                            ? "bg-green-500 text-white cursor-not-allowed"
-                            : "bg-green-100 text-green-700 hover:bg-green-200"
-                        }
-                      `}
+                  {
+                    user?.fullName !== message?.name ? (
+                      <div className="flex items-center justify-center  gap-2">
+                        <button 
+                        type="button" 
+                        className={`px-2 py-1 sm:px-3 sm:py-1.5 text-[10px] sm:text-sm  bg-blue-500
+                          text-white rounded-full  transition cursor-pointer
+                          ${isDarkMode? "bg-gradient-to-br from-gray-800/30 via-gray-900/90 to-black/90 text-gray-100 "
+                      : "bg-gray-300  text-gray-900 hover:bg-gray-400"}
+                        `}>
+                          <a href={`mailto:${message?.email}`}>Envoyez un Email</a>
+                        </button>
+                        <button 
+                        type="button" 
+                        className={`px-2 py-1 sm:px-3 sm:py-1.5 text-[10px] sm:text-sm bg-blue-500
+                        text-white rounded-full hover:bg-blue-600 transition cursor-pointer
+                        ${isDarkMode? "bg-gradient-to-br from-gray-800/30 via-gray-900/90 to-black/90 text-gray-100 "
+                      : "bg-gray-300  text-gray-900 hover:bg-gray-400"}
+                        `}
+                        onClick={() => toggleResponseView(message.id)}
+                        >
+                          {responseCounts[message.id] || 0} Réponse(s)
+                      </button>
+                      </div>
+                  ) :
+                  (
+                    <button 
+                    type="button" 
+                    className={`px-2 py-1 sm:px-3 sm:py-1.5 text-[10px] sm:text-sm bg-blue-500 
+                    rounded-full  transition cursor-pointer text-white
+                    ${isDarkMode? "bg-gradient-to-br from-gray-800/30 via-gray-900/90 to-black/90 text-gray-100 "
+                      : "bg-gray-300  text-gray-900 hover:bg-gray-400"}
+                    `}
+                      onClick={() => toggleResponseView(message.id)}
                     >
-                      👍 {vote.liked ? 1 : 0}
-                    </button>
-
-                    <button
-                      onClick={() => handleDislike(message.id)}
-                      disabled={vote.disliked}
-                      className={`flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5 text-[10px] sm:text-sm rounded-full transition 
-                        ${
-                          vote.disliked
-                            ? "bg-red-500 text-white cursor-not-allowed"
-                            : "bg-red-100 text-red-700 hover:bg-red-200"
-                        }
-                      `}
-                    >
-                      👎 {vote.disliked ? 1 : 0}
-                    </button>
-                  </div>
+                        {responseCounts[message.id] || 0} Réponse(s)
+                      </button>
+                  )}
+                  {/* button de suppression du message */}
 
                   {user?.fullName === message?.name && (
                     <button
@@ -225,12 +199,15 @@ const MessageList = () => {
                     </button>
                   )}
                 </div>
+                {/* Affichage de la réponse */}
+                    
               </div>
             );
           })}
         </>
       )}
 
+      {/* les boutons dela pagination */}
       {messageList.length > minLengthToPaginate && (
         <div className="flex justify-center mt-6">
           <ButtonPagination
