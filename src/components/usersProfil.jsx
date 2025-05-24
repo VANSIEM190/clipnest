@@ -5,11 +5,12 @@ import { db } from "../services/firebaseconfig";
 import DOMPurify from "dompurify";
 import { stringToColor } from "../utils/StringToColor";
 import { useDarkMode } from "../Context/DarkModeContext";
-import Loader from "./Loader";
+import { FileurLoader} from "./Loader";
 import useSortedQuestions from "../hooks/useSortedQuestions";
 import ButtonPagination from "./ButtonPagination";
 import usePagination from "../hooks/Pagination";
 import UserStatus from "./UsersStatut";
+import formatDate from "../utils/formatDate";
 
 const QUESTIONS_PER_PAGE = 5;
 
@@ -68,7 +69,7 @@ const UsersProfileDetails = () => {
   }, [id]);
 
 
-  if (loading) return <Loader />;
+  if (loading) return <FileurLoader />;
   if (!userData) return <p>Utilisateur introuvable.</p>;
 
   const bgColor = stringToColor(`${userData.prenom} ${userData.nom}`);
@@ -106,7 +107,7 @@ const UsersProfileDetails = () => {
             <span className="font-medium">Inscrit le :</span>
             <span className="text-right sm:text-left">
               {userData?.createdAt
-                ? userData?.createdAt.toDate().toLocaleString()
+                ? formatDate(userData?.createdAt)
                 : "Date inconnue"}
             </span>
           </div>
@@ -132,7 +133,7 @@ const UsersProfileDetails = () => {
                 <li key={q.id} className={`p-4 rounded-xl shadow ${isDarkMode ? "bg-gray-800" : "bg-white"}`}>
                   <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(q.message) }} className="text-base break-words" />
                   <div className="text-sm text-gray-500 dark:text-gray-400 mt-2 text-right">
-                    Posté le : {q.timestamp?.toDate().toLocaleString()}
+                    Posté : {formatDate(q.timestamp)}
                   </div>
                 </li>
               ))}

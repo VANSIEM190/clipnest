@@ -4,7 +4,7 @@ import { db } from "../services/firebaseconfig";
 import { useNavigate } from "react-router-dom";
 import { stringToColor } from "../utils/StringToColor";
 import { useDarkMode } from "../Context/DarkModeContext";
-import Loader from "../components/Loader";
+import { FileurLoader} from "./Loader";
 import usePagination from "../hooks/Pagination";
 import useSortedQuestions from "../hooks/useSortedQuestions";
 import ButtonPagination from "./ButtonPagination";
@@ -53,7 +53,7 @@ const ContactCard = () => {
   });
 
   return loading ? (
-    <Loader />
+    <FileurLoader />
   ) : (
     <div className="container mx-auto p-2 sm:p-4">
       <h2 className="text-lg sm:text-2xl font-bold mb-2 sm:mb-4">Liste des utilisateurs</h2>

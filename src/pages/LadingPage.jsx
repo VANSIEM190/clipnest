@@ -60,7 +60,7 @@ const LandingPage = () => {
           </p>
 
           <button
-            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 sm:px-6 rounded-xl transition duration-200"
+            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 sm:px-6 rounded-xl transition duration-200 cursor-pointer"
             onClick={handleClick}
           >
             {initials ? "Accéder au salon" : "Rejoindre la communauté"}

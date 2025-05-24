@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { auth, db } from "../services/firebaseconfig";
@@ -55,6 +55,7 @@ const FormulaireList = [
 const FormulaireInscription = () => {
   const { isDarkMode } = useDarkMode();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
   const onSubmit = async (values, { resetForm }) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
@@ -69,6 +70,7 @@ const FormulaireInscription = () => {
         nationalite: values.nationalite,
         createdAt: new Date()
       });
+      setLoading(false);
       navigate("/salon")
       alert("Inscription réussie !");
       resetForm();
@@ -99,17 +101,21 @@ const FormulaireInscription = () => {
             </div>
           ))}
 
-          <button type="submit" className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700">
-            S'inscrire
+          <button 
+          type="submit" 
+          className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700">
+            disabled={loading}
+            {loading ? "Chargement..." : "S'inscrire"}
           </button>
         </Form>
       </Formik>
     </div>
     </div>
+
     <Seo
       title="Inscription - ClipNest"
       description="Créez un compte sur ClipNest pour commencer à apprendre et échanger."
-      url="https://tonsite.com/inscription"
+      url="https://clipnest-zet.vercel.app/inscription"
     />
   
     </>

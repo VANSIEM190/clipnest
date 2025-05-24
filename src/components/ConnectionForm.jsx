@@ -84,7 +84,7 @@ const LoginForm = () => {
         <Seo
         title="Connexion - ClipNest"
         description="Connectez-vous à votre compte ClipNest pour participer aux discussions."
-        url="https://tonsite.com/connexion"
+        url="https://clipnest-zet.vercel.app/connexion"
       />
   
     </>

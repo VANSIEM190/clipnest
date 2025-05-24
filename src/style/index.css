@@ -9,27 +9,52 @@
 }
 
 /* loader */
+/* HTML: <div class="loader"></div> */
 .loader {
   width: fit-content;
-  font-size: 40px;
-  font-family: system-ui,sans-serif;
   font-weight: bold;
-  text-transform: uppercase;
-  color: #0000;
-  -webkit-text-stroke: 1px #000;
+  font-family: monospace;
+  font-size: 30px;
+  animation: l26 2s infinite;
+}
+.loader::before {
+  content:"Loading...";
+}
+
+@keyframes l26{
+   0%,10%  {transform:perspective(200px) rotateX(0)      rotateY(0)      scale(1)}
+   30%,36% {transform:perspective(200px) rotateX(180deg) rotateY(0)      scale(1)}
+   63%,69% {transform:perspective(200px) rotateX(180deg) rotateY(180deg) scale(1)}
+   90%,100%{transform:perspective(200px) rotateX(180deg) rotateY(180deg) scale(-1)}
+}
+
+/* HTML: <div class="loader"></div> */
+.fileurLoader{
+  width: 50px;
+  aspect-ratio: 1;
+  display:grid;
+  -webkit-mask: conic-gradient(from 15deg,#0000,#000);
+  animation: l26 1s infinite steps(12);
+}
+.fileurLoader,
+.fileurLoader:before,
+.fileurLoader:after{
   background:
-    radial-gradient(0.71em at 50% 1em,#000 99%,#0000 101%) calc(50% - 1em) 1em/2em 200% repeat-x text,
-    radial-gradient(0.71em at 50% -0.5em,#0000 99%,#000 101%) 50% 1.5em/2em 200% repeat-x text;
-  animation: 
-    l10-0 .8s linear infinite alternate,
-    l10-1  4s linear infinite;
+    radial-gradient(closest-side at 50% 12.5%,
+     #f03355 96%,#0000) 50% 0/20% 80% repeat-y,
+    radial-gradient(closest-side at 12.5% 50%,
+     #f03355 96%,#0000) 0 50%/80% 20% repeat-x;
 }
-.loader:before {
-  content: "Loading";
+.fileurLoader:before,
+.fileurLoader:after {
+  content: "";
+  grid-area: 1/1;
+  transform: rotate(30deg);
 }
-@keyframes l10-0 {
-  to {background-position-x: 50%,calc(50% + 1em)}
+.fileurLoader:after {
+  transform: rotate(60deg);
 }
-@keyframes l10-1 {
-  to {background-position-y: -.5em,0}
+
+@keyframes l26 {
+  100% {transform:rotate(1turn)}
 }

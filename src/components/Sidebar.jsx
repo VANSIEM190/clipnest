@@ -1,6 +1,5 @@
 import {
   FaHome,
-  FaQuestionCircle,
   FaCommentDots,
   FaUsers,
   FaUser,
@@ -17,7 +16,7 @@ import UserStatus from './UsersStatut';
 const Sidebar = ({ onNavigate }) => {
   const {  user } = useUser();
   const { isDarkMode } = useDarkMode();
-  const isSmallScreen = useStateScreen(); // Ex: return window.innerWidth < 640;
+  const isSmallScreen = useStateScreen(); 
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const bgColor = stringToColor(user?.fullName);

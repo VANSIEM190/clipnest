@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import useSortedQuestions from "../hooks/useSortedQuestions";
 import ButtonPagination from "./ButtonPagination";
 import UserStatus from "./UsersStatut";
+import { FileurLoader} from "./Loader";
+import formatDate from "../utils/formatDate";
 
 
 const QUESTIONS_PER_PAGE = 5;
@@ -86,7 +88,7 @@ const UserProfil = () => {
             <span className="font-medium">Inscrit le :</span>
             <span className="text-right sm:text-left">
               {user?.createdAt
-                ? user?.createdAt.toDate().toLocaleString()
+                ? formatDate(user?.createdAt)
                 : "Date inconnue"}
             </span>
           </div>
@@ -103,7 +105,7 @@ const UserProfil = () => {
       <div className="w-full max-w-2xl">
         <h3 className="text-xl font-semibold mb-4">Mes Questions</h3>
         {loading ? (
-          <p>Chargement des questions...</p>
+          <FileurLoader/>
         ) : questions.length > 0 ? (
           <>
             <ul className="space-y-3">
@@ -119,7 +121,7 @@ const UserProfil = () => {
                     }}
                   ></span>
                   <span className="text-sm text-gray-500 dark:text-gray-400 mt-2 sm:mt-0 sm:ml-4 text-center">
-                    Posté le : {q.timestamp?.toDate().toLocaleString()}
+                    Posté : {formatDate(q.timestamp)}
                   </span>
                 </li>
               ))}
