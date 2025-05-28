@@ -14,9 +14,9 @@ import { useDarkMode } from "../Context/DarkModeContext";
 import usePagination from "../hooks/Pagination";
 import ButtonPagination from "./ButtonPagination";
 import {FiSend} from "react-icons/fi";
-import {IoReturnUpBack} from "react-icons/io5";
-import {Link} from "react-router-dom"
-import MessagesUsers from "./MessagesUsers";
+import { IoReturnUpBack } from 'react-icons/io5'
+import { Link } from 'react-router-dom'
+import MessagesUsers from '../pages/MessagesUsers'
 
 const ResponseList = ({ messageId }) => {
 

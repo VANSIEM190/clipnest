@@ -19,36 +19,54 @@ const Navbar = () => {
 
   return (
     <>
-      <header 
-      className={`${isDarkMode ? "dark:bg-gray-900" : "bg-gray-200"} shadow-md py-4 px-8 flex justify-between items-center max-sm:flex-wrap max-sm:items-start max-sm:gap-4`}
-      translate="no"
+      <header
+        className={`${
+          isDarkMode ? 'dark:bg-gray-900' : 'bg-gray-100'
+        } shadow-md py-4 px-8 flex justify-between items-center max-sm:flex-wrap max-sm:items-start max-sm:gap-4`}
       >
-        <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400">ClipNest</h3>
+        <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+          ClipNest
+        </h3>
 
-        <nav className={`items-center space-x-6 text-gray-800 ${isDarkMode ? "dark:text-gray-200" : ""} ${isSmallScreen ? "hidden" : "flex"}`}>
-          <Link to="/" className="hover:text-blue-500 dark:hover:text-blue-400 transition">Accueil</Link>
-          <Link to="/Àpropos" className="hover:text-blue-500 dark:hover:text-blue-400 transition">À propos</Link>
+        <nav
+          className={`items-center space-x-6 text-gray-800 ${
+            isDarkMode ? 'dark:text-gray-200' : ''
+          } ${isSmallScreen ? 'hidden' : 'flex'}`}
+        >
+          <Link
+            to="/"
+            className="hover:text-blue-500 dark:hover:text-blue-400 transition"
+          >
+            Accueil
+          </Link>
+          <Link
+            to="/Àpropos"
+            className="hover:text-blue-500 dark:hover:text-blue-400 transition"
+          >
+            À propos
+          </Link>
           <FiBell className="text-2xl" />
-          <button onClick={toggleDarkMode} className="text-xl focus:outline-none cursor-pointer">
+          <button
+            onClick={toggleDarkMode}
+            className="text-xl focus:outline-none cursor-pointer"
+          >
             {isDarkMode ? <FiSun /> : <FiMoon />}
           </button>
-          <div className=" relative w-8 h-8 rounded-full  flex items-center justify-center text-white font-semibold"
-          style={{ backgroundColor: bgColor }}
+          <div
+            className=" relative w-8 h-8 rounded-full  flex items-center justify-center text-white font-semibold"
+            style={{ backgroundColor: bgColor }}
           >
             {user?.initials}
             <div className="absolute -bottom-1 right-1 translate-x-1/2 -translate-y-1/2">
-                    <UserStatus uid={user?.uid} />
+              <UserStatus uid={user?.uid} />
             </div>
           </div>
         </nav>
 
-        {isSmallScreen && !isRoot && (
-          <Options  />
-        )}
+        {isSmallScreen && !isRoot && <Options />}
       </header>
-      
     </>
-  );
+  )
 };
 
 export default Navbar;

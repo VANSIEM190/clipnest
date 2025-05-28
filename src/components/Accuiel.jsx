@@ -8,7 +8,7 @@ import { useUser } from "../Context/UserContext";
 import usePagination from "../hooks/Pagination";
 import ButtonPagination from "./ButtonPagination";
 import useSortedQuestions from "../hooks/useSortedQuestions";
-import MessagesUsers from "./MessagesUsers";
+import MessagesUsers from '../pages/MessagesUsers'
 import {FaEnvelope , FaCommentDots} from "react-icons/fa";
 
 

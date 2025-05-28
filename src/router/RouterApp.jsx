@@ -13,30 +13,29 @@ const FormulaireInscription = lazy(() => import("../components/Formulaire"));
 const LoginForm = lazy(() => import("../components/ConnectionForm"));
 const Home = lazy(() => import("../pages/Home"));
 const ErrorPage = lazy(() => import("../pages/ErrorPage"));
-const UsersProfileDetails = lazy(() => import("../components/usersProfil"));
-const MessageResponses = lazy(()=> import("../components/MessageResponses.jsx"))
+const UsersProfil = lazy(() => import('../components/usersProfil'))
+const MessageResponses = lazy(() =>
+  import('../components/MessageResponses.jsx')
+)
 
 const RouterApp = () => {
-  
-  const [fcmToken , setFcmToken] = useState(null);  
+  const [fcmToken, setFcmToken] = useState(null)
 
   useEffect(() => {
     const requestPermission = async () => {
-      const token = await requestFCMToken();
+      const token = await requestFCMToken()
       if (token) {
-        setFcmToken(token);
+        setFcmToken(token)
       }
-    };
-    requestPermission();
-  }, []);
+    }
+    requestPermission()
+  }, [])
 
-onMessageListener()
-  .then((payload) => {
-    console.log("Message reçu :", payload)
-  })
-  .catch((err) => console.log("Erreur de réception du message :", err));
-
-  
+  onMessageListener()
+    .then(payload => {
+      console.log('Message reçu :', payload)
+    })
+    .catch(err => console.log('Erreur de réception du message :', err))
 
   return (
     <Suspense fallback={<Loader />}>
@@ -46,12 +45,12 @@ onMessageListener()
         <Route path="/inscription" element={<FormulaireInscription />} />
         <Route path="/connexion" element={<LoginForm />} />
         <Route path="/salon" element={<Home />} />
-        <Route path="/profil/:id" element={<UsersProfileDetails />} />
+        <Route path="/profil/:id" element={<UsersProfil />} />
         <Route path="/message/:messageId" element={<MessageResponses />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </Suspense>
-  );
-};
+  )
+}
 
 export default RouterApp;

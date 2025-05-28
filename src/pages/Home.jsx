@@ -13,13 +13,17 @@ import Seo from "../components/Seo";
 const Home = () => {
   const { isDarkMode } = useDarkMode();
   const isSmallScreen = useStateScreen();
-  const homeClass = isDarkMode ? "bg-gray-900 text-white" : "bg-gray-200 text-black";
+  const homeClass = isDarkMode
+    ? 'bg-gray-900 text-white'
+    : 'bg-gray-100 text-black'
+  const [activeSection, setActiveSection] = useState([])
+  const [isdefaultSection, setIsdefaultSection] = useState(true)
+  const sections = ['home', 'profil', 'users', 'questions']
 
-  const [activeSection, setActiveSection] = useState("home"); 
-
-  const handleNavigation = (section ) => {
-    setActiveSection(section );
-  };
+  const handleNavigationSection = section => {
+    setActiveSection(sections.includes(section) ? section : 'home')
+    setIsdefaultSection(false)
+  }
 
   return (
     <div className={`${homeClass} min-h-screen flex flex-col`}>
@@ -27,25 +31,27 @@ const Home = () => {
         <Navbar />
 
         <div className="w-screen  ">
-          <Sidebar onNavigate={handleNavigation} />
-
-          <div className={` w-[97%] overflow-auto ${isSmallScreen? " mx-auto" : "float-right" }`}  >
-            {activeSection === "profil" && <UserProfil />}
-            {activeSection === "users" && <ContactCard />}
-            {activeSection === "questions" && <RichTextEditor />}
-            {activeSection === "home" && <MessageCard /> }
-            {/* tu peux en ajouter d'autres si tu veux */}
+          <Sidebar onNavigate={handleNavigationSection} />
+          <div
+            className={` w-[97%] overflow-auto ${
+              isSmallScreen ? ' mx-auto' : 'float-right'
+            }`}
+          >
+            {isdefaultSection && <MessageCard />}
+            {activeSection.includes('profil') && <UserProfil />}
+            {activeSection.includes('users') && <ContactCard />}
+            {activeSection.includes('questions') && <RichTextEditor />}
+            {activeSection.includes('home') && <MessageCard />}
           </div>
         </div>
       </UserProvider>
       <Seo
-          title="Salon - Discussions éducatives sur ClipNest"
-          description="Rejoignez les discussions dans le salon de ClipNest, un lieu d'échange d'idées éducatives."
-          url="https://clipnest-zeta.vercel.app/salon"
-        />
-
+        title="Salon - Discussions éducatives sur ClipNest"
+        description="Rejoignez les discussions dans le salon de ClipNest, un lieu d'échange d'idées éducatives."
+        url="https://clipnest-zeta.vercel.app/salon"
+      />
     </div>
-  );
+  )
 };
 
 export default Home;
