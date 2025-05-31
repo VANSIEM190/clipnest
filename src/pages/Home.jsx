@@ -4,15 +4,15 @@ import Sidebar from "../components/Sidebar";
 import { UserProvider } from "../Context/UserContext";
 import { useDarkMode } from "../Context/DarkModeContext";
 import useStateScreen from "../hooks/UseSizeScreen";
-import ContactCard from "../components/Users";
-import RichTextEditor from "../components/QuestionsUsers";
-import MessageCard from "../components/Accuiel";
-import UserProfil from "../components/userProfil";
-import Seo from "../components/Seo";
+import ContactCard from '../components/AllUsers'
+import RichTextEditor from '../components/QuestionsUsers'
+import UsersMessages from '../components/usersMessages'
+import UserProfil from '../components/userProfil'
+import Seo from '../components/Seo'
 
 const Home = () => {
-  const { isDarkMode } = useDarkMode();
-  const isSmallScreen = useStateScreen();
+  const { isDarkMode } = useDarkMode()
+  const isSmallScreen = useStateScreen()
   const homeClass = isDarkMode
     ? 'bg-gray-900 text-white'
     : 'bg-gray-100 text-black'
@@ -37,11 +37,11 @@ const Home = () => {
               isSmallScreen ? ' mx-auto' : 'float-right'
             }`}
           >
-            {isdefaultSection && <MessageCard />}
+            {isdefaultSection && <UsersMessages />}
             {activeSection.includes('profil') && <UserProfil />}
             {activeSection.includes('users') && <ContactCard />}
             {activeSection.includes('questions') && <RichTextEditor />}
-            {activeSection.includes('home') && <MessageCard />}
+            {activeSection.includes('home') && <UsersMessages />}
           </div>
         </div>
       </UserProvider>
@@ -52,6 +52,6 @@ const Home = () => {
       />
     </div>
   )
-};
+}
 
 export default Home;

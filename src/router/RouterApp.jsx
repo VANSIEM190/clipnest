@@ -5,18 +5,15 @@ import { Routes, Route } from "react-router-dom";
 import {Loader} from "../components/Loader";
 import { requestFCMToken , onMessageListener } from "../utils/firebase-utils.js";
 
-
 // Lazy loading des pages
 const LadingPage = lazy(() => import("../pages/LadingPage"));
 const Apropos = lazy(() => import("../pages/Apropos"));
 const FormulaireInscription = lazy(() => import("../components/Formulaire"));
 const LoginForm = lazy(() => import("../components/ConnectionForm"));
 const Home = lazy(() => import("../pages/Home"));
-const ErrorPage = lazy(() => import("../pages/ErrorPage"));
-const UsersProfil = lazy(() => import('../components/usersProfil'))
-const MessageResponses = lazy(() =>
-  import('../components/MessageResponses.jsx')
-)
+const ErrorPage = lazy(() => import('../pages/ErrorPage'))
+const ReplyMessage = lazy(() => import('../components/ReplyMessage'))
+const SelectedUser = lazy(() => import('../components/SelectedUser'))
 
 const RouterApp = () => {
   const [fcmToken, setFcmToken] = useState(null)
@@ -45,8 +42,8 @@ const RouterApp = () => {
         <Route path="/inscription" element={<FormulaireInscription />} />
         <Route path="/connexion" element={<LoginForm />} />
         <Route path="/salon" element={<Home />} />
-        <Route path="/profil/:id" element={<UsersProfil />} />
-        <Route path="/message/:messageId" element={<MessageResponses />} />
+        <Route path="/profil/:id" element={<SelectedUser />} />
+        <Route path="/message/:messageId" element={<ReplyMessage />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </Suspense>

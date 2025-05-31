@@ -7,7 +7,7 @@ import { UserProvider, useUser } from "../Context/UserContext";
 import Seo from "../components/Seo";
 
 const LandingPage = () => {
-  const { isDarkMode } = useDarkMode();
+  const { isDarkMode } = useDarkMode()
   const { initials, isLoading } = useUser()
   const typedElement = useRef(null)
   const navigate = useNavigate()

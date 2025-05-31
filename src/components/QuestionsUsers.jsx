@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { db } from '../services/firebaseconfig';
 import { addDoc, collection } from 'firebase/firestore';
 import useStateScreen from '../hooks/UseSizeScreen';
-import { useUser } from '../Context/UserContext';
-import MessageList from './Accuiel';
+import { useUser } from '../Context/UserContext'
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 

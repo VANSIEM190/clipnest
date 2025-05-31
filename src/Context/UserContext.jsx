@@ -3,13 +3,15 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../services/firebaseconfig";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 
-const db = getFirestore();
-const UserContext = createContext();
+
+const UserContext = createContext()
 
 export const UserProvider = ({ children }) => {
-  const [initials, setInitials] = useState("");
+  const [initials, setInitials] = useState('')
   const [user, setUser] = useState({})
   const [isLoading, setIsLoading] = useState(true)
+
+  const db = getFirestore()
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async currentUser => {
@@ -38,15 +40,18 @@ export const UserProvider = ({ children }) => {
             console.warn('Utilisateur non trouvé dans Firestore')
             setInitials('')
             setUser(null)
+            setIsLoading(false)
           }
         } catch (error) {
           console.error('Erreur Firestore:', error)
           setInitials('')
           setUser(null)
+          setIsLoading(false)
         }
       } else {
         setInitials('')
         setUser(null)
+        setIsLoading(false)
       }
     })
 
@@ -58,6 +63,6 @@ export const UserProvider = ({ children }) => {
       {children}
     </UserContext.Provider>
   )
-};
+}
 
 export const useUser = () => useContext(UserContext);

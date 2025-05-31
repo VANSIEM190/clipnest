@@ -5,11 +5,13 @@ import { db } from '../services/firebaseconfig'
 import { doc, deleteDoc } from 'firebase/firestore'
 import { useUser } from '../Context/UserContext'
 
-const MessagesUsers = ({
+const AfficheMessagesUser = ({
   userName,
   userProfil,
   timestamp,
   messageId,
+  userId,
+  collectionName,
   messageText,
 }) => {
   const { user } = useUser()
@@ -20,8 +22,12 @@ const MessagesUsers = ({
     )
     if (!confirmDelete) return
 
-    const messageRef = doc(db, 'responses', messageId)
+    const messageRef = doc(db, collectionName, messageId)
     try {
+      if (!user || user.uid !== userId) {
+        alert("Vous n'avez pas la permission de supprimer ce message")
+        return
+      }
       await deleteDoc(messageRef)
     } catch (error) {
       console.error('Erreur lors de la suppression :', error)
@@ -63,4 +69,4 @@ const MessagesUsers = ({
   )
 }
 
-export default MessagesUsers
+export default AfficheMessagesUser

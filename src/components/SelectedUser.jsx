@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import {
   collection,
@@ -9,11 +9,10 @@ import {
   getDocs,
 } from 'firebase/firestore'
 import { db } from '../services/firebaseconfig'
-import { FileurLoader } from './Loader'
 
 import ProfilsUsers from '../pages/profilsUsers'
 
-const UsersProfil = () => {
+const SelectedUser = () => {
   const { id } = useParams() // ID de l'utilisateur dans l'URL
 
   const [userData, setUserData] = useState({}) // données utilisateur
@@ -74,4 +73,4 @@ const UsersProfil = () => {
   )
 }
 
-export default UsersProfil
+export default SelectedUser
