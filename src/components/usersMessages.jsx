@@ -12,6 +12,7 @@ import useSortedQuestions from '../hooks/useSortedQuestions'
 import MessagesUsers from '../pages/AfficheMessagesUser'
 import { FaEnvelope, FaCommentDots } from 'react-icons/fa'
 import { stringToColor } from '../utils/StringToColor'
+
 const UsersMessages = () => {
   const [messageList, setMessageList] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -21,9 +22,10 @@ const UsersMessages = () => {
   const [onlineStatuses, setOnlineStatuses] = useState({})
   const sortedMessages = useSortedQuestions(messageList)
   const [users, setUsers] = useState([])
-  const [loading, setLoading] = useState(true)
   const realTimeDb = getDatabase()
   const navigate = useNavigate()
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [visibleUsers] = useState(10) // nombre d'utilisateurs visibles à la fois
 
   const maxMessagesPerPage = 20
   const minLengthToPaginate = 6
@@ -51,7 +53,6 @@ const UsersMessages = () => {
         },
         error => {
           console.error('Erreur de lecture des messages:', error)
-          setIsLoading(false)
         }
       )
 
@@ -114,22 +115,38 @@ const UsersMessages = () => {
           lastSeen: doc.data().lastSeen?.toDate?.() || null,
         }))
         setUsers(userList)
-        setLoading(false)
       } catch (error) {
         console.error(
           'Erreur lors de la récupération des utilisateurs :',
           error
         )
-        setLoading(false)
       }
     }
     fetchUsers()
   }, [])
 
+  //  fonction pour gérer le défilement
+  const nextSlide = () => {
+    const onlineUsers = users.filter(user => onlineStatuses[user.id]?.isOnline)
+    setCurrentIndex(prevIndex =>
+      prevIndex + visibleUsers >= onlineUsers.length ? 0 : prevIndex + 1
+    )
+  }
+
+  // prévisualiser le défilement
+  const previousSlide = () => {
+    const onlineUsers = users.filter(user => onlineStatuses[user.id]?.isOnline)
+    setCurrentIndex(prevIndex =>
+      prevIndex === 0
+        ? Math.max(0, onlineUsers.length - visibleUsers)
+        : prevIndex - 1
+    )
+  }
+
+  // naviguer sur l'onglet des réponses
   const toggleResponseView = messageId => {
     navigate(`/message/${messageId}`)
   }
-  console.log(paginatedMessages)
 
   if (isLoading) return <FileurLoader />
 
@@ -139,46 +156,57 @@ const UsersMessages = () => {
         <p className="text-center text-gray-500">Aucun message trouvé.</p>
       ) : (
         <>
-          <div
-            className={`flex justify-center items-center gap-3 rounded-2xl p-2 sm:p-5  transition-all duration-300 w-full 
-          ${
-            isDarkMode
-              ? 'bg-gradient-to-br from-gray-800/90 via-gray-900/90 to-black/90 text-gray-100 backdrop-blur-sm'
-              : 'bg-white/80 backdrop-blur-sm text-gray-900 '
-          }
-          hover:shadow-xl
-        `}
-          >
-            {users.map((user, idUser) => {
-              const userStatus = onlineStatuses[user.id]
-              const isOnline = userStatus?.isOnline || false
-              return loading ? (
-                <div>
-                  <FileurLoader />
-                </div>
-              ) : (
-                <div className="flex items-center gap-2" key={idUser}>
-                  <div
-                    className="relative w-7 h-7 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-semibold text-white text-sm sm:text-xl shadow-inner shrink-0"
-                    style={{
-                      backgroundColor: stringToColor(
-                        `${user.prenom} ${user.nom}`
-                      ),
-                    }}
-                  >
-                    {`${user.prenom.charAt(0)} ${user.nom.charAt(
-                      0
-                    )}`.toUpperCase()}
-                    <div
-                      className={`absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 border-white ${
-                        isOnline ? 'bg-green-500' : 'bg-red-500'
-                      }`}
-                    />
-                  </div>
-                </div>
-              )
-            })}
+          {/* affichage des utilisateur connectés */}
+          <div className="flex justify-center">
+            <div
+              className={`relative flex items-center gap-3 px-3 ${
+                isDarkMode
+                  ? 'bg-gradient-to-br from-gray-800/90 via-gray-900/90 to-black/90 text-gray-100'
+                  : 'bg-white/80 text-gray-900'
+              } rounded-2xl p-2 sm:p-5`}
+            >
+              <button
+                onClick={previousSlide}
+                className="absolute left-0 z-10 p-1 sm:p-2 bg-gray-400 rounded-full text-white hover:bg-gray-700 cursor-pointer"
+              >
+                &#8249;
+              </button>
+
+              <div className="flex items-center gap-2 overflow-hidden">
+                {users
+                  .filter(user => onlineStatuses[user.id]?.isOnline)
+                  .slice(currentIndex, currentIndex + visibleUsers)
+                  .map((user, idUser) => (
+                    <div className="flex items-center gap-2" key={idUser}>
+                      <div
+                        className="relative w-7 h-7 sm:w-10 sm:h-10 rounded-full flex items-center mx-2
+                        justify-center font-semibold text-white text-sm sm:text-xl shadow-inner shrink-0"
+                        title="en ligne"
+                        style={{
+                          backgroundColor: stringToColor(
+                            `${user.prenom} ${user.nom}`
+                          ),
+                        }}
+                      >
+                        {`${user.prenom.charAt(0)} ${user.nom.charAt(
+                          0
+                        )}`.toUpperCase()}
+                        <div className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 border-white bg-green-500" />
+                      </div>
+                    </div>
+                  ))}
+              </div>
+
+              <button
+                onClick={nextSlide}
+                className="absolute right-0 z-10 p-1  sm:p-2 bg-gray-400 rounded-full text-white hover:bg-gray-700 cursor-pointer"
+              >
+                &#8250;
+              </button>
+            </div>
           </div>
+
+          {/* card message */}
           {paginatedMessages.map(message => {
             return (
               <div
