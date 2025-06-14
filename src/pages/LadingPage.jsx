@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import Typed from "typed.js";
-import Navbar from "../components/Navbar";
-import { useDarkMode } from "../Context/DarkModeContext";
-import { UserProvider, useUser } from "../Context/UserContext";
-import Seo from "../components/Seo";
+import { useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useDarkMode } from '../Context/DarkModeContext'
+import { UserProvider, useUser } from '../Context/UserContext'
+import Typed from 'typed.js'
+import Navbar from '../components/Navbar'
+import Seo from '../components/Seo'
 
 const LandingPage = () => {
   const { isDarkMode } = useDarkMode()
@@ -32,16 +32,14 @@ const LandingPage = () => {
     return () => typed.destroy()
   }, [])
 
-  const handleClick = () => {
-    navigate(initials ? '/salon' : '/connexion')
+  const redirectToPath = () => {
+    const navigationPage = initials ? '/salon' : '/connexion'
+    navigate(navigationPage)
   }
 
   return (
     <>
-      <UserProvider>
-        <Navbar />
-      </UserProvider>
-
+      <Navbar />
       <main
         className={`flex items-center justify-center min-h-screen px-2 sm:px-6 py-10 
         ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'}`}
@@ -60,8 +58,9 @@ const LandingPage = () => {
           </p>
 
           <button
-            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 sm:px-6 rounded-xl transition duration-200 cursor-pointer"
-            onClick={handleClick}
+            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 
+            sm:px-6 rounded-xl transition duration-200 cursor-pointer disabled:bg-blue-400 disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={redirectToPath}
             disabled={isLoading}
           >
             {isLoading
@@ -80,6 +79,6 @@ const LandingPage = () => {
       />
     </>
   )
-};
+}
 
-export default LandingPage;
+export default LandingPage

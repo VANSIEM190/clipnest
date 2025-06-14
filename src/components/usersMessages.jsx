@@ -157,7 +157,7 @@ const UsersMessages = () => {
       ) : (
         <>
           {/* affichage des utilisateur connectés */}
-          <div className="flex justify-center">
+          <div className="flex justify-center ">
             <div
               className={`relative flex items-center gap-3 px-3 ${
                 isDarkMode

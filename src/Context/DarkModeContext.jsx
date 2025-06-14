@@ -12,7 +12,7 @@ export const DarkModeProvider = ({ children }) => {
     const lightTheme = "light";
 
     if (storedTheme === darkTheme) {
-      setIsDarkMode(true);
+      setIsDarkMode(true)   
       document.documentElement.classList.add(darkTheme);
     } else if (storedTheme === lightTheme) {
       setIsDarkMode(false);

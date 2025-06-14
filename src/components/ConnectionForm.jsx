@@ -32,63 +32,80 @@ const LoginForm = () => {
 
   return (
     <>
-    <div className={`flex items-center justify-center min-h-screen ${isDarkMode ? "dark:bg-gray-900" : "bg-gray-200"}`}>
-      <div className="w-2/4 max-sm:w-5/6 mx-auto mt-10 p-6 bg-white rounded-xl shadow-md">
-        <h2 className="text-2xl font-bold text-center mb-6 text-indigo-600">Connexion</h2>
-        <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Champ Email */}
-          <div>
-            <label htmlFor="email" className="block text-gray-700 font-medium mb-1">Email</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring focus:border-blue-400"
-              required
-            />
-          </div>
+      <div
+        className={`flex items-center justify-center min-h-screen ${
+          isDarkMode ? 'dark:bg-gray-900' : 'bg-gray-200'
+        }`}
+      >
+        <div className="w-2/4 max-sm:w-5/6 mx-auto mt-10 p-6 bg-white rounded-xl shadow-md">
+          <h2 className="text-2xl font-bold text-center mb-6 text-indigo-600">
+            Connexion
+          </h2>
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Champ Email */}
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-gray-700 font-medium mb-1"
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring focus:border-blue-400"
+                required
+              />
+            </div>
 
-          {/* Champ Mot de passe */}
-          <div>
-            <label htmlFor="password" className="block text-gray-700 font-medium mb-1">Mot de passe</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring focus:border-blue-400"
-              required
-            />
-          </div>
+            {/* Champ Mot de passe */}
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-gray-700 font-medium mb-1"
+              >
+                Mot de passe
+              </label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring focus:border-blue-400"
+                required
+              />
+            </div>
 
-          {/* Message d'erreur */}
-          {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+            {/* Message d'erreur */}
+            {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
 
-          {/* Bouton de connexion */}
-          <button
-            type="submit"
-            className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700"
-            disabled={loading}
-          >
-            {loading ? "Chargement..." : "Se connecter"}
-          </button>
-        </form>
+            {/* Bouton de connexion */}
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white py-2 rounded cursor-pointer hover:bg-blue-700 disabled:bg-blue-400 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={loading}
+            >
+              {loading ? 'Chargement...' : 'Se connecter'}
+            </button>
+          </form>
 
-        <p className="mt-4 text-center text-sm">
-          Pas encore de compte ?{" "}
-          <Link to="/inscription" className="text-blue-600 hover:underline">S'inscrire ici</Link>
-        </p>
+          <p className="mt-4 text-center text-sm">
+            Pas encore de compte ?{' '}
+            <Link to="/inscription" className="text-blue-600 hover:underline">
+              S'inscrire ici
+            </Link>
+          </p>
+        </div>
       </div>
-    </div>
-        <Seo
+      <Seo
         title="Connexion - ClipNest"
         description="Connectez-vous à votre compte ClipNest pour participer aux discussions."
         url="https://clipnest-zet.vercel.app/connexion"
       />
-  
     </>
-  );
+  )
 };
 
 export default LoginForm;
