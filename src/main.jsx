@@ -6,18 +6,21 @@ import RouterApp from './router/RouterApp'
 import { UserProvider } from './Context/UserContext'; 
 import { DarkModeProvider } from './Context/DarkModeContext'; 
 import {PresenceProvider} from './Context/PresenceContext'
+import { NetWorkStatusProvider } from './Context/networkStatusContext'
 
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <PresenceProvider>
-      <UserProvider>
-        <DarkModeProvider>
-          <RouterApp />
-        </DarkModeProvider>
-      </UserProvider>
-      </PresenceProvider>
+      <NetWorkStatusProvider>
+        <PresenceProvider>
+          <UserProvider>
+            <DarkModeProvider>
+              <RouterApp />
+            </DarkModeProvider>
+          </UserProvider>
+        </PresenceProvider>
+      </NetWorkStatusProvider>
     </BrowserRouter>
   </StrictMode>
 )

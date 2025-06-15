@@ -33,6 +33,7 @@ const Navbar = () => {
             isDarkMode ? 'dark:text-gray-200' : ''
           } ${isSmallScreen ? 'hidden' : 'flex'}`}
         >
+          {/* liens de navigation */}
           <Link
             to="/"
             className="hover:text-blue-500 dark:hover:text-blue-400 transition"
@@ -52,6 +53,7 @@ const Navbar = () => {
           >
             {isDarkMode ? <FiSun /> : <FiMoon />}
           </button>
+          {/* profil utilisateur  */}
           <div
             className=" relative w-8 h-8 rounded-full  flex items-center justify-center text-white font-semibold"
             style={{ backgroundColor: bgColor }}
@@ -62,7 +64,7 @@ const Navbar = () => {
             </div>
           </div>
         </nav>
-
+          {/* on affiche les composant options si nous sommes dans small screen */}
         {isSmallScreen && !isRoot && <Options />}
       </header>
     </>
