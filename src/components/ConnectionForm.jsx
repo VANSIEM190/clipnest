@@ -21,7 +21,7 @@ const LoginForm = () => {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate("/salon"); // Rediriger l'utilisateur vers le salon ou une autre page
+      navigate('/salon') 
     } catch (err) {
       console.error("Erreur de connexion :", err);
       setError("Email ou mot de passe incorrect.");

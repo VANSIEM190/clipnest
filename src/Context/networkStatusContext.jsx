@@ -8,8 +8,12 @@ export const NetWorkStatusProvider = ({ children }) => {
 
   useEffect(() => {
     const checkInternet = async () => {
+      const millisecondeController = 3000
       const controller = new AbortController()
-      const timeout = setTimeout(() => controller.abort(), 3000) // 3 secondes
+      const timeout = setTimeout(
+        () => controller.abort(),
+        millisecondeController
+      )
 
       try {
         await fetch('https://www.google.com/favicon.ico', {
@@ -27,6 +31,11 @@ export const NetWorkStatusProvider = ({ children }) => {
 
     checkInternet()
 
+    const milliSecondeInterval = 1000
+    const intervalId = setInterval(() => {
+      checkInternet()
+    }, milliSecondeInterval)
+
     const handleOnline = () => {
       setIsOnlineStatus(true)
       checkInternet()
@@ -39,6 +48,7 @@ export const NetWorkStatusProvider = ({ children }) => {
     window.addEventListener('offline', handleOffline)
 
     return () => {
+      clearInterval(intervalId)
       window.removeEventListener('online', handleOnline)
       window.removeEventListener('offline', handleOffline)
     }
