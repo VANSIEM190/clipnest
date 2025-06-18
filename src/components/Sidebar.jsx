@@ -6,20 +6,22 @@ import {
   FaChevronLeft,
   FaChevronRight,
 } from 'react-icons/fa';
-import { useUser } from '../Context/UserContext';
-import { useDarkMode } from '../Context/DarkModeContext';
-import React, { useEffect, useState } from 'react';
-import useStateScreen from '../hooks/UseSizeScreen'; 
-import { stringToColor } from '../utils/StringToColor';
-import UserStatus from './UsersStatut';
+import { useNavigate } from 'react-router-dom'
+import { useUser } from '../Context/UserContext'
+import { useDarkMode } from '../Context/DarkModeContext'
+import React, { useEffect, useState } from 'react'
+import useStateScreen from '../hooks/UseSizeScreen'
+import { stringToColor } from '../utils/StringToColor'
+import UserStatus from './UsersStatut'
 
-const Sidebar = ({ onNavigate }) => {
-  const {  user } = useUser();
-  const { isDarkMode } = useDarkMode();
-  const isSmallScreen = useStateScreen(); 
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const bgColor = stringToColor(user?.fullName);
+const Sidebar = () => {
+  const { user } = useUser()
+  const { isDarkMode } = useDarkMode()
+  const isSmallScreen = useStateScreen()
+  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const bgColor = stringToColor(user?.fullName)
+  const navigate = useNavigate()
 
   const sidebarClass = isDarkMode
     ? 'bg-gray-900 text-gray-200'
@@ -45,6 +47,10 @@ const Sidebar = ({ onNavigate }) => {
 
   const shouldCollapse = isSmallScreen ? !isMobileMenuOpen : isCollapsed
 
+  const onNavigate = link => {
+    navigate(link)
+  }
+
   return (
     <>
       {/* Bouton menu flottant */}
@@ -56,7 +62,11 @@ const Sidebar = ({ onNavigate }) => {
       >
         <button
           onClick={toggleMenu}
-          className="text-sm p-2  rounded-full shadow"
+          className={`text-sm p-2  rounded-full shadow ${
+            isDarkMode
+              ? 'bg-transparent text-gray-100'
+              : 'bg-transparent text-gray-900'
+          }`}
         >
           {shouldCollapse ? <FaChevronRight /> : <FaChevronLeft />}
         </button>
@@ -107,32 +117,32 @@ const Sidebar = ({ onNavigate }) => {
               icon={<FaHome size={20} />}
               label="Accueil"
               isCollapsed={shouldCollapse}
-              onClick={() => onNavigate('home')}
+              onClick={() => onNavigate('/salon')}
             />
             <NavItem
               icon={<FaCommentDots size={20} />}
               label="Posez une Question"
               isCollapsed={shouldCollapse}
-              onClick={() => onNavigate('questions')}
+              onClick={() => onNavigate('/question-user')}
             />
             <NavItem
               icon={<FaUsers size={20} />}
               label="Utilisateurs"
               isCollapsed={shouldCollapse}
-              onClick={() => onNavigate('users')}
+              onClick={() => onNavigate('/profils-utilisateurs')}
             />
             <NavItem
               icon={<FaUser size={20} />}
               label="Profil"
               isCollapsed={shouldCollapse}
-              onClick={() => onNavigate('profil')}
+              onClick={() => onNavigate('/mon-profil')}
             />
           </div>
         </div>
       ) : null}
     </>
   )
-};
+}
 
 const NavItem = React.memo(({ icon, label, isCollapsed, onClick }) => {
   const { isDarkMode } = useDarkMode();

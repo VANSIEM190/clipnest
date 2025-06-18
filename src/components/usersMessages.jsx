@@ -12,6 +12,8 @@ import useSortedQuestions from '../hooks/useSortedQuestions'
 import MessagesUsers from '../pages/AfficheMessagesUser'
 import { FaEnvelope, FaCommentDots } from 'react-icons/fa'
 import { stringToColor } from '../utils/StringToColor'
+import Navbar from './Navbar'
+import Sidebar from './Sidebar'
 
 const UsersMessages = () => {
   const [messageList, setMessageList] = useState([])
@@ -151,67 +153,71 @@ const UsersMessages = () => {
   if (isLoading) return <FileurLoader />
 
   return (
-    <div className="p-4 sm:p-6 max-w-4xl mx-auto space-y-6">
-      {paginatedMessages.length === 0 ? (
-        <p className="text-center text-gray-500">Aucun message trouvé.</p>
-      ) : (
-        <>
-          {/* affichage des utilisateur connectés */}
-          <div className="flex justify-center ">
-            <div
-              className={`relative flex items-center gap-3 px-3 ${
-                isDarkMode
-                  ? 'bg-gradient-to-br from-gray-800/90 via-gray-900/90 to-black/90 text-gray-100'
-                  : 'bg-white/80 text-gray-900'
-              } rounded-2xl p-2 sm:p-5`}
-            >
-              <button
-                onClick={previousSlide}
-                className="absolute left-0 z-10 p-1 sm:p-2 bg-gray-400 rounded-full text-white hover:bg-gray-700 cursor-pointer"
-              >
-                &#8249;
-              </button>
+    <>
+      <Navbar />
+      <Sidebar />
+      <div className={` ${isDarkMode ? 'bg-gray-900' : 'bg-gray-100'}`}>
+        <div className={`p-4 sm:p-6 max-w-4xl mx-auto space-y-6`}>
+          {paginatedMessages.length === 0 ? (
+            <p className="text-center text-gray-500">Aucun message trouvé.</p>
+          ) : (
+            <>
+              {/* affichage des utilisateur connectés */}
+              <div className="flex justify-center ">
+                <div
+                  className={`relative flex items-center gap-3 px-3 ${
+                    isDarkMode
+                      ? 'bg-gradient-to-br from-gray-800/90 via-gray-900/90 to-black/90 text-gray-100'
+                      : 'bg-white/80 text-gray-900'
+                  } rounded-2xl p-2 sm:p-5`}
+                >
+                  <button
+                    onClick={previousSlide}
+                    className="absolute left-0 z-10 p-1 sm:p-2 bg-gray-400 rounded-full text-white hover:bg-gray-700 cursor-pointer"
+                  >
+                    &#8249;
+                  </button>
 
-              <div className="flex items-center gap-2 overflow-hidden">
-                {users
-                  .filter(user => onlineStatuses[user.id]?.isOnline)
-                  .slice(currentIndex, currentIndex + visibleUsers)
-                  .map((user, idUser) => (
-                    <div className="flex items-center gap-2" key={idUser}>
-                      <div
-                        className="relative w-7 h-7 sm:w-10 sm:h-10 rounded-full flex items-center mx-2
+                  <div className="flex items-center gap-2 overflow-hidden">
+                    {users
+                      .filter(user => onlineStatuses[user.id]?.isOnline)
+                      .slice(currentIndex, currentIndex + visibleUsers)
+                      .map((user, idUser) => (
+                        <div className="flex items-center gap-2" key={idUser}>
+                          <div
+                            className="relative w-7 h-7 sm:w-10 sm:h-10 rounded-full flex items-center mx-2
                         justify-center font-semibold text-white text-sm sm:text-xl shadow-inner shrink-0"
-                        title="en ligne"
-                        style={{
-                          backgroundColor: stringToColor(
-                            `${user.prenom} ${user.nom}`
-                          ),
-                        }}
-                      >
-                        {`${user.prenom.charAt(0)} ${user.nom.charAt(
-                          0
-                        )}`.toUpperCase()}
-                        <div className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 border-white bg-green-500" />
-                      </div>
-                    </div>
-                  ))}
+                            title="en ligne"
+                            style={{
+                              backgroundColor: stringToColor(
+                                `${user.prenom} ${user.nom}`
+                              ),
+                            }}
+                          >
+                            {`${user.prenom.charAt(0)} ${user.nom.charAt(
+                              0
+                            )}`.toUpperCase()}
+                            <div className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 border-white bg-green-500" />
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+
+                  <button
+                    onClick={nextSlide}
+                    className="absolute right-0 z-10 p-1  sm:p-2 bg-gray-400 rounded-full text-white hover:bg-gray-700 cursor-pointer"
+                  >
+                    &#8250;
+                  </button>
+                </div>
               </div>
 
-              <button
-                onClick={nextSlide}
-                className="absolute right-0 z-10 p-1  sm:p-2 bg-gray-400 rounded-full text-white hover:bg-gray-700 cursor-pointer"
-              >
-                &#8250;
-              </button>
-            </div>
-          </div>
-
-          {/* card message */}
-          {paginatedMessages.map(message => {
-            return (
-              <div
-                key={message.id}
-                className={`flex flex-col gap-3 rounded-2xl p-2 sm:p-5  transition-all duration-300 w-full 
+              {/* card message */}
+              {paginatedMessages.map(message => {
+                return (
+                  <div
+                    key={message.id}
+                    className={`flex flex-col gap-3 rounded-2xl p-2 sm:p-5  transition-all duration-300 w-full 
             ${
               isDarkMode
                 ? 'bg-gradient-to-br from-gray-800/90 via-gray-900/90 to-black/90 text-gray-100 backdrop-blur-sm'
@@ -219,64 +225,66 @@ const UsersMessages = () => {
             }
             hover:shadow-xl
           `}
-              >
-                <MessagesUsers
-                  userName={message.name}
-                  userProfil={message.nameProfil}
-                  timestamp={message.timestamp}
-                  messageId={message.id}
-                  userId={message.userId}
-                  collectionName={'messages'}
-                  messageText={message.message}
-                />
-                <div className="flex justify-between items-center gap-2 mt-2 flex-wrap">
-                  {user?.fullName !== message?.name ? (
-                    <div className="flex items-center justify-center  gap-2">
-                      <a href={`mailto:${message?.email}`}>
-                        <FaEnvelope size={18} />
-                      </a>
-                      <button
-                        type="button"
-                        className="relative cursor-pointer"
-                        onClick={() => toggleResponseView(message.id)}
-                      >
-                        <span className="absolute left-2.5 bottom-2.5 flex items-center justify-center text-sm w-4 h-4 rounded-full bg-red-500 text-white">
-                          {responseCounts[message.id] || 0}
-                        </span>
-                        <FaCommentDots size={18} />
-                      </button>
+                  >
+                    <MessagesUsers
+                      userName={message.name}
+                      userProfil={message.nameProfil}
+                      timestamp={message.timestamp}
+                      messageId={message.id}
+                      userId={message.userId}
+                      collectionName={'messages'}
+                      messageText={message.message}
+                    />
+                    <div className="flex justify-between items-center gap-2 mt-2 flex-wrap">
+                      {user?.fullName !== message?.name ? (
+                        <div className="flex items-center justify-center  gap-2">
+                          <a href={`mailto:${message?.email}`}>
+                            <FaEnvelope size={18} />
+                          </a>
+                          <button
+                            type="button"
+                            className="relative cursor-pointer"
+                            onClick={() => toggleResponseView(message.id)}
+                          >
+                            <span className="absolute left-2.5 bottom-2.5 flex items-center justify-center text-sm w-4 h-4 rounded-full bg-red-500 text-white">
+                              {responseCounts[message.id] || 0}
+                            </span>
+                            <FaCommentDots size={18} />
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          className="relative cursor-pointer"
+                          onClick={() => toggleResponseView(message.id)}
+                        >
+                          <span className="absolute left-2.5 bottom-2.5 flex items-center justify-center text-sm w-4 h-4 rounded-full bg-red-500 text-white">
+                            {responseCounts[message.id] || 0}
+                          </span>
+                          <FaCommentDots size={18} />
+                        </button>
+                      )}
                     </div>
-                  ) : (
-                    <button
-                      type="button"
-                      className="relative cursor-pointer"
-                      onClick={() => toggleResponseView(message.id)}
-                    >
-                      <span className="absolute left-2.5 bottom-2.5 flex items-center justify-center text-sm w-4 h-4 rounded-full bg-red-500 text-white">
-                        {responseCounts[message.id] || 0}
-                      </span>
-                      <FaCommentDots size={18} />
-                    </button>
-                  )}
-                </div>
-              </div>
-            )
-          })}
-        </>
-      )}
+                  </div>
+                )
+              })}
+            </>
+          )}
 
-      {/* les boutons dela pagination */}
-      {messageList.length > minLengthToPaginate && (
-        <div className="flex justify-center mt-6">
-          <ButtonPagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            goToNextPage={goToNextPage}
-            goToPreviousPage={goToPreviousPage}
-          />
+          {/* les boutons dela pagination */}
+          {messageList.length > minLengthToPaginate && (
+            <div className="flex justify-center mt-6">
+              <ButtonPagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                goToNextPage={goToNextPage}
+                goToPreviousPage={goToPreviousPage}
+              />
+            </div>
+          )}
         </div>
-      )}
-    </div>
+      </div>
+    </>
   )
 }
 

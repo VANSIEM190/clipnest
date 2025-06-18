@@ -10,10 +10,13 @@ import FormulaireInscription from '../components/Formulaire'
 import LoginForm from '../components/ConnectionForm'
 import ErrorPage from '../pages/ErrorPage'
 import Apropos from '../pages/Apropos'
+import RichTextEditor from '../components/QuestionsUsers.jsx'
 
 // Lazy loading des pages
 const LadingPage = lazy(() => import('../pages/LadingPage'))
-const Home = lazy(() => import('../pages/Home'))
+const UsersMessages = lazy(() => import('../components/usersMessages.jsx'))
+const ContactCard = lazy(() => import('../components/AllUsers.jsx'))
+const UserProfil = lazy(() => import('../components/userProfil.jsx'))
 const ReplyMessage = lazy(() => import('../components/ReplyMessage'))
 const SelectedUser = lazy(() => import('../components/SelectedUser'))
 
@@ -45,7 +48,10 @@ const RouterApp = () => {
           <Route path="/Àpropos" element={<Apropos />} />
           <Route path="/inscription" element={<FormulaireInscription />} />
           <Route path="/connexion" element={<LoginForm />} />
-          <Route path="/salon" element={<Home />} />
+          <Route path="/salon" element={<UsersMessages />} />
+          <Route path="/question-user" element={<RichTextEditor />} />
+          <Route path="/profils-utilisateurs" element={<ContactCard />} />
+          <Route path="/mon-profil" element={<UserProfil />} />
           <Route path="/profil/:id" element={<SelectedUser />} />
           <Route path="/message/:messageId" element={<ReplyMessage />} />
           <Route path="*" element={<ErrorPage />} />

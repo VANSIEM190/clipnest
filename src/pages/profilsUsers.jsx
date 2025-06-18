@@ -127,11 +127,13 @@ const ProfilsUsers = ({
               {paginatedMessages.map(q => (
                 <li
                   key={q.id}
-                  className={`p-4 rounded-xl shadow flex flex-col md:flex-row justify-between ${
+                  className={`p-4 rounded-xl shadow flex flex-col  justify-center items-center ${
                     isDarkMode ? 'bg-gray-800' : 'bg-white'
                   }`}
                 >
-                  <div className="text-base break-words">{q.message}</div>
+                  <div className="text-centertext-base break-words">
+                    {q.message}
+                  </div>
                   <div className="text-sm text-gray-500 dark:text-gray-400 mt-2 text-right">
                     Posté : {formatDate(q.timestamp)}
                   </div>
