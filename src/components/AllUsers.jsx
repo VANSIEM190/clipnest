@@ -1,26 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import { collection, getDocs } from 'firebase/firestore'
 import { db } from '../services/firebaseconfig'
-import { getDatabase, ref, onValue } from 'firebase/database'
 import { useNavigate } from 'react-router-dom'
 import { stringToColor } from '../utils/StringToColor'
 import { useDarkMode } from '../Context/DarkModeContext'
 import { FileurLoader } from './Loader'
-import formatLastSeen from '../utils/formatLastSeen'
 import usePagination from '../hooks/Pagination'
 import useSortedQuestions from '../hooks/useSortedQuestions'
 import ButtonPagination from './ButtonPagination'
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
+import { UserStatus } from './AutreUsersStatus'
 
 const ContactCard = () => {
   const [users, setUsers] = useState([])
-  const [onlineStatuses, setOnlineStatuses] = useState({})
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
   const { isDarkMode } = useDarkMode()
+
   const navigate = useNavigate()
-  const realTimeDb = getDatabase()
   const sortedUsers = useSortedQuestions(users)
   const maxUsersPerPage = 40
   const {
@@ -41,6 +39,7 @@ const ContactCard = () => {
           ...doc.data(),
           lastSeen: doc.data().lastSeen?.toDate?.() || null,
         }))
+        console.log(userList)
         setUsers(userList)
         setLoading(false)
       } catch (error) {
@@ -52,31 +51,8 @@ const ContactCard = () => {
       }
     }
 
-    // Écouter les statuts en temps réel
-    const statusRef = ref(realTimeDb, 'status')
-    const unsubscribeStatus = onValue(statusRef, snapshot => {
-      if (snapshot.exists()) {
-        const statuses = snapshot.val()
-        const formattedStatuses = {}
-
-        Object.entries(statuses).forEach(([userId, status]) => {
-          formattedStatuses[userId] = {
-            isOnline: status.isActivelyUsing === true,
-            lastSeen: status.lastActivity,
-            state: status.state,
-          }
-        })
-
-        setOnlineStatuses(formattedStatuses)
-      }
-    })
-
-    fetchUsers()
-
-    return () => {
-      unsubscribeStatus()
-    }
-  }, [realTimeDb])
+    return () => fetchUsers()
+  }, [])
 
   const handleClick = userId => {
     navigate(`/profil/${userId}`)
@@ -114,10 +90,6 @@ const ContactCard = () => {
 
           <div className="grid grid-cols-[repeat(auto-fill,minmax(152px,1fr))] gap-4">
             {filteredUsers.map(user => {
-              const userStatus = onlineStatuses[user.id]
-              const isOnline = userStatus?.isOnline || false
-              const lastSeenTime = userStatus?.lastSeen || user.lastSeen
-
               return (
                 <div
                   key={user.id}
@@ -141,23 +113,19 @@ const ContactCard = () => {
                         }}
                         translate="no"
                       >
+                        {' '}
                         {`${user.prenom.charAt(0)}${user.nom.charAt(
                           0
                         )}`.toUpperCase()}
+                        <div className="absolute -bottom-1.5 right-1 translate-x-1/2 -translate-y-1/2">
+                          <UserStatus userId={user.id} />
+                        </div>
                       </div>
-                      <div
-                        className={`absolute bottom-0 right- w-3.5 h-3.5 rounded-full border-2 border-white ${
-                          isOnline ? 'bg-green-500' : 'bg-red-500'
-                        }`}
-                      />
                     </div>
                     <div className="flex-1 max-sm:overflow-hidden">
                       <h3 className="text-sm sm:text-base font-semibold max-sm:truncate">
                         {`${user.prenom} ${user.nom}`}
                       </h3>
-                      <p className="text-xs text-gray-500 ">
-                        {isOnline ? 'En ligne' : formatLastSeen(lastSeenTime)}
-                      </p>
                     </div>
                   </div>
                 </div>

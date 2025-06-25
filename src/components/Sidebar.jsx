@@ -12,7 +12,7 @@ import { useDarkMode } from '../Context/DarkModeContext'
 import React, { useEffect, useState } from 'react'
 import useStateScreen from '../hooks/UseSizeScreen'
 import { stringToColor } from '../utils/StringToColor'
-import UserStatus from './UsersStatut'
+import { UserStatus } from './UserStatut'
 
 const Sidebar = () => {
   const { user } = useUser()
@@ -75,10 +75,9 @@ const Sidebar = () => {
       {/* Sidebar */}
       {!isSmallScreen || isMobileMenuOpen ? (
         <div
-          className={`z-40 h-screen flex flex-col shadow-lg transition-all duration-300 ease-in-out min-w-15 max-w-65
+          className={`z-40 h-screen flex flex-col shadow-lg transition-all duration-300 ease-in-out  fixed top-15 left-0
           ${sidebarClass}
           ${shouldCollapse ? 'w-16' : 'w-58'}
-          ${isSmallScreen ? 'fixed top-20 left-0' : 'fixed top-20 left-0'}
           `}
         >
           {!shouldCollapse && (
@@ -101,8 +100,8 @@ const Sidebar = () => {
                 style={{ backgroundColor: bgColor }}
               >
                 {user?.initials}
-                <div className="absolute -bottom-1 right-1 translate-x-1/2 -translate-y-1/2">
-                  <UserStatus uid={user.uid} />
+                <div className="absolute -bottom-1.5 right-1 translate-x-1/2 -translate-y-1/2">
+                  <UserStatus userId={user?.uid} />
                 </div>
               </div>
               {!shouldCollapse && (

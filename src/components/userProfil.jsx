@@ -10,7 +10,6 @@ const UserProfil = () => {
   const { user } = useUser()
   const navigation = useNavigate()
   const { questions, loading } = useUserQuestions()
-
   const [userInformations] = useState({
     nom: user?.nom,
     prenom: user?.prenom,

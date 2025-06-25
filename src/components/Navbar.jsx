@@ -5,17 +5,16 @@ import { useDarkMode } from "../Context/DarkModeContext";
 import useStateScreen from "../hooks/UseSizeScreen";
 import Options from "./Options";
 import { stringToColor } from "../utils/StringToColor";
-import UserStatus from "./UsersStatut";
+import { UserStatus } from './UserStatut'
 
 const Navbar = () => {
-  const { user } = useUser();
-  const { isDarkMode, toggleDarkMode } = useDarkMode();
-  const location = useLocation();
-  const isSmallScreen = useStateScreen();
-  const bgColor = stringToColor(user?.fullName);
+  const { user } = useUser()
+  const { isDarkMode, toggleDarkMode } = useDarkMode()
+  const location = useLocation()
+  const isSmallScreen = useStateScreen()
+  const bgColor = stringToColor(user?.fullName)
 
-
-  const isRoot = location.pathname === "/";
+  const isRoot = location.pathname === '/'
 
   return (
     <>
@@ -59,16 +58,16 @@ const Navbar = () => {
             style={{ backgroundColor: bgColor }}
           >
             {user?.initials}
-            <div className="absolute -bottom-1 right-1 translate-x-1/2 -translate-y-1/2">
-              <UserStatus uid={user?.uid} />
+            <div className="absolute -bottom-1.5 right-1 translate-x-1/2 -translate-y-1/2">
+              <UserStatus userId={user?.uid} />
             </div>
           </div>
         </nav>
-          {/* on affiche les composant options si nous sommes dans small screen */}
+        {/* on affiche les composant options si nous sommes dans small screen */}
         {isSmallScreen && !isRoot && <Options />}
       </header>
     </>
   )
-};
+}
 
 export default Navbar;

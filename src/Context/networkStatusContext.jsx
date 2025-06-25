@@ -31,7 +31,7 @@ export const NetWorkStatusProvider = ({ children }) => {
 
     checkInternet()
 
-    const milliSecondeInterval = 1000
+    const milliSecondeInterval = 50000
     const intervalId = setInterval(() => {
       checkInternet()
     }, milliSecondeInterval)

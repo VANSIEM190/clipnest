@@ -46,7 +46,6 @@ export default function useOnlineStatus(uid) {
     // Référence pour vérifier la connexion
     const connectedRef = ref(db, '.info/connected')
 
-    let activityTimeout
     let inactivityTimeout
 
     // Fonction pour mettre à jour le statut

@@ -72,12 +72,13 @@ const RichTextEditor = () => {
         setdisabled(false)
       } else {
         toast.error('Permission de notification non accordée.')
+        setdisabled(false)
       }
     } catch (error) {
       console.error('Erreur :', error)
       toast.error("Erreur lors de l'envoi du message ou de la notification.")
     } finally {
-      setdisabled(true)
+      setdisabled(false)
     }
   }
 
@@ -87,7 +88,7 @@ const RichTextEditor = () => {
       <Sidebar />
       <div
         className={`${
-          isDarkMode ? 'bg-gray-900 text-gray-100' : 'bg-gray-200 text-gray-900'
+          isDarkMode ? 'bg-gray-900 text-gray-100' : 'bg-gray-100 text-gray-900'
         }`}
       >
         <ToastContainer position="top-right" autoClose={3000} />

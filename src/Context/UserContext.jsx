@@ -1,8 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../services/firebaseconfig";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
-
+import { auth, db } from '../services/firebaseconfig'
+import { doc, getDoc } from 'firebase/firestore'
 
 const UserContext = createContext()
 
@@ -10,8 +9,6 @@ export const UserProvider = ({ children }) => {
   const [initials, setInitials] = useState('')
   const [user, setUser] = useState({})
   const [isLoading, setIsLoading] = useState(true)
-
-  const db = getFirestore()
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async currentUser => {

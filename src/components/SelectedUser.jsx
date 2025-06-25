@@ -66,6 +66,7 @@ const SelectedUser = () => {
     <>
       <ProfilsUsers
         informationsUser={userData}
+        userOnline={userData.id}
         messagesUser={userMessages}
         loading={loading}
       />

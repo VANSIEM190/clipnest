@@ -171,6 +171,7 @@ const UsersMessages = () => {
                       : 'bg-white/80 text-gray-900'
                   } rounded-2xl p-2 sm:p-5`}
                 >
+                  {/* button previous */}
                   <button
                     onClick={previousSlide}
                     className="absolute left-0 z-10 p-1 sm:p-2 bg-gray-400 rounded-full text-white hover:bg-gray-700 cursor-pointer"
