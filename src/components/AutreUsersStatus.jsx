@@ -1,8 +1,7 @@
 import useUserStatus from '../hooks/useUserStatus'
 
 const UserStatus = ({ userId }) => {
-  const { state, isActivelyUsing } = useUserStatus(userId)
-  console.log(isActivelyUsing, userId)
+  const { state } = useUserStatus(userId)
 
   return (
     <>

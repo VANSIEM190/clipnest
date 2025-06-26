@@ -39,7 +39,6 @@ const ContactCard = () => {
           ...doc.data(),
           lastSeen: doc.data().lastSeen?.toDate?.() || null,
         }))
-        console.log(userList)
         setUsers(userList)
         setLoading(false)
       } catch (error) {
@@ -51,7 +50,7 @@ const ContactCard = () => {
       }
     }
 
-    return () => fetchUsers()
+    fetchUsers()
   }, [])
 
   const handleClick = userId => {
@@ -146,5 +145,4 @@ const ContactCard = () => {
     </>
   )
 }
-
 export default ContactCard

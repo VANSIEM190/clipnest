@@ -1,8 +1,7 @@
 import useOnlineStatus from '../hooks/useOnelineStatus'
 
-const UserStatus = ({ userId }) => {
+export const UserStatus = ({ userId }) => {
   const { isOnline } = useOnlineStatus(userId)
-  console.log(userId)
 
   return (
     <>
@@ -16,19 +15,3 @@ const UserStatus = ({ userId }) => {
     </>
   )
 }
-
-const UserLastSeen = ({ uidUser }) => {
-  const { lastSeen, isOnline } = useOnlineStatus(uidUser)
-
-  return (
-    <>
-      <p className="text-sm">
-        {isOnline === 'online'
-          ? 'en ligne'
-          : ` en ligne: ${new Date(lastSeen).toLocaleString()}`}
-      </p>
-    </>
-  )
-}
-
-export { UserStatus, UserLastSeen }
