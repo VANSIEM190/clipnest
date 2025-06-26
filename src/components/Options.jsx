@@ -4,23 +4,25 @@ import { FiBell, FiSun, FiMoon, FiMenu } from "react-icons/fi";
 import { useUser } from "../Context/UserContext";
 import { useDarkMode } from "../Context/DarkModeContext";
 import { stringToColor } from '../utils/StringToColor';
-import useUsersIsConnected from '../hooks/useUsersconnected';
-
+import { UserStatus } from './UserStatut'
 
 const Options = () => {
-  const { isDarkMode, toggleDarkMode } = useDarkMode();
-  const { user } = useUser();
-  const bgColor = stringToColor(user.fullName);
+  const { isDarkMode, toggleDarkMode } = useDarkMode()
+  const { user } = useUser()
+  const bgColor = stringToColor(user.fullName)
   const [isOpen, setIsOpen] = useState(false)
-  const toggleDropdown = () => setIsOpen(!isOpen);
-  const connectedUserIds = useUsersIsConnected();
-  const isOnline = connectedUserIds.includes(user?.uid);
+  const toggleDropdown = () => setIsOpen(!isOpen)
 
   return (
     <div className="relative inline-block text-left">
       <div>
-        <button 
-          className={`flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50 ${isDarkMode ? "bg-gray-900  text-white" : "bg-gray-200 text-gray-900"}`}
+        <button
+          className={`flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50 
+            ${
+              isDarkMode
+                ? 'bg-gray-900  text-white'
+                : 'bg-gray-200 text-gray-900'
+            }`}
           type="button"
           onClick={toggleDropdown}
         >
@@ -33,7 +35,11 @@ const Options = () => {
           className="z-100 absolute max-xs:-right-30 right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
           role="menu"
         >
-          <div className={`py-1 rounded-sm shadow-sm shadow-gray-700 ${isDarkMode ? "bg-gray-900 text-white " : "bg-white text-gray-900"}`} >
+          <div
+            className={`py-1 rounded-sm shadow-sm shadow-gray-700 ${
+              isDarkMode ? 'bg-gray-900 text-white ' : 'bg-white text-gray-900'
+            }`}
+          >
             {/* Accueil */}
             <div className="w-full text-center py-2 text-sm  hover:bg-gray-100">
               <Link to="/" className="block">
@@ -56,7 +62,10 @@ const Options = () => {
 
             {/* Mode sombre/clair */}
             <div className="w-full text-center py-2 text-sm  hover:bg-gray-100">
-              <button onClick={toggleDarkMode} className="flex items-center justify-center gap-x-2 w-full">
+              <button
+                onClick={toggleDarkMode}
+                className="flex items-center justify-center gap-x-2 w-full"
+              >
                 {isDarkMode ? (
                   <>
                     <FiSun className="text-xl" />
@@ -72,20 +81,19 @@ const Options = () => {
             </div>
 
             {/* Profil utilisateur */}
-            <div className="flex items-center justify-center gap-x-2 py-2 text-sm  hover:bg-gray-100">
+            <div className="p-1 flex items-center justify-center gap-x-2 py-2 text-sm  hover:bg-gray-100">
               <div
-                className=" relative w-8 h-8 rounded-full flex items-center justify-center text-white font-semibold"
+                className=" relative w-8 h-8 rounded-full flex items-center justify-center text-white font-semibold text-sm  shadow-inner shrink-0"
                 style={{ backgroundColor: bgColor }}
               >
                 {user.initials}
-                <span
-                  className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${
-                    isOnline ? "bg-green-500" : "bg-red-500"
-                  }`}
-                  title={isOnline ? "En ligne" : "Hors ligne"}
-                ></span>
+                <div className="absolute -bottom-1.5 right-1 translate-x-1/2 -translate-y-1/2">
+                  <UserStatus userId={user?.uid} />
+                </div>
               </div>
-              <span>{user.fullName}</span>
+              <span className="font-semibol text-sm sm:text-base truncate  overflow-hidden">
+                {user.fullName}
+              </span>
             </div>
           </div>
         </div>

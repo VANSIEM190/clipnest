@@ -1,15 +1,17 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useUser } from '../Context/UserContext'
 import { signOut } from 'firebase/auth'
+import { where, collection, getDocs, query } from 'firebase/firestore'
+import { db } from '../services/firebaseconfig'
 import { auth } from '../services/firebaseconfig'
 import { useNavigate } from 'react-router-dom'
 import ProfilsUsers from '../pages/profilsUsers'
-import useUserQuestions from '../hooks/useUserQuestion'
 
 const UserProfil = () => {
   const { user } = useUser()
   const navigation = useNavigate()
-  const { questions, loading } = useUserQuestions()
+  const [userMessages, setUserMessages] = useState([])
+  const [loading, setLoading] = useState(false)
   const [userInformations] = useState({
     nom: user?.nom,
     prenom: user?.prenom,
@@ -19,6 +21,29 @@ const UserProfil = () => {
     nationalite: user?.nationalite,
     createdAt: user?.createdAt,
   })
+
+  useEffect(() => {
+    const fetchMessageUser = async () => {
+      setLoading(true)
+      try {
+        const queryMessages = await query(
+          collection(db, 'messages'),
+          where('userId', '==', user?.uid)
+        )
+        const querySnapshotMessage = await getDocs(queryMessages)
+        const messagesUser = querySnapshotMessage.docs.map(message => ({
+          id: message.id,
+          ...message.data(),
+        }))
+        setUserMessages(messagesUser)
+      } catch {
+        console.log('erreur lors de la récupération des données')
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchMessageUser()
+  }, [user?.uid])
 
   const handleLogout = async () => {
     try {
@@ -32,7 +57,7 @@ const UserProfil = () => {
   return (
     <ProfilsUsers
       informationsUser={userInformations}
-      messagesUser={questions}
+      messagesUser={userMessages}
       loading={loading}
       handleLogout={handleLogout}
     />

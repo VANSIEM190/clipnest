@@ -11,7 +11,7 @@ import {
 import { db } from "../services/firebaseconfig";
 import { useUser } from "../Context/UserContext";
 import { useDarkMode } from "../Context/DarkModeContext";
-import usePagination from "../hooks/Pagination";
+import usePagination from '../hooks/usePagination'
 import ButtonPagination from "./ButtonPagination";
 import {FiSend} from "react-icons/fi";
 import { IoReturnUpBack } from 'react-icons/io5'

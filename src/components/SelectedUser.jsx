@@ -13,10 +13,10 @@ import { db } from '../services/firebaseconfig'
 import ProfilsUsers from '../pages/profilsUsers'
 
 const SelectedUser = () => {
-  const { id } = useParams() // ID de l'utilisateur dans l'URL
+  const { id } = useParams()
 
-  const [userData, setUserData] = useState({}) // données utilisateur
-  const [userMessages, setUserMessages] = useState([]) // messages utilisateur
+  const [userData, setUserData] = useState({})
+  const [userMessages, setUserMessages] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -60,16 +60,18 @@ const SelectedUser = () => {
     fetchUserAndMessages()
   }, [id])
 
-  if (!userData) return <p>Utilisateur introuvable.</p>
-
   return (
     <>
-      <ProfilsUsers
-        informationsUser={userData}
-        userOnline={userData.id}
-        messagesUser={userMessages}
-        loading={loading}
-      />
+      {userData ? (
+        <ProfilsUsers
+          informationsUser={userData}
+          userOnline={userData.id}
+          messagesUser={userMessages}
+          loading={loading}
+        />
+      ) : (
+        <p>Utilisateur introuvable.</p>
+      )}
     </>
   )
 }

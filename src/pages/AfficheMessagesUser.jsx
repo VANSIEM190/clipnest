@@ -43,8 +43,8 @@ const AfficheMessagesUser = ({
         >
           {userProfil}
         </div>
-        <div className="flex flex-col overflow-hidden">
-          <span className="font-semibold text-sm sm:text-base truncate">
+        <div className="flex flex-col overflow-hiddden">
+          <span className="font-semibol text-sm sm:text-base truncate">
             {userName}
           </span>
           <div className="text-[10px] sm:text-xs text-gray-400 truncate">
