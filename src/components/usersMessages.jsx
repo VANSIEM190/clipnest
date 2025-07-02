@@ -156,7 +156,11 @@ const UsersMessages = () => {
     <>
       <Navbar />
       <Sidebar />
-      <div className={` ${isDarkMode ? 'bg-gray-900' : 'bg-gray-100'}`}>
+      <div
+        className={` ${
+          isDarkMode ? 'bg-gray-900' : 'bg-gray-100'
+        } min-w-screen`}
+      >
         <div className={`p-4 sm:p-6 max-w-4xl mx-auto space-y-6`}>
           {paginatedMessages.length === 0 ? (
             <p className="text-center text-gray-500">Aucun message trouvé.</p>
@@ -179,7 +183,7 @@ const UsersMessages = () => {
                     &#8249;
                   </button>
 
-                  <div className="flex items-center gap-2 overflow-hidden">
+                  <div className="flex items-center gap-2 overflow-hidden ">
                     {users
                       .filter(user => onlineStatuses[user.id]?.isOnline)
                       .slice(currentIndex, currentIndex + visibleUsers)
@@ -218,7 +222,7 @@ const UsersMessages = () => {
                 return (
                   <div
                     key={message.id}
-                    className={`flex flex-col gap-3 rounded-2xl p-2 sm:p-5  transition-all duration-300 w-full 
+                    className={`ml-15 flex flex-col gap-3 rounded-2xl p-2 sm:p-5  transition-all duration-300 w-full 
             ${
               isDarkMode
                 ? 'bg-gradient-to-br from-gray-800/90 via-gray-900/90 to-black/90 text-gray-100 backdrop-blur-sm'

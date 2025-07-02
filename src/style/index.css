@@ -9,7 +9,6 @@
 }
 
 /* loader */
-/* HTML: <div class="loader"></div> */
 .loader {
   width: fit-content;
   font-weight: bold;
@@ -18,32 +17,27 @@
   animation: l26 2s infinite;
 }
 .loader::before {
-  content:"Loading...";
+  content: "Loading...";
 }
-
-@keyframes l26{
-   0%,10%  {transform:perspective(200px) rotateX(0)      rotateY(0)      scale(1)}
-   30%,36% {transform:perspective(200px) rotateX(180deg) rotateY(0)      scale(1)}
-   63%,69% {transform:perspective(200px) rotateX(180deg) rotateY(180deg) scale(1)}
-   90%,100%{transform:perspective(200px) rotateX(180deg) rotateY(180deg) scale(-1)}
+@keyframes l26 {
+  0%,10% {transform:perspective(200px) rotateX(0) rotateY(0) scale(1)}
+  30%,36% {transform:perspective(200px) rotateX(180deg) rotateY(0) scale(1)}
+  63%,69% {transform:perspective(200px) rotateX(180deg) rotateY(180deg) scale(1)}
+  90%,100% {transform:perspective(200px) rotateX(180deg) rotateY(180deg) scale(-1)}
 }
-
-/* HTML: <div class="loader"></div> */
-.fileurLoader{
+.fileurLoader {
   width: 50px;
   aspect-ratio: 1;
-  display:grid;
+  display: grid;
   -webkit-mask: conic-gradient(from 15deg,#0000,#000);
   animation: l26 1s infinite steps(12);
 }
 .fileurLoader,
 .fileurLoader:before,
-.fileurLoader:after{
+.fileurLoader:after {
   background:
-    radial-gradient(closest-side at 50% 12.5%,
-     #f03355 96%,#0000) 50% 0/20% 80% repeat-y,
-    radial-gradient(closest-side at 12.5% 50%,
-     #f03355 96%,#0000) 0 50%/80% 20% repeat-x;
+    radial-gradient(closest-side at 50% 12.5%, #f03355 96%, #0000) 50% 0/20% 80% repeat-y,
+    radial-gradient(closest-side at 12.5% 50%, #f03355 96%, #0000) 0 50%/80% 20% repeat-x;
 }
 .fileurLoader:before,
 .fileurLoader:after {
@@ -54,7 +48,8 @@
 .fileurLoader:after {
   transform: rotate(60deg);
 }
-
 @keyframes l26 {
   100% {transform:rotate(1turn)}
 }
+
+

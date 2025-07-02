@@ -21,7 +21,7 @@ const Navbar = () => {
       <header
         className={`${
           isDarkMode ? 'dark:bg-gray-900' : 'bg-gray-100'
-        } shadow-md py-4 px-8 flex justify-between items-center max-sm:flex-wrap max-sm:items-start max-sm:gap-4`}
+        } min-w-scren shadow-md py-4 px-8 flex justify-between items-center max-sm:flex-wrap max-sm:items-start max-sm:gap-4`}
       >
         <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
           ClipNest

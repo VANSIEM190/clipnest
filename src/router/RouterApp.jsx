@@ -11,6 +11,7 @@ import LoginForm from '../components/ConnectionForm'
 import ErrorPage from '../pages/ErrorPage'
 import Apropos from '../pages/Apropos'
 import RichTextEditor from '../components/QuestionsUsers.jsx'
+import SnippetsCode from '../components/SnippetsCode.jsx'
 
 // Lazy loading des pages
 const LadingPage = lazy(() => import('../pages/LadingPage'))
@@ -51,6 +52,7 @@ const RouterApp = () => {
           <Route path="/salon" element={<UsersMessages />} />
           <Route path="/question-user" element={<RichTextEditor />} />
           <Route path="/profils-utilisateurs" element={<ContactCard />} />
+          <Route path="/snippets" element={<SnippetsCode />} />
           <Route path="/mon-profil" element={<UserProfil />} />
           <Route path="/profil/:id" element={<SelectedUser />} />
           <Route path="/message/:messageId" element={<ReplyMessage />} />
