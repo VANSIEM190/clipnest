@@ -73,7 +73,7 @@ const ContactCard = () => {
           isDarkMode ? 'bg-gray-900 text-gray-200' : 'bg-gray-100 text-gray-900'
         }`}
       >
-        <div className="container mx-auto p-2 sm:p-4">
+        <div className="container mx-auto p-2 sm:p-4 ">
           <h2 className="text-lg sm:text-2xl font-bold mb-2 sm:mb-4">
             Liste des utilisateurs
           </h2>

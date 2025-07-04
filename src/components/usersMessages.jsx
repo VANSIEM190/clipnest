@@ -158,8 +158,8 @@ const UsersMessages = () => {
       <Sidebar />
       <div
         className={` ${
-          isDarkMode ? 'bg-gray-900' : 'bg-gray-100'
-        } min-w-screen`}
+          isDarkMode ? 'bg-gray-900 bg-fixed' : 'bg-gray-100'
+        } min-w-screen  `}
       >
         <div className={`p-4 sm:p-6 max-w-4xl mx-auto space-y-6`}>
           {paginatedMessages.length === 0 ? (
@@ -218,11 +218,12 @@ const UsersMessages = () => {
               </div>
 
               {/* card message */}
-              {paginatedMessages.map(message => {
-                return (
-                  <div
-                    key={message.id}
-                    className={`ml-15 flex flex-col gap-3 rounded-2xl p-2 sm:p-5  transition-all duration-300 w-full 
+              <div className=" w-full flex  flex-col items-end  sm:items-center justify-center p-1 gap-2 ">
+                {paginatedMessages.map(message => {
+                  return (
+                    <div
+                      key={message.id}
+                      className={` flex flex-col items gap-3 rounded-2xl p-2 sm:p-5  transition-all duration-300  w-[85%] truncate
             ${
               isDarkMode
                 ? 'bg-gradient-to-br from-gray-800/90 via-gray-900/90 to-black/90 text-gray-100 backdrop-blur-sm'
@@ -230,22 +231,34 @@ const UsersMessages = () => {
             }
             hover:shadow-xl
           `}
-                  >
-                    <MessagesUsers
-                      userName={message.name}
-                      userProfil={message.nameProfil}
-                      timestamp={message.timestamp}
-                      messageId={message.id}
-                      userId={message.userId}
-                      collectionName={'messages'}
-                      messageText={message.message}
-                    />
-                    <div className="flex justify-between items-center gap-2 mt-2 flex-wrap">
-                      {user?.fullName !== message?.name ? (
-                        <div className="flex items-center justify-center  gap-2">
-                          <a href={`mailto:${message?.email}`}>
-                            <FaEnvelope size={18} />
-                          </a>
+                    >
+                      <MessagesUsers
+                        userName={message.name}
+                        userProfil={message.nameProfil}
+                        timestamp={message.timestamp}
+                        messageId={message.id}
+                        userId={message.userId}
+                        collectionName={'messages'}
+                        messageText={message.message}
+                      />
+                      <div className="flex justify-between items-center gap-2 mt-2 flex-wrap">
+                        {user?.fullName !== message?.name ? (
+                          <div className="flex items-center justify-center  gap-2">
+                            <a href={`mailto:${message?.email}`}>
+                              <FaEnvelope size={18} />
+                            </a>
+                            <button
+                              type="button"
+                              className="relative cursor-pointer"
+                              onClick={() => toggleResponseView(message.id)}
+                            >
+                              <span className="absolute left-2.5 bottom-2.5 flex items-center justify-center text-sm w-4 h-4 rounded-full bg-red-500 text-white">
+                                {responseCounts[message.id] || 0}
+                              </span>
+                              <FaCommentDots size={18} />
+                            </button>
+                          </div>
+                        ) : (
                           <button
                             type="button"
                             className="relative cursor-pointer"
@@ -256,23 +269,12 @@ const UsersMessages = () => {
                             </span>
                             <FaCommentDots size={18} />
                           </button>
-                        </div>
-                      ) : (
-                        <button
-                          type="button"
-                          className="relative cursor-pointer"
-                          onClick={() => toggleResponseView(message.id)}
-                        >
-                          <span className="absolute left-2.5 bottom-2.5 flex items-center justify-center text-sm w-4 h-4 rounded-full bg-red-500 text-white">
-                            {responseCounts[message.id] || 0}
-                          </span>
-                          <FaCommentDots size={18} />
-                        </button>
-                      )}
+                        )}
+                      </div>
                     </div>
-                  </div>
-                )
-              })}
+                  )
+                })}
+              </div>
             </>
           )}
 

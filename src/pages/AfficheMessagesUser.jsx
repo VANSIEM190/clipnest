@@ -43,14 +43,14 @@ const AfficheMessagesUser = ({
         >
           {userProfil}
         </div>
-        <div className="flex flex-col overflow-hiddden">
+        <div className="flex flex-col overflow-hidden">
           <span className="font-semibol text-sm sm:text-base truncate">
             {userName}
           </span>
           <div className="text-[10px] sm:text-xs text-gray-400 truncate">
             {formatDate(timestamp)}
           </div>
-          <div className="text-xs sm:text-sm leading-relaxed mt-1 text-wrap break-words whitespace-pre-wrap">
+          <div className="text-xs sm:text-sm text-left leading-relaxed mt-1 text-wrap break-words whitespace-pre-wrap">
             {messageText}
           </div>
         </div>
