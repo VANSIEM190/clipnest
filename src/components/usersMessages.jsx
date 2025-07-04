@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { collection, onSnapshot, getDocs } from 'firebase/firestore'
+import {
+  collection,
+  onSnapshot,
+  getDocs,
+  query,
+  orderBy,
+} from 'firebase/firestore'
 import { db } from '../services/firebaseconfig'
 import { getDatabase, ref, onValue } from 'firebase/database'
 import { useDarkMode } from '../Context/DarkModeContext'
@@ -8,12 +14,12 @@ import { FileurLoader } from './Loader'
 import { useUser } from '../Context/UserContext'
 import usePagination from '../hooks/usePagination'
 import ButtonPagination from './ButtonPagination'
-import useSortedQuestions from '../hooks/useSortedQuestions'
 import MessagesUsers from '../pages/AfficheMessagesUser'
 import { FaEnvelope, FaCommentDots } from 'react-icons/fa'
 import { stringToColor } from '../utils/StringToColor'
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
+import { ToastContainer, toast } from 'react-toastify'
 
 const UsersMessages = () => {
   const [messageList, setMessageList] = useState([])
@@ -22,7 +28,6 @@ const UsersMessages = () => {
   const { user } = useUser()
   const [responseCounts, setResponseCounts] = useState({})
   const [onlineStatuses, setOnlineStatuses] = useState({})
-  const sortedMessages = useSortedQuestions(messageList)
   const [users, setUsers] = useState([])
   const realTimeDb = getDatabase()
   const navigate = useNavigate()
@@ -38,13 +43,17 @@ const UsersMessages = () => {
     currentData: paginatedMessages,
     goToNextPage,
     goToPreviousPage,
-  } = usePagination(sortedMessages, maxMessagesPerPage)
+  } = usePagination(messageList, maxMessagesPerPage)
 
   useEffect(() => {
+    // récupération des messages des utilisateurs depius firebase firestore
     try {
-      const messagesRef = collection(db, 'messages')
+      const queryMessages = query(
+        collection(db, 'messages'),
+        orderBy('timestamp', 'desc')
+      )
       const unsubscribe = onSnapshot(
-        messagesRef,
+        queryMessages,
         snapshot => {
           const updatedMessages = snapshot.docs.map(doc => ({
             id: doc.id,
@@ -53,8 +62,10 @@ const UsersMessages = () => {
           setMessageList(updatedMessages)
           setIsLoading(false)
         },
-        error => {
-          console.error('Erreur de lecture des messages:', error)
+        () => {
+          toast.error(
+            'Erreur de lecture des messages veillez ressayer en actualisant la page'
+          )
         }
       )
 
@@ -80,8 +91,10 @@ const UsersMessages = () => {
         unsubscribe()
         unsubscribeStatus()
       }
-    } catch (error) {
-      console.error("Erreur lors de l'initialisation de l'écoute:", error)
+    } catch {
+      toast.error(
+        "Erreur lors de l'initialisation de l'écoute actualisez la page !"
+      )
       setIsLoading(false)
     }
   }, [realTimeDb])
@@ -93,14 +106,16 @@ const UsersMessages = () => {
         const snapshot = await getDocs(responsesRef)
         const counts = {}
         snapshot.forEach(doc => {
+          console.log(counts[doc.data().messageId])
+
           const data = doc.data()
           if (data.messageId) {
             counts[data.messageId] = (counts[data.messageId] || 0) + 1
           }
         })
         setResponseCounts(counts)
-      } catch (error) {
-        console.error('Erreur lors de la récupération des réponses:', error)
+      } catch {
+        toast.error('Erreur lors de la récupération des réponses')
       }
     }
 
@@ -156,6 +171,7 @@ const UsersMessages = () => {
     <>
       <Navbar />
       <Sidebar />
+      <ToastContainer position="top-right" autoClose={3000} />
       <div
         className={` ${
           isDarkMode ? 'bg-gray-900 bg-fixed' : 'bg-gray-100'

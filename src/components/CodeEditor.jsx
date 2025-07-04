@@ -5,6 +5,7 @@ import { db } from '../services/firebaseconfig'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { toast } from 'react-toastify'
 import { useUser } from '../Context/UserContext'
+import { FiChevronDown } from 'react-icons/fi'
 
 // Liste des langages avec labels
 const languages = [
@@ -109,15 +110,51 @@ const CodeEditor = () => {
           automaticLayout: true,
         }}
       />
+      <CommentaireUser />
       <button
         type="button"
-        className=" mt-4 inline-block bg-indigo-600 text-white
-        px-3 py-1 rounded-lg hover:bg-indigo-700 transition cursor-pointer"
+        className=" mt-4 inline-block bg-blue-500 text-white
+        px-3 py-1 rounded-lg hover:bg-blue-600 transition cursor-pointer"
         onClick={handlSendCode}
       >
         publier le code
       </button>
     </div>
+  )
+}
+
+const CommentaireUser = () => {
+  const [detailsIsOpen, setDetailsIsOpen] = useState(false)
+  const { isDarkMode } = useDarkMode()
+  const [commentaire, setCommentaire] = useState('')
+  return (
+    <>
+      <details
+        open={detailsIsOpen}
+        onClick={() => setDetailsIsOpen(!detailsIsOpen)}
+        className={`w-full max-w-md mx-auto  rounded-2xl shadow-lg p-4 transition-all duration-300 ${
+          isDarkMode ? 'bg-gray-900 text-white' : 'bg-white text-black'
+        }`}
+      >
+        <summary className="cursor-pointer text-lg font-semibold text-gray-700 flex items-center justify-between list-none">
+          <span>Écrire un commentaire</span>
+          <FiChevronDown
+            className={`w-5 h-5 ml-2 transform transition-transform duration-300 ${
+              detailsIsOpen ? 'rotate-180' : ''
+            }`}
+          />
+        </summary>
+        <div className="mt-4">
+          <textarea
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none transition-all duration-200"
+            rows="5"
+            placeholder="Votre message..."
+            onChange={e => setCommentaire(e.target.value)}
+            value={commentaire}
+          ></textarea>
+        </div>
+      </details>
+    </>
   )
 }
 

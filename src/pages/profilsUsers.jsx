@@ -11,7 +11,6 @@ import { FaSignOutAlt } from 'react-icons/fa'
 import { IoReturnUpBack } from 'react-icons/io5'
 import { UserStatus, UserLastSeen } from '../components/AutreUsersStatus'
 import Navbar from '../components/Navbar'
-import Sidebar from '../components/Sidebar'
 
 const ProfilsUsers = ({
   informationsUser,
@@ -41,7 +40,6 @@ const ProfilsUsers = ({
   return (
     <>
       <Navbar />
-      <Sidebar />
       <div
         className={`min-w-screen min-h-screen p-4 sm:p-6 flex flex-col items-center gap-6 ${
           isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'

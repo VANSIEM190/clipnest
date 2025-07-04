@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { db } from '../services/firebaseconfig'
-import { addDoc, collection } from 'firebase/firestore'
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import useStateScreen from '../hooks/UseSizeScreen'
 import { useUser } from '../Context/UserContext'
 import axios from 'axios'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { useDarkMode } from '../Context/DarkModeContext'
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
@@ -38,7 +38,7 @@ const RichTextEditor = () => {
         nameProfil: user.initials,
         email: user.email,
         message: content,
-        timestamp: new Date(),
+        timestamp: serverTimestamp(),
       })
 
       setContent('')
@@ -91,7 +91,6 @@ const RichTextEditor = () => {
           isDarkMode ? 'bg-gray-900 text-gray-100' : 'bg-gray-100 text-gray-900'
         }`}
       >
-        <ToastContainer position="top-right" autoClose={3000} />
         <div className="flex justify-center items-center w-full h-screen">
           <div
             className={`mx-auto my-8 p-4 rounded-lg shadow-md ${
