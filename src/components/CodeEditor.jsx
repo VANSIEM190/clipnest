@@ -113,8 +113,8 @@ const CodeEditor = () => {
       <CommentaireUser />
       <button
         type="button"
-        className=" mt-4 inline-block bg-blue-500 text-white
-        px-3 py-1 rounded-lg hover:bg-blue-600 transition cursor-pointer"
+        className=" mt-4 inline-block bg-blue-600 text-white
+        px-3 py-1 rounded-lg hover:bg-blue-700 transition cursor-pointer"
         onClick={handlSendCode}
       >
         publier le code
