@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Editor from '@monaco-editor/react'
 import { useDarkMode } from '../Context/DarkModeContext'
 import { db } from '../services/firebaseconfig'
@@ -41,12 +42,14 @@ const themes = [
 ]
 
 const CodeEditor = () => {
+  const [detailsIsOpen, setDetailsIsOpen] = useState(false)
+  const [commentaire, setCommentaire] = useState('')
   const [code, setCode] = useState('// Commence ici...')
   const [language, setLanguage] = useState('javascript')
   const [theme, setTheme] = useState('vs-dark')
   const { isDarkMode } = useDarkMode()
   const { user } = useUser()
-
+  const navigate = useNavigate()
   const handlSendCode = async () => {
     try {
       await addDoc(collection(db, 'snippets'), {
@@ -54,9 +57,13 @@ const CodeEditor = () => {
         prenom: user?.prenom,
         code: code,
         language: language,
+        commentaireUser: commentaire,
         date: serverTimestamp(),
       })
+      setCode('// Commence ici...')
+      setCommentaire('')
       toast.success('code envoyé avec succé')
+      navigate('/blog-de-code')
     } catch {
       toast.error('une erreur est surveni veillez reesayer !')
     }
@@ -110,25 +117,6 @@ const CodeEditor = () => {
           automaticLayout: true,
         }}
       />
-      <CommentaireUser />
-      <button
-        type="button"
-        className=" mt-4 inline-block bg-blue-600 text-white
-        px-3 py-1 rounded-lg hover:bg-blue-700 transition cursor-pointer"
-        onClick={handlSendCode}
-      >
-        publier le code
-      </button>
-    </div>
-  )
-}
-
-const CommentaireUser = () => {
-  const [detailsIsOpen, setDetailsIsOpen] = useState(false)
-  const { isDarkMode } = useDarkMode()
-  const [commentaire, setCommentaire] = useState('')
-  return (
-    <>
       <details
         open={detailsIsOpen}
         onClick={() => setDetailsIsOpen(!detailsIsOpen)}
@@ -136,12 +124,16 @@ const CommentaireUser = () => {
           isDarkMode ? 'bg-gray-900 text-white' : 'bg-white text-black'
         }`}
       >
-        <summary className="cursor-pointer text-lg font-semibold text-gray-700 flex items-center justify-between list-none">
+        <summary
+          className={`cursor-pointer text-lg font-semibold  flex items-center justify-between list-none${
+            isDarkMode ? 'text-white' : 'text-black'
+          }`}
+        >
           <span>Écrire un commentaire</span>
           <FiChevronDown
             className={`w-5 h-5 ml-2 transform transition-transform duration-300 ${
               detailsIsOpen ? 'rotate-180' : ''
-            }`}
+            } ${isDarkMode ? 'text-white' : 'text-base'}`}
           />
         </summary>
         <div className="mt-4">
@@ -154,8 +146,17 @@ const CommentaireUser = () => {
           ></textarea>
         </div>
       </details>
-    </>
+      <button
+        type="button"
+        className=" mt-4 inline-block bg-blue-600 text-white
+        px-3 py-1 rounded-lg hover:bg-blue-700 transition cursor-pointer"
+        onClick={handlSendCode}
+      >
+        publier le code
+      </button>
+    </div>
   )
 }
+
 
 export default CodeEditor

@@ -6,5 +6,6 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   optimizeDeps: {
     include: ['@monaco-editor/react'],
+    include2: ['prismjs'],
   },
 })

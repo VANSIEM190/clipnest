@@ -6,7 +6,6 @@ import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { doc, setDoc } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom'
 import { useDarkMode } from '../Context/DarkModeContext'
-import Seo from './Seo'
 import { FileurLoader } from './Loader'
 
 const validationSchema = Yup.object({
@@ -154,11 +153,6 @@ const FormulaireInscription = () => {
             </Formik>
           </div>
         )}
-        <Seo
-          title="Inscription - ClipNest"
-          description="Créez un compte sur ClipNest pour commencer à apprendre et échanger."
-          url="https://clipnest-zet.vercel.app/inscription"
-        />
       </div>
     </>
   )

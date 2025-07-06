@@ -4,31 +4,31 @@ import { auth } from "../services/firebaseconfig";
 import { useNavigate } from "react-router-dom";
 import { useDarkMode } from "../Context/DarkModeContext";
 import { Link } from "react-router-dom";
-import Seo from "./Seo";
+
 
 const LoginForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const { isDarkMode } = useDarkMode();
-  const navigate = useNavigate();
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const { isDarkMode } = useDarkMode()
+  const navigate = useNavigate()
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
+  const handleSubmit = async e => {
+    e.preventDefault()
+    setLoading(true)
+    setError(null)
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      navigate('/salon') 
+      await signInWithEmailAndPassword(auth, email, password)
+      navigate('/salon')
     } catch (err) {
-      console.error("Erreur de connexion :", err);
-      setError("Email ou mot de passe incorrect.");
+      console.error('Erreur de connexion :', err)
+      setError('Email ou mot de passe incorrect.')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <>
@@ -99,13 +99,8 @@ const LoginForm = () => {
           </p>
         </div>
       </div>
-      <Seo
-        title="Connexion - ClipNest"
-        description="Connectez-vous à votre compte ClipNest pour participer aux discussions."
-        url="https://clipnest-zet.vercel.app/connexion"
-      />
     </>
   )
-};
+}
 
 export default LoginForm;
