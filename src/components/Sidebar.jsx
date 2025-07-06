@@ -1,9 +1,14 @@
-import { FaHome, FaCommentDots, FaUsers, FaUser } from 'react-icons/fa'
+import {
+  FaHome,
+  FaCommentDots,
+  FaUsers,
+  FaUser,
+  FaFileCode,
+} from 'react-icons/fa'
 import React from 'react'
-import { BiCodeAlt } from 'react-icons/bi'
+import { BiCodeBlock } from 'react-icons/bi'
 import { useNavigate } from 'react-router-dom'
 import { useDarkMode } from '../Context/DarkModeContext'
-import { UserStatus } from './UserStatut'
 
 const Sidebar = () => {
   const { isDarkMode } = useDarkMode()
@@ -49,9 +54,14 @@ const Sidebar = () => {
             onClick={() => onNavigate('/mon-profil')}
           />
           <NavItem
-            icon={<BiCodeAlt size={24} />}
+            icon={<BiCodeBlock size={24} />}
             label="codeLine"
             onClick={() => onNavigate('/snippets')}
+          />
+          <NavItem
+            icon={<FaFileCode size={24} />}
+            label="snippets"
+            onClick={() => onNavigate('/blog-de-code')}
           />
         </div>
       </div>
@@ -74,4 +84,4 @@ const NavItem = React.memo(({ icon, label, onClick }) => {
   )
 })
 
-export default Sidebar;
+export default Sidebar

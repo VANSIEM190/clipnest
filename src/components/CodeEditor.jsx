@@ -10,7 +10,8 @@ import { FiChevronDown } from 'react-icons/fi'
 
 // Liste des langages avec labels
 const languages = [
-  { id: 'javascript', label: 'JavaScript' },
+  { id: 'javascript', label: 'js' },
+  { id: 'typescript', label: 'ts' },
   { id: 'python', label: 'Python' },
   { id: 'java', label: 'Java' },
   { id: 'php', label: 'PHP' },
@@ -26,7 +27,6 @@ const languages = [
   { id: 'rust', label: 'Rust' },
   { id: 'kotlin', label: 'Kotlin' },
   { id: 'swift', label: 'Swift' },
-  { id: 'typescript', label: 'TypeScript' },
   { id: 'dart', label: 'Dart' },
   { id: 'scala', label: 'Scala' },
   { id: 'ruby', label: 'Ruby' },
