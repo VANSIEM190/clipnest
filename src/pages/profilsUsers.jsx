@@ -4,7 +4,6 @@ import formatDate from '../utils/formatDate'
 import { useNavigate } from 'react-router-dom'
 import ButtonPagination from '../components/ButtonPagination'
 import usePagination from '../hooks/usePagination'
-import useSortedQuestions from '../hooks/useSortedQuestions'
 import { useUser } from '../Context/UserContext'
 import { FileurLoader } from '../components/Loader'
 import { FaSignOutAlt } from 'react-icons/fa'
@@ -25,7 +24,6 @@ const ProfilsUsers = ({
   )
   const navigate = useNavigate()
   const QUESTIONS_PER_PAGE = 5
-  const sortedMessages = useSortedQuestions(messagesUser) // messages triés
 
   // la pagination
   const {
@@ -35,7 +33,7 @@ const ProfilsUsers = ({
     goToNextPage,
     goToPreviousPage,
     goToPage,
-  } = usePagination(sortedMessages, QUESTIONS_PER_PAGE)
+  } = usePagination(messagesUser, QUESTIONS_PER_PAGE)
 
   return (
     <>
