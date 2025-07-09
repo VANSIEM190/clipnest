@@ -21,6 +21,9 @@ const UserProfil = lazy(() => import('../components/userProfil.jsx'))
 const ReplyMessage = lazy(() => import('../components/ReplyMessage'))
 const SelectedUser = lazy(() => import('../components/SelectedUser'))
 const AffCode = lazy(() => import('../components/AfficheCode.jsx'))
+const SectionDeCommentaire = lazy(() =>
+  import('../components/SectionDeCommentaire.jsx')
+)
 
 const RouterApp = () => {
   const [fcmToken, setFcmToken] = useState(null)
@@ -58,6 +61,7 @@ const RouterApp = () => {
           <Route path="/mon-profil" element={<UserProfil />} />
           <Route path="/profil/:id" element={<SelectedUser />} />
           <Route path="/message/:messageId" element={<ReplyMessage />} />
+          <Route path="/code-id/:codeId" element={<SectionDeCommentaire />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       ) : (

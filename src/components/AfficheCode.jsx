@@ -1,45 +1,18 @@
 import { db } from "../services/firebaseconfig"
 import { useEffect, useState } from "react"
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore"
-import { ToastContainer, toast } from "react-toastify"
-import { useDarkMode } from "../Context/DarkModeContext"
-import Navbar from "./Navbar"
-import Sidebar from "./Sidebar"
-import { stringToColor } from "../utils/StringToColor"
-import { FaCopy } from "react-icons/fa"
+import { Link } from 'react-router-dom'
+import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
+import { ToastContainer, toast } from 'react-toastify'
+import { useDarkMode } from '../Context/DarkModeContext'
+import Navbar from './Navbar'
+import Sidebar from './Sidebar'
+import { stringToColor } from '../utils/StringToColor'
+import { FaCopy, FaCommentDots } from 'react-icons/fa'
 import usePagination from '../hooks/usePagination'
 import { FileurLoader } from './Loader'
 import ButtonPagination from './ButtonPagination'
 import Prism from 'prismjs'
-
-//languages
-import 'prismjs/components/prism-javascript'
-import 'prismjs/components/prism-python'
-import 'prismjs/components/prism-java'
-import 'prismjs/components/prism-jsx'
-import 'prismjs/components/prism-tsx'
-import 'prismjs/components/prism-markup-templating'
-import 'prismjs/components/prism-php'
-import 'prismjs/components/prism-c'
-import 'prismjs/components/prism-cpp'
-import 'prismjs/components/prism-csharp'
-import 'prismjs/components/prism-css'
-import 'prismjs/components/prism-markup'
-import 'prismjs/components/prism-sql'
-import 'prismjs/components/prism-json'
-import 'prismjs/components/prism-bash'
-import 'prismjs/components/prism-go'
-import 'prismjs/components/prism-rust'
-import 'prismjs/components/prism-kotlin'
-import 'prismjs/components/prism-swift'
-import 'prismjs/components/prism-typescript'
-import 'prismjs/components/prism-dart'
-import 'prismjs/components/prism-scala'
-import 'prismjs/components/prism-ruby'
-import 'prismjs/components/prism-perl'
-import 'prismjs/components/prism-lua'
-import 'prismjs/components/prism-yaml'
-//thème
+import '../utils/prismLanguages'
 import 'prismjs/themes/prism-tomorrow.css'
 
 const AffCode = () => {
@@ -138,15 +111,16 @@ const AffCode = () => {
                 <div
                   className={`${
                     isDarkMode ? 'text-gray-100' : 'text-gray-900'
-                  } flex justify-between mt-7`}
+                  } flex justify-between items-center mt-7`}
                 >
-                  <p className="text-sm  mb-4">{item.language}</p>
+                  <p className="text-sm">{item.language}</p>
                   <button
                     type="button"
                     onClick={() => CopierLeCode(item.code)}
                     className="cursor-pointer"
+                    title="copier le code"
                   >
-                    <div className="flex items-center">
+                    <div className="flex items-center justify-center">
                       <FaCopy size={18} />
                       copier
                     </div>
@@ -172,6 +146,17 @@ const AffCode = () => {
                     mon commentaire : {item.commentaireUser}
                   </p>
                 </div>
+                <Link to={`/code-Id/${item.id}`}>
+                  <button
+                    type="button"
+                    className="relative cursor-pointer mt-1.5"
+                  >
+                    <span className="absolute left-2.5 bottom-2.5 flex items-center justify-center text-sm w-4 h-4 rounded-full bg-red-500 text-white">
+                      0
+                    </span>
+                    <FaCommentDots size={18} />
+                  </button>
+                </Link>
               </div>
             ))}
 
