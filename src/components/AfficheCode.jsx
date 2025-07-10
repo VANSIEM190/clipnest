@@ -1,7 +1,13 @@
 import { db } from "../services/firebaseconfig"
 import { useEffect, useState } from "react"
 import { Link } from 'react-router-dom'
-import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
+import {
+  collection,
+  getDocs,
+  onSnapshot,
+  orderBy,
+  query,
+} from 'firebase/firestore'
 import { ToastContainer, toast } from 'react-toastify'
 import { useDarkMode } from '../Context/DarkModeContext'
 import Navbar from './Navbar'
@@ -17,6 +23,7 @@ import 'prismjs/themes/prism-tomorrow.css'
 
 const AffCode = () => {
   const [code, setCode] = useState([])
+  const [isCountComments, setIsCountComments] = useState({})
   const [loading, setLoading] = useState(true)
   const { isDarkMode } = useDarkMode()
   const minLengthToPaginate = 5
@@ -49,6 +56,27 @@ const AffCode = () => {
     } finally {
       setLoading(false)
     }
+  }, [])
+
+  useEffect(() => {
+    const fetchCommentCounts = async () => {
+      try {
+        const commentRef = collection(db, 'commentCode')
+        const querySnapshot = await getDocs(commentRef)
+        const counts = {}
+        querySnapshot.forEach(snapshot => {
+          const idComment = snapshot.data().codeId
+          if (idComment) {
+            counts[idComment] = (counts[idComment] || 0) + 1
+          }
+        })
+        setIsCountComments(counts)
+      } catch {
+        toast.error('erreur lors de la recupération de nombre de message')
+      }
+    }
+
+    fetchCommentCounts()
   }, [])
   useEffect(() => {
     Prism.highlightAll()
@@ -152,7 +180,7 @@ const AffCode = () => {
                     className="relative cursor-pointer mt-1.5"
                   >
                     <span className="absolute left-2.5 bottom-2.5 flex items-center justify-center text-sm w-4 h-4 rounded-full bg-red-500 text-white">
-                      0
+                      {isCountComments[item.id] || 0}
                     </span>
                     <FaCommentDots size={18} />
                   </button>

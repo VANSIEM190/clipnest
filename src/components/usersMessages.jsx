@@ -106,8 +106,6 @@ const UsersMessages = () => {
         const snapshot = await getDocs(responsesRef)
         const counts = {}
         snapshot.forEach(doc => {
-          console.log(counts[doc.data().messageId])
-
           const data = doc.data()
           if (data.messageId) {
             counts[data.messageId] = (counts[data.messageId] || 0) + 1

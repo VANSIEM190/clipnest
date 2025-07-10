@@ -74,94 +74,88 @@ const AfficheCommentairesUsers = ({codeId}) =>{
   }
 
 
-  return(
+  return (
     <>
-      {
-        isLoading? (
-          <FileurLoader/>
-        ):
-        (
-          <>
+      {isLoading ? (
+        <FileurLoader />
+      ) : (
+        <>
           <h3 className="font-bold mt-3">Commentaires</h3>
-              {
-                CommentsUsers.map((comment , ind) =>(
-                  <div
-                  className={`${
-                    isDarkMode ? "bg-gray-900" : "bg-gray-200"
-                  } relative w-2/4 max-sm:w-3/4 rounded-lg shadow-md p-4 mt-5`}
-                  key={ind}
-                >
-                  <div className="flex gap-3 sm:gap-5">
-                <div
-                className="relative w-7 h-7 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-white text-sm sm:text-xl shadow-inner shrink-0"
-                style={{
-                  backgroundColor: stringToColor(
-                    `${comment?.userName} `
-                  ),
-                }}
-              >
-                {comment?.userProfil}
-              </div>
-              <span
-                className={`${
-                  isDarkMode ? "text-gray-100" : "text-gray-900"
-                } font-semibold text-sm sm:text-base truncate`}
-              >
-                {comment?.userName}
-              </span>
-              </div>
-            {
-              comment?.isCode? (
-                <>
-                <div
-              className={`${
-                isDarkMode ? "text-gray-100" : "text-gray-900"
-              } flex justify-between mt-7`}
-            >
-              <p className="text-sm">{comment?.language}</p>
-              <button 
-              type="button" 
-              className="cursor-pointer  flex justify-center items-center" 
-              onClick={CopierLeCode}
-              title="copier le code"
-              >
-                <FaCopy size={18}/> 
-                <span>Copier</span>
-              </button>
-            </div>
-
-            <pre className="bg-transparent p-4 rounded-lg overflow-auto">
-              <code className={`language-${comment?.language}`}>
-                {comment?.code}
-              </code>
-            </pre>
+          {CommentsUsers.map((comment, ind) => (
             <div
-              className={`${isDarkMode ? "text-gray-100" : "text-gray-900"}`}
+              className={`${
+                isDarkMode ? 'bg-gray-900' : 'bg-gray-200'
+              } relative w-2/4 max-sm:w-3/4 rounded-lg shadow-md p-4 mt-5`}
+              key={ind}
             >
-              <p className="text-xs sm:text-sm leading-relaxed mt-1 text-wrap break-words whitespace-pre-wrap">
-                mon commentaire : {comment.commentaireCode || "pas de commentaire"}
-              </p>
-            </div>
-                </>
-              ):(
-                <p>{comment?.commentaire}</p>
-              )
-            }
-            {
-              comment?.userId.includes(user?.uid)? (
-                <button 
-                type="button" 
-                className="text-red-400 absolute  bottom-2 right-3 cursor-pointer"
-                onClick={()=>deleteComment(comment.id)}
+              <div className="flex gap-3 sm:gap-5">
+                <div
+                  className="relative w-7 h-7 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-white text-sm sm:text-xl shadow-inner shrink-0"
+                  style={{
+                    backgroundColor: stringToColor(`${comment?.userName} `),
+                  }}
                 >
-                  <FaTrash size={18}/>
+                  {comment?.userProfil}
+                </div>
+                <span
+                  className={`${
+                    isDarkMode ? 'text-gray-100' : 'text-gray-900'
+                  } font-semibold text-sm sm:text-base truncate`}
+                >
+                  {comment?.userName}
+                </span>
+              </div>
+              {comment?.isCode ? (
+                <>
+                  <div
+                    className={`${
+                      isDarkMode ? 'text-gray-100' : 'text-gray-900'
+                    } flex justify-between mt-7`}
+                  >
+                    <p className="text-sm">{comment?.language}</p>
+                    <button
+                      type="button"
+                      className="cursor-pointer  flex justify-center items-center"
+                      onClick={CopierLeCode}
+                      title="copier le code"
+                    >
+                      <FaCopy size={18} />
+                      <span>Copier</span>
+                    </button>
+                  </div>
+
+                  <pre className="bg-transparent p-4 rounded-lg overflow-auto">
+                    <code className={`language-${comment?.language}`}>
+                      {comment?.code}
+                    </code>
+                  </pre>
+                  <div
+                    className={`${
+                      isDarkMode ? 'text-gray-100' : 'text-gray-900'
+                    }`}
+                  >
+                    <p className="text-xs sm:text-sm leading-relaxed mt-1 text-wrap break-words whitespace-pre-wrap">
+                      mon commentaire :{' '}
+                      {comment.commentaireCode || 'pas de commentaire'}
+                    </p>
+                  </div>
+                </>
+              ) : (
+                <p>{comment?.commentaire}</p>
+              )}
+              {comment?.userId.includes(user?.uid) ? (
+                <button
+                  type="button"
+                  className="text-red-400 absolute  bottom-2 right-3 cursor-pointer"
+                  onClick={() => deleteComment(comment.id)}
+                >
+                  <FaTrash size={18} />
                 </button>
-              ):null
-            }
-          </div>
-                )) }
+              ) : null}
+            </div>
+          ))}
         </>
-        )}
+      )}
     </>
   )
 }
