@@ -16,12 +16,12 @@ const MessageModal = ({codeId}) =>{
       const commentairesUsersRef = collection(db, "commentCode")
       await addDoc(commentairesUsersRef, {
         codeId,
-        iscode:false,
-        commentaire : commentaire,
-        userName: user?.fullName || "anonyme",
-        userProfil : user?.initials || "X",
-        userId : user?.uid,
-        timestamp : serverTimestamp()
+        iscode: false,
+        commentaire: commentaire,
+        userName: user?.fullName,
+        userProfil: user?.initials,
+        userId: user?.uid,
+        timestamp: serverTimestamp(),
       })
       toast.success("commentaire envoyer")
     } catch{

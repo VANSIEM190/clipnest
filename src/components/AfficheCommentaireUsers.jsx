@@ -82,7 +82,13 @@ const AfficheCommentairesUsers = ({codeId}) =>{
         <FileurLoader />
       ) : (
         <>
-          <h3 className={`${isDarkMode? "text-gray-200" : "text-gray-900"} font-bold mt-3`}>Commentaires</h3>
+          <h3
+            className={`${
+              isDarkMode ? 'text-gray-200' : 'text-gray-900'
+            } font-bold mt-3`}
+          >
+            Commentaires
+          </h3>
           {CommentsUsers.map((comment, ind) => (
             <div
               className={`${
@@ -94,7 +100,7 @@ const AfficheCommentairesUsers = ({codeId}) =>{
                 <div
                   className="relative w-7 h-7 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-white text-sm sm:text-xl shadow-inner shrink-0"
                   style={{
-                    backgroundColor: stringToColor(`${comment?.userName} `),
+                    backgroundColor: stringToColor(`${comment?.userName}`),
                   }}
                 >
                   {comment?.userProfil}
@@ -148,7 +154,13 @@ const AfficheCommentairesUsers = ({codeId}) =>{
                   </div>
                 </>
               ) : (
-                <p className={`${isDarkMode? "text-gray-200" : "text-gray-900"}`}>{comment?.commentaire}</p>
+                <p
+                  className={`${
+                    isDarkMode ? 'text-gray-200' : 'text-gray-900'
+                  }`}
+                >
+                  {comment?.commentaire}
+                </p>
               )}
               {comment?.userId.includes(user?.uid) ? (
                 <button
