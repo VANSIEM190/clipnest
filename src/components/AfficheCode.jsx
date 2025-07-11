@@ -13,21 +13,24 @@ import { useDarkMode } from '../Context/DarkModeContext'
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
 import { stringToColor } from '../utils/StringToColor'
-import { FaCopy, FaCommentDots } from 'react-icons/fa'
+import { FaCopy, FaCommentDots, FaTrash } from 'react-icons/fa'
 import usePagination from '../hooks/usePagination'
 import { FileurLoader } from './Loader'
 import ButtonPagination from './ButtonPagination'
 import Prism from 'prismjs'
 import '../utils/prismLanguages'
 import 'prismjs/themes/prism-tomorrow.css'
+import { useUser } from '../Context/UserContext'
+import formatDate from '../utils/formatDate'
 
 const AffCode = () => {
   const [code, setCode] = useState([])
   const [isCountComments, setIsCountComments] = useState({})
   const [loading, setLoading] = useState(true)
   const { isDarkMode } = useDarkMode()
+  const { user } = useUser()
   const minLengthToPaginate = 5
-  const maxSnippetsCodePerPage = 15
+  const maxSnippetsCodePerPage = 7
   const {
     currentPage,
     totalPages,
@@ -48,13 +51,12 @@ const AffCode = () => {
           ...doc.data(),
         }))
         setCode(codeData)
+        setLoading(false)
       })
       return () => unsubscribe()
     } catch (error) {
       console.error('Erreur lors de la récupération des codes :', error)
       toast.error('Une erreur est survenue lors de la récupération des codes')
-    } finally {
-      setLoading(false)
     }
   }, [])
 
@@ -80,7 +82,7 @@ const AffCode = () => {
   }, [])
   useEffect(() => {
     Prism.highlightAll()
-  }, [code])
+  }, [paginatedMessages])
 
   const CopierLeCode = code => {
     navigator.clipboard
@@ -128,13 +130,18 @@ const AffCode = () => {
                       0
                     )}`.toUpperCase()}
                   </div>
-                  <span
-                    className={`${
-                      isDarkMode ? 'text-gray-100' : 'text-gray-900'
-                    } font-semibold text-sm sm:text-base truncate`}
-                  >
-                    {`${item.prenom} ${item.nom}`}
-                  </span>
+                  <div className="flex flex-col">
+                    <span
+                      className={`${
+                        isDarkMode ? 'text-gray-100' : 'text-gray-900'
+                      } font-semibold text-sm sm:text-base truncate`}
+                    >
+                      {`${item.prenom} ${item.nom}`}
+                    </span>
+                    <div className="text-[10px] sm:text-xs text-gray-400 truncate">
+                      {formatDate(item.date)}
+                    </div>
+                  </div>
                 </div>
                 <div
                   className={`${
@@ -174,17 +181,27 @@ const AffCode = () => {
                     mon commentaire : {item.commentaireUser}
                   </p>
                 </div>
-                <Link to={`/code-Id/${item.id}`}>
-                  <button
-                    type="button"
-                    className="relative cursor-pointer mt-1.5"
-                  >
-                    <span className="absolute left-2.5 bottom-2.5 flex items-center justify-center text-sm w-4 h-4 rounded-full bg-red-500 text-white">
-                      {isCountComments[item.id] || 0}
-                    </span>
-                    <FaCommentDots size={18} />
-                  </button>
-                </Link>
+                <div className=" relative flex justify-between items-center w-full px-1">
+                  <Link to={`/code-Id/${item.id}`}>
+                    <button
+                      type="button"
+                      className="relative cursor-pointer mt-1.5"
+                    >
+                      <span className="absolute left-2.5 bottom-2.5 flex items-center justify-center text-sm w-4 h-4 rounded-full bg-red-500 text-white">
+                        {isCountComments[item.id] || 0}
+                      </span>
+                      <FaCommentDots size={18} />
+                    </button>
+                  </Link>
+                  {item.idUser === user?.uid && (
+                    <button
+                      type="button"
+                      className="absolute bottom-1.5 right-2.5 cursor-pointer text-red-400"
+                    >
+                      <FaTrash size={18} />
+                    </button>
+                  )}
+                </div>
               </div>
             ))}
 

@@ -10,6 +10,7 @@ import Prism from 'prismjs'
 import 'prismjs/themes/prism-tomorrow.css'
 import { FaTrash , FaCopy } from "react-icons/fa";
 import { useUser } from "../Context/UserContext";
+import formatDate from "../utils/formatDate";
 
 const AfficheCommentairesUsers = ({codeId}) =>{
 
@@ -42,9 +43,10 @@ const AfficheCommentairesUsers = ({codeId}) =>{
   }
   },[codeId])
 
-  useEffect(()=>{
-      Prism.highlightAll()
-  },[isLoading])
+  useEffect(() => {
+    Prism.highlightAll()
+  }, [CommentsUsers])
+  
 
   const CopierLeCode = code => {
     navigator.clipboard
@@ -80,7 +82,7 @@ const AfficheCommentairesUsers = ({codeId}) =>{
         <FileurLoader />
       ) : (
         <>
-          <h3 className="font-bold mt-3">Commentaires</h3>
+          <h3 className={`${isDarkMode? "text-gray-200" : "text-gray-900"} font-bold mt-3`}>Commentaires</h3>
           {CommentsUsers.map((comment, ind) => (
             <div
               className={`${
@@ -97,13 +99,18 @@ const AfficheCommentairesUsers = ({codeId}) =>{
                 >
                   {comment?.userProfil}
                 </div>
-                <span
-                  className={`${
-                    isDarkMode ? 'text-gray-100' : 'text-gray-900'
-                  } font-semibold text-sm sm:text-base truncate`}
-                >
-                  {comment?.userName}
-                </span>
+                <div className="flex flex-col">
+                  <span
+                    className={`${
+                      isDarkMode ? 'text-gray-100' : 'text-gray-900'
+                    } font-semibold text-sm sm:text-base truncate`}
+                  >
+                    {`${comment.userName}`}
+                  </span>
+                  <div className="text-[10px] sm:text-xs text-gray-400 truncate">
+                    {formatDate(comment.timestamp)}
+                  </div>
+                </div>
               </div>
               {comment?.isCode ? (
                 <>
@@ -141,7 +148,7 @@ const AfficheCommentairesUsers = ({codeId}) =>{
                   </div>
                 </>
               ) : (
-                <p>{comment?.commentaire}</p>
+                <p className={`${isDarkMode? "text-gray-200" : "text-gray-900"}`}>{comment?.commentaire}</p>
               )}
               {comment?.userId.includes(user?.uid) ? (
                 <button

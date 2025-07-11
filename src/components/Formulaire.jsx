@@ -102,7 +102,7 @@ const FormulaireInscription = () => {
     <>
       <div
         className={`flex items-center justify-center min-h-screen ${
-          isDarkMode ? 'dark:bg-gray-900' : 'bg-gray-200'
+          isDarkMode ? 'dark:bg-gray-900' : 'bg-gray-100'
         }`}
       >
         {loading ? (

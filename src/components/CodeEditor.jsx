@@ -21,6 +21,7 @@ const CodeEditor = () => {
   const handlSendCode = async () => {
     try {
       await addDoc(collection(db, 'snippets'), {
+        idUser: user?.uid,
         nom: user?.nom,
         prenom: user?.prenom,
         code: code,
