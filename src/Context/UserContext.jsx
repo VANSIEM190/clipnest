@@ -36,18 +36,18 @@ export const UserProvider = ({ children }) => {
           } else {
             console.warn('Utilisateur non trouvé dans Firestore')
             setInitials('')
-            setUser(null)
+            setUser("")
             setIsLoading(false)
           }
         } catch (error) {
           console.error('Erreur Firestore:', error)
           setInitials('')
-          setUser(null)
+          setUser("")
           setIsLoading(false)
         }
       } else {
         setInitials('')
-        setUser(null)
+        setUser("")
         setIsLoading(false)
       }
     })

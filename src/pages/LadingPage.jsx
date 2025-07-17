@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useDarkMode } from '../Context/DarkModeContext'
-import { useUser } from '../Context/UserContext'
+import { useDarkMode } from '../context/DarkModeContext'
+import { useUser } from '../context/UserContext'
 import Typed from 'typed.js'
-import Navbar from '../components/Navbar'
+import Navbar from '../components/layout/Navbar'
 
 const LandingPage = () => {
   const { isDarkMode } = useDarkMode()

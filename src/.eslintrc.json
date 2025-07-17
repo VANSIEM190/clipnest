@@ -1,0 +1,14 @@
+{
+  "extends": ["../../eslint.config.js"],
+  "rules": {
+    "import/no-unresolved": "off",
+    "import/extensions": "off"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx"]
+      }
+    }
+  }
+} 

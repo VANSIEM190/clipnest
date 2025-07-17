@@ -1,15 +1,16 @@
-import { useDarkMode } from '../Context/DarkModeContext'
+import { useDarkMode } from '../context/DarkModeContext'
 import { stringToColor } from '../utils/StringToColor'
 import formatDate from '../utils/formatDate'
 import { useNavigate } from 'react-router-dom'
-import ButtonPagination from '../components/ButtonPagination'
+import ButtonPagination from '../components/common/ButtonPagination'
 import usePagination from '../hooks/usePagination'
-import { useUser } from '../Context/UserContext'
-import { FileurLoader } from '../components/Loader'
+import { useUser } from '../context/UserContext'
+import { FileurLoader } from '../components/common/Loader'
 import { FaSignOutAlt } from 'react-icons/fa'
 import { IoReturnUpBack } from 'react-icons/io5'
-import { UserStatus, UserLastSeen } from '../components/AutreUsersStatus'
-import Navbar from '../components/Navbar'
+import { UserStatus, UserLastSeen } from '../components/users/AutreUsersStatus'
+import Navbar from '../components/layout/Navbar'
+import { ToastContainer } from 'react-toastify'
 
 const ProfilsUsers = ({
   informationsUser,
@@ -38,6 +39,7 @@ const ProfilsUsers = ({
   return (
     <>
       <Navbar />
+      <ToastContainer />
       <div
         className={`min-w-screen min-h-screen p-4 sm:p-6 flex flex-col items-center gap-6 ${
           isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'

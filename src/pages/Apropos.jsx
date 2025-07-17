@@ -1,17 +1,18 @@
 import { useNavigate } from 'react-router-dom'
-import { useDarkMode } from '../Context/DarkModeContext'
-import { useUser } from '../Context/UserContext'
+import { useDarkMode } from '../context/DarkModeContext'
+import { useUser } from '../context/UserContext'
+import { Navbar } from '../components/layout'
 
 const Apropos = () => {
   const { isDarkMode } = useDarkMode()
   const { user } = useUser()
   const navigate = useNavigate()
 
-  const redirigerUserPage = () => {
+  const redirigerPage = () => {
     if (user === undefined) return
 
     if (user) {
-      navigate('/salon')
+      navigate(-1)
     } else {
       navigate('/')
     }
@@ -19,9 +20,10 @@ const Apropos = () => {
 
   return (
     <>
+      <Navbar />
       <div
-        className={`bg-white min-h-screen px-6 py-12 md:px-16 ${
-          isDarkMode ? 'dark:bg-gray-900' : ''
+        className={` min-h-screen px-6 py-12 md:px-16 ${
+          isDarkMode ? 'dark:bg-gray-900' : 'bg-gray-100'
         }`}
       >
         <div className="max-w-4xl mx-auto text-center">
@@ -53,10 +55,12 @@ const Apropos = () => {
             </h2>
             <ul className="list-disc ml-6 text-gray-600 space-y-2">
               <li>
-                Des questions-réponses sur des sujets scolaires et académiques
+                Des questions-réponses sur des sujets scolaires , académiques et
+                informatique
               </li>
               <li>Des ressources partagées par les membres</li>
               <li>Un espace de discussion et de collaboration</li>
+              <li>Un espace de partage de code pour le dev</li>
               <li>Des notifications pour suivre ses sujets préférés</li>
             </ul>
           </div>
@@ -93,8 +97,8 @@ const Apropos = () => {
           <button
             type="button"
             className="mt-4 inline-block bg-indigo-600 text-white
-        px-6 py-3 rounded-lg hover:bg-indigo-700 transition"
-            onClick={redirigerUserPage}
+        px-6 py-3 rounded-lg hover:bg-indigo-700 transition cursor-pointer"
+            onClick={redirigerPage}
           >
             Retour
           </button>
