@@ -3,9 +3,9 @@ import { createRoot } from 'react-dom/client'
 import './styles/index.css'
 import { BrowserRouter } from 'react-router-dom'
 import RouterApp from './router/RouterApp'
-import { UserProvider } from './Context/UserContext'; 
-import { DarkModeProvider } from './Context/DarkModeContext' 
-import { NetWorkStatusProvider } from './Context/networkStatusContext'
+import { UserProvider } from './context/UserContext'
+import { DarkModeProvider } from './context/DarkModeContext'
+import { NetWorkStatusProvider } from './context/networkStatusContext'
 
 
 
