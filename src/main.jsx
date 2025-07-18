@@ -5,20 +5,18 @@ import { BrowserRouter } from 'react-router-dom'
 import RouterApp from './router/RouterApp'
 import { UserProvider } from './context/UserContext'
 import { DarkModeProvider } from './context/DarkModeContext'
-import { NetWorkStatusProvider } from './context/networkStatusContext'
-
-
+import { NetworkStatusProvider } from './context/networkStatusContext'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <NetWorkStatusProvider>
+      <NetworkStatusProvider>
         <UserProvider>
           <DarkModeProvider>
             <RouterApp />
           </DarkModeProvider>
         </UserProvider>
-      </NetWorkStatusProvider>
+      </NetworkStatusProvider>
     </BrowserRouter>
   </StrictMode>
 )

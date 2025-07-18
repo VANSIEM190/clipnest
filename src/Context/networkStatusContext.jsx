@@ -1,8 +1,8 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 
-const netWorkStatusContext = createContext()
+const networkStatusContext = createContext()
 
-export const NetWorkStatusProvider = ({ children }) => {
+export const NetworkStatusProvider = ({ children }) => {
   const [isOnline, setIsOnline] = useState(false)
   const [isOnlineStatus, setIsOnlineStatus] = useState(navigator.onLine)
 
@@ -55,10 +55,10 @@ export const NetWorkStatusProvider = ({ children }) => {
   }, [])
 
   return (
-    <netWorkStatusContext.Provider value={{ isOnline, isOnlineStatus }}>
+    <networkStatusContext.Provider value={{ isOnline, isOnlineStatus }}>
       {children}
-    </netWorkStatusContext.Provider>
+    </networkStatusContext.Provider>
   )
 }
 
-export const useNetworkStatus = () => useContext(netWorkStatusContext)
+export const useNetworkStatus = () => useContext(networkStatusContext)
