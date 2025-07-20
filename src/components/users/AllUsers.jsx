@@ -7,7 +7,7 @@ import { useDarkMode } from '../../context/DarkModeContext'
 import usePagination from '../../hooks/usePagination'
 import { ButtonPagination, FileurLoader } from '../common'
 import { Navbar, Sidebar } from '../layout'
-import { UserStatus } from './AutreUsersStatus'
+import { AutreUsersStatus } from './AutreUsersStatus'
 import { ToastContainer, toast } from 'react-toastify'
 
 const ContactCard = () => {
@@ -98,8 +98,8 @@ const ContactCard = () => {
                     onClick={() => handleNavigate(user.id)}
                     translate="no"
                   >
-                    <div className="flex items-center" >
-                      <div className="relative" >
+                    <div className="flex items-center">
+                      <div className="relative">
                         <div
                           className=" relative min-w-[40px] min-h-[40px] w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-xs sm:text-xl font-bold text-gray-700 mr-2 sm:mr-4"
                           style={{
@@ -113,7 +113,7 @@ const ContactCard = () => {
                             0
                           )}`.toUpperCase()}
                           <div className="absolute -bottom-1.5 right-1 translate-x-1/2 -translate-y-1/2">
-                            <UserStatus userId={user.id} />
+                            <AutreUsersStatus userId={user.id} />
                           </div>
                         </div>
                       </div>

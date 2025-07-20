@@ -2,11 +2,11 @@
 import { Suspense, lazy, useEffect , useState} from "react";
 import { Routes, Route } from "react-router-dom";
 
-import { Loader } from '../components/common/Loader'
+import { Loader } from '../components/index.js'
 import { requestFCMToken, onMessageListener } from '../utils/firebase-utils.js'
 import { useNetworkStatus } from '../context/networkStatusContext.jsx'
 import OfflineStatus from '../pages/OfflineStatus.jsx'
-import FormulaireInscription from '../components/forms/Formulaire'
+import FormulaireInscription from '../components/forms/Formulaire.jsx'
 import LoginForm from '../components/forms/ConnectionForm.jsx'
 import ErrorPage from '../pages/ErrorPage'
 import Apropos from '../pages/Apropos'

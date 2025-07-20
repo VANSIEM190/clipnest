@@ -1,6 +1,6 @@
 import useUserStatus from '../../hooks/useUserStatus'
 
-const UserStatus = ({ userId }) => {
+const AutreUsersStatus = ({ userId }) => {
   const { state } = useUserStatus(userId)
 
   return (
@@ -32,4 +32,4 @@ const UserLastSeen = ({ uidUser }) => {
   )
 }
 
-export { UserStatus, UserLastSeen }
+export { AutreUsersStatus, UserLastSeen }

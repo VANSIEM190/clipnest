@@ -7,7 +7,7 @@ import usePagination from '../../hooks/usePagination'
 import { useUser } from '../../context/UserContext'
 import { FaSignOutAlt } from 'react-icons/fa'
 import { IoReturnUpBack } from 'react-icons/io5'
-import { UserStatus, UserLastSeen } from './AutreUsersStatus'
+import { AutreUsersStatus, UserLastSeen } from './AutreUsersStatus'
 import { Navbar } from '../layout'
 import { ToastContainer } from 'react-toastify'
 
@@ -61,7 +61,7 @@ const ProfilsUsers = ({
                 {informationsUser.prenom?.charAt(0).toUpperCase()}
                 {informationsUser.nom?.charAt(0).toUpperCase()}
                 <div className="absolute sm:-bottom-1 sm:right-3.5 translate-x-1/2 -translate-y-1/2 -bottom-1.5 right-1">
-                  <UserStatus userId={informationsUser.id} />
+                  <AutreUsersStatus userId={informationsUser.id} />
                 </div>
               </div>
               <div className="overflow-hidden">

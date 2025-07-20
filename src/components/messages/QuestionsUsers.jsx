@@ -92,7 +92,7 @@ const RichTextEditor = () => {
       >
         <div className="flex justify-center items-center w-full h-screen">
           <div
-            className={`mx-auto my-8 p-4 rounded-lg shadow-md ${
+            className={`mx-auto my-8 p-4 rounded-lg shadow-md max-xm:mr-3 ${
               isSmallScreen ? 'w-3/4' : 'w-2/4'
             }`}
           >
