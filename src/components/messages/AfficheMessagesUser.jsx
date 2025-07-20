@@ -1,9 +1,9 @@
-import { stringToColor } from '../utils/StringToColor'
-import formatDate from '../utils/formatDate'
+import { stringToColor } from '../../utils/StringToColor'
+import formatDate from '../../utils/formatDate'
 import { FaTrash } from 'react-icons/fa'
-import { db } from '../services/firebaseconfig'
+import { db } from '../../services/firebaseconfig'
 import { doc, deleteDoc } from 'firebase/firestore'
-import { useUser } from '../context/UserContext'
+import { useUser } from '../../context/UserContext'
 
 const AfficheMessagesUser = ({
   userName,

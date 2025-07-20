@@ -3,7 +3,7 @@ import { FiBell, FiSun, FiMoon } from "react-icons/fi";
 import { useUser } from "../../context/UserContext";
 import { useDarkMode } from "../../context/DarkModeContext";
 import useStateScreen from "../../hooks/UseSizeScreen";
-import Options from "../common/Options";
+import { Options } from '../common'
 import { stringToColor } from "../../utils/StringToColor";
 import { UserStatus } from '../users/UserStatut'
 

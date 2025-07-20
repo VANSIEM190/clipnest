@@ -6,7 +6,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { doc, setDoc } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom'
 import { useDarkMode } from '../../context/DarkModeContext'
-import { FileurLoader } from '../common/Loader'
+import { FileurLoader } from '../common'
 import { Navbar } from '../layout'
 import { ToastContainer , toast } from 'react-toastify'
 

@@ -32,24 +32,24 @@ Organisés par fonctionnalité pour une meilleure maintenabilité :
   - `SelectedUser.jsx` - Utilisateur sélectionné
   - `UserStatut.jsx` - Statut utilisateur
   - `AutreUsersStatus.jsx` - Statut des autres utilisateurs
+  - `profilsUsers.jsx` - Profils des utilisateurs
 
 - **`/messages/`** - Composants de messagerie
   - `UsersMessages.jsx` - Messages des utilisateurs
   - `MessageModal.jsx` - Modal de message
   - `ReplyMessage.jsx` - Réponse aux messages
+   - `QuestionsUsers.jsx` - Questions des utilisateurs
+  - `ReponsesList.jsx` - Liste des réponses des utilisateurs
+  - `AfficheMessagesUser.jsx` - Affichage des messages
 
 - **`/comments/`** - Composants de commentaires
   - `AfficheCommentaireUsers.jsx` - Affichage des commentaires
   - `SectionDeCommentaire.jsx` - Section de commentaires
   - `commentairesUsers.jsx` - Commentaires des utilisateurs
-  - `QuestionsUsers.jsx` - Questions des utilisateurs
-  - `ReponsesList.jsx` - Liste des réponses
 
 ### `/pages/` - Pages de l'application
 - `LadingPage.jsx` - Page d'accueil
 - `Apropos.jsx` - Page À propos
-- `profilsUsers.jsx` - Profils des utilisateurs
-- `AfficheMessagesUser.jsx` - Affichage des messages
 - `OfflineStatus.jsx` - Statut hors ligne
 - `ErrorPage.jsx` - Page d'erreur
 

@@ -5,7 +5,7 @@ import { where, collection, getDocs, query } from 'firebase/firestore'
 import { db } from '../../services/firebaseconfig'
 import { auth } from '../../services/firebaseconfig'
 import { useNavigate } from 'react-router-dom'
-import ProfilsUsers from '../../pages/profilsUsers'
+import ProfilsUsers from './profilsUsers'
 import {toast } from 'react-toastify'
 
 

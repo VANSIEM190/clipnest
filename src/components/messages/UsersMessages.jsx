@@ -10,15 +10,13 @@ import {
 import { db } from '../../services/firebaseconfig'
 import { getDatabase, ref, onValue } from 'firebase/database'
 import { useDarkMode } from '../../context/DarkModeContext'
-import { FileurLoader } from '../common/Loader'
 import { useUser } from '../../context/UserContext'
 import usePagination from '../../hooks/usePagination'
-import ButtonPagination from '../common/ButtonPagination'
-import MessagesUsers from '../../pages/AfficheMessagesUser'
+import { ButtonPagination, FileurLoader } from '../common'
+import MessagesUsers from './AfficheMessagesUser'
 import { FaEnvelope, FaCommentDots } from 'react-icons/fa'
 import { stringToColor } from '../../utils/StringToColor'
-import Navbar from '../layout/Navbar'
-import Sidebar from '../layout/Sidebar'
+import { Navbar, Sidebar } from '../layout'
 import { ToastContainer, toast } from 'react-toastify'
 
 const UsersMessages = () => {

@@ -10,9 +10,9 @@ import {
 import { db } from "../../services/firebaseconfig";
 import { useDarkMode } from "../../context/DarkModeContext";
 import usePagination from '../../hooks/usePagination'
-import ButtonPagination from "../common/ButtonPagination";
+import { ButtonPagination } from '../common'
 import { IoReturnUpBack } from 'react-icons/io5'
-import MessagesUsers from '../../pages/AfficheMessagesUser'
+import MessagesUsers from './AfficheMessagesUser'
 import MessageModal from "./MessageModal";
 
 const ResponseList = ({ messageId }) => {

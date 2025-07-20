@@ -2,7 +2,7 @@ import { useState , useEffect } from "react";
 import { onSnapshot , collection , query , where , orderBy, doc , deleteDoc } from "firebase/firestore";
 import { db } from "../../services/firebaseconfig";
 import { toast } from "react-toastify";
-import {FileurLoader} from "../common/Loader"
+import { FileurLoader } from '../common'
 import { useDarkMode } from "../../context/DarkModeContext";
 import { stringToColor } from "../../utils/StringToColor";
 import "../../utils/prismLanguages"

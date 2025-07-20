@@ -7,7 +7,7 @@ import { useUser } from '../../context/UserContext'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { useDarkMode } from '../../context/DarkModeContext'
-import { Navbar } from '../layout';
+import { Navbar, Sidebar } from '../layout'
 
 const RichTextEditor = () => {
   const [content, setContent] = useState('')

@@ -1,4 +1,5 @@
 import { useDarkMode } from '../../context/DarkModeContext'
+
 const Loader = () => {
   const { isDarkMode } = useDarkMode()
   return (
@@ -11,6 +12,7 @@ const Loader = () => {
     </div>
   )
 }
+
 const FileurLoader = () => {
   const { isDarkMode } = useDarkMode()
   return (

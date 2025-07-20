@@ -5,7 +5,7 @@ import { useDarkMode } from "../../context/DarkModeContext";
 import { db } from "../../services/firebaseconfig";
 import {  toast } from "react-toastify";
 import { stringToColor } from "../../utils/StringToColor";
-import { FileurLoader } from "../common/Loader";
+import { FileurLoader } from '../common'
 import { FaCopy } from "react-icons/fa";
 import Prism from 'prismjs'
 import "../../utils/prismLanguages"

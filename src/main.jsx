@@ -4,7 +4,7 @@ import './styles/index.css'
 import { BrowserRouter } from 'react-router-dom'
 import RouterApp from './router/RouterApp'
 import { UserProvider } from './context/UserContext'
-import { DarkModeProvider } from './context/DarkModeContext'
+import { DarkModeProvider } from './context'
 import { NetworkStatusProvider } from './context/networkStatusContext'
 
 createRoot(document.getElementById('root')).render(

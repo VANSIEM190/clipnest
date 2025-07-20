@@ -5,7 +5,7 @@ import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../../services/firebaseconfig'
 import ResponseList from './ReponsesList'
 import { useDarkMode } from '../../context/DarkModeContext'
-import { FileurLoader } from '../common/Loader'
+import { FileurLoader } from '../common'
 import { Navbar } from '../layout'
 
 const ReplyMessage = () => {

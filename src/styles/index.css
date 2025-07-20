@@ -5,6 +5,8 @@
   --breakpoint-sm: 42rem;
   --breakpoint-md: 50rem;
   --breakpoint-xs: 13.5rem;
+  --breakpoint-xm: 26rem;
+  --breakpoint-xn: 22rem;
   --breakpoint-xl: 32rem;
 }
 

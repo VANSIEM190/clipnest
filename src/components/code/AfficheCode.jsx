@@ -10,12 +10,11 @@ import {
 } from 'firebase/firestore'
 import { ToastContainer, toast } from 'react-toastify'
 import { useDarkMode } from '../../context/DarkModeContext'
-import { Navbar , Sidebar } from "../layout"
+import { Navbar, Sidebar } from '../layout'
 import { stringToColor } from '../../utils/StringToColor'
 import { FaCopy, FaCommentDots, FaTrash } from 'react-icons/fa'
 import usePagination from '../../hooks/usePagination'
-import { FileurLoader } from '../common/Loader'
-import ButtonPagination from '../common/ButtonPagination'
+import { ButtonPagination, FileurLoader } from '../common'
 import Prism from 'prismjs'
 import '../../utils/prismLanguages'
 import 'prismjs/themes/prism-tomorrow.css'
@@ -108,13 +107,13 @@ const AffCode = () => {
         >
           <Sidebar />
 
-          <div className="flex flex-col justify-center items-center gap-3">
+          <div className="flex flex-col justify-center items-center gap-3  max-xm:items-end max-xm:mr-3 max-xn:mr-0">
             {paginatedMessages.map(item => (
               <div
                 key={item.id}
                 className={`${
                   isDarkMode ? 'bg-gray-900' : 'bg-gray-200'
-                } w-2/4 max-sm:w-3/4 rounded-lg shadow-md p-4`}
+                } w-2/4 max-sm:w-3/4  max-xm:w-[85%] rounded-lg shadow-md p-4`}
               >
                 <div className="flex gap-3 sm:gap-5">
                   <div
