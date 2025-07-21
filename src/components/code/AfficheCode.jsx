@@ -143,7 +143,7 @@ const AffCode = () => {
                 <div
                   className={`${
                     isDarkMode ? 'text-gray-100' : 'text-gray-900'
-                  } flex justify-between items-center mt-7`}
+                  } flex justify-between items-center mt-7 max-xs:flex-col `}
                 >
                   <p className="text-sm">{item.language}</p>
                   <button
