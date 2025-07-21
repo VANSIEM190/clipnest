@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { useDarkMode } from '../context'
-import { useUser } from '../context/UserContext'
+import { useDarkMode, useUser } from '../context'
 import { Navbar } from '../components'
 
 const Apropos = () => {

@@ -7,7 +7,7 @@ import {
   NetworkStatusProvider,
   DarkModeProvider,
   UserProvider,
-} from './context'
+} from './context/index.js'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
