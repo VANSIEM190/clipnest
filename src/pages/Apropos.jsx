@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
-import { useDarkMode } from '../context/DarkModeContext'
+import { useDarkMode } from '../context'
 import { useUser } from '../context/UserContext'
-import { Navbar } from '../components/layout'
+import { Navbar } from '../components'
 
 const Apropos = () => {
   const { isDarkMode } = useDarkMode()

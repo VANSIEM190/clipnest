@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FiBell, FiSun, FiMoon, FiMenu } from "react-icons/fi";
-import { useUser } from "../../context/UserContext";
-import { useDarkMode } from "../../context/DarkModeContext";
+import { useDarkMode, useUser } from '../../context'
 import { stringToColor } from '../../utils/StringToColor';
 import { UserStatus } from '../users/UserStatut'
 

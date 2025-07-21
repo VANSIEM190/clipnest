@@ -3,13 +3,12 @@ import { onSnapshot , collection , query , where , orderBy, doc , deleteDoc } fr
 import { db } from "../../services/firebaseconfig";
 import { toast } from "react-toastify";
 import { FileurLoader } from '../common'
-import { useDarkMode } from "../../context/DarkModeContext";
-import { stringToColor } from "../../utils/StringToColor";
-import "../../utils/prismLanguages"
+import { useDarkMode, useUser } from '../../context'
+import { stringToColor } from '../../utils/StringToColor'
+import '../../utils/prismLanguages'
 import Prism from 'prismjs'
 import 'prismjs/themes/prism-tomorrow.css'
-import { FaTrash , FaCopy } from "react-icons/fa";
-import { useUser } from "../../context/UserContext";
+import { FaTrash, FaCopy } from 'react-icons/fa'
 import formatDate from "../../utils/formatDate";
 
 const AfficheCommentairesUsers = ({codeId}) =>{

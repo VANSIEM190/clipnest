@@ -1,17 +1,19 @@
-import { useDarkMode } from "../Context/DarkModeContext";
+import { useDarkMode } from '../context'
 
 const ErrorPage = () => {
-  const { isDarkMode } = useDarkMode();
+  const { isDarkMode } = useDarkMode()
 
   return (
     <main
       className={`grid min-h-full place-items-center px-6 py-24 sm:py-32 lg:px-8 ${
-        isDarkMode ? "bg-gray-900 text-white" : "bg-gray-200 text-black"
+        isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-200 text-black'
       }`}
     >
       <div className="text-center">
         <p className="text-base font-semibold text-indigo-600">404</p>
-        <h1 className="mt-4 text-5xl font-bold sm:text-7xl">Page non trouvée</h1>
+        <h1 className="mt-4 text-5xl font-bold sm:text-7xl">
+          Page non trouvée
+        </h1>
         <p className="mt-6 text-lg leading-8">
           Oups ! La page que vous cherchez n'existe pas.
         </p>
@@ -25,7 +27,7 @@ const ErrorPage = () => {
         </div>
       </div>
     </main>
-  );
-};
+  )
+}
 
-export default ErrorPage;
+export default ErrorPage

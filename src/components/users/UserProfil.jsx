@@ -2,10 +2,9 @@ import { useEffect, useState } from 'react'
 import { useUser } from '../../context/UserContext'
 import { signOut } from 'firebase/auth'
 import { where, collection, getDocs, query } from 'firebase/firestore'
-import { db } from '../../services/firebaseconfig'
-import { auth } from '../../services/firebaseconfig'
+import { auth, db } from '../../services/firebaseconfig'
 import { useNavigate } from 'react-router-dom'
-import ProfilsUsers from './profilsUsers'
+import ProfilsUsers from './ProfilsUsers'
 import {toast } from 'react-toastify'
 
 

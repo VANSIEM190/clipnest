@@ -5,7 +5,7 @@ export * from './common';
 export * from './layout';
 
 // Form components
-export * from './forms';
+export * from './forms'
 
 // Code-related components
 export * from './code';

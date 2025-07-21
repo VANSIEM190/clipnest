@@ -1,4 +1,4 @@
-import { useDarkMode } from '../../context/DarkModeContext'
+import { useDarkMode } from '../../context'
 import { Navbar , Sidebar } from '../layout'
 import CodeEditor from './CodeEditor'
 import { ToastContainer } from 'react-toastify'

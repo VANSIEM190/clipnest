@@ -1,17 +1,24 @@
 // router/RouterApp.jsx
 import { Suspense, lazy, useEffect , useState} from "react";
-import { Routes, Route } from "react-router-dom";
-
-import { Loader } from '../components/common/Loader.jsx'
+import { Routes, Route } from 'react-router-dom'
 import { requestFCMToken, onMessageListener } from '../utils/firebase-utils.js'
-import { useNetworkStatus } from '../context/networkStatusContext.jsx'
+
+// components
+import {
+  FormulaireInscription,
+  LoginForm,
+  RichTextEditor,
+  SnippetsCode,
+  Loader,
+} from '../components'
+
+// context
+import { useNetworkStatus } from '../context'
+
+// pages
 import OfflineStatus from '../pages/OfflineStatus.jsx'
-import FormulaireInscription from '../components/forms/Formulaire.jsx'
-import LoginForm from '../components/forms/ConnectionForm.jsx'
 import ErrorPage from '../pages/ErrorPage'
 import Apropos from '../pages/Apropos'
-import RichTextEditor from '../components/messages/QuestionsUsers.jsx'
-import SnippetsCode from '../components/code/SnippetsCode.jsx'
 
 // Lazy loading des pages
 const LadingPage = lazy(() => import('../pages/LadingPage'))
@@ -20,11 +27,13 @@ const UsersMessages = lazy(() =>
 )
 const ContactCard = lazy(() => import('../components/users/AllUsers.jsx'))
 const UserProfil = lazy(() => import('../components/users/UserProfil.jsx'))
-const ReplyMessage = lazy(() => import('../components/messages/ReplyMessage'))
-const SelectedUser = lazy(() => import('../components/users/SelectedUser'))
+const ReplyMessage = lazy(() =>
+  import('../components/messages/ReplyMessage.jsx')
+)
+const SelectedUser = lazy(() => import('../components/users/SelectedUser.jsx'))
 const AfficheCode = lazy(() => import('../components/code/AfficheCode.jsx'))
 const SectionDeCommentaire = lazy(() =>
-  import('../components/comments/SectionDeCommentaire')
+  import('../components/comments/SectionDeCommentaire.jsx')
 )
 
 const RouterApp = () => {
@@ -43,7 +52,7 @@ const RouterApp = () => {
 
   onMessageListener()
     .then(payload => {
-      console.log('Message reçu :', payload)
+      console.log('Message reçu :', payload, fcmToken)
     })
     .catch(err => console.log('Erreur de réception du message :', err))
 

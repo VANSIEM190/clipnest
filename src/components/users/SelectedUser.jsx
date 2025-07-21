@@ -10,7 +10,7 @@ import {
 } from 'firebase/firestore'
 import { signOut } from 'firebase/auth'
 import { db, auth } from '../../services/firebaseconfig'
-import ProfilsUsers from './profilsUsers'
+import ProfilsUsers from './ProfilsUsers'
 import { toast } from 'react-toastify'
 
 const SelectedUser = () => {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getDoc , doc  } from "firebase/firestore";
-import { useDarkMode } from "../../context/DarkModeContext";
+import { useDarkMode } from '../../context'
 import { db } from "../../services/firebaseconfig";
 import {  toast } from "react-toastify";
 import { stringToColor } from "../../utils/StringToColor";

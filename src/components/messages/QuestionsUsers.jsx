@@ -3,10 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { db } from '../../services/firebaseconfig'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import useStateScreen from '../../hooks/UseSizeScreen'
-import { useUser } from '../../context/UserContext'
+import {useDarkMode , useUser } from '../../context'
 import axios from 'axios'
 import { toast } from 'react-toastify'
-import { useDarkMode } from '../../context/DarkModeContext'
 import { Navbar, Sidebar } from '../layout'
 
 const RichTextEditor = () => {

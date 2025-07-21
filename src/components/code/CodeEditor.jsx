@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Editor from '@monaco-editor/react'
-import { useDarkMode } from '../../context/DarkModeContext'
+import { useDarkMode, useUser } from '../../context'
 import { db } from '../../services/firebaseconfig'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { toast } from 'react-toastify'
-import { useUser } from '../../context/UserContext'
 import { FiChevronDown } from 'react-icons/fi'
 import { languages, themes } from '../../utils/languagesAndThemesEditor'
 

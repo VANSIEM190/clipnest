@@ -1,2 +1,2 @@
-export { default as ConnectionForm } from './ConnectionForm.jsx';
-export { default as Formulaire } from './Formulaire.jsx'; 
+export { default as LoginForm } from './ConnectionForm.jsx'
+export { default as FormulaireInscription } from './Formulaire.jsx'

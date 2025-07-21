@@ -1,7 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { FiBell, FiSun, FiMoon } from "react-icons/fi";
-import { useUser } from "../../context/UserContext";
-import { useDarkMode } from "../../context/DarkModeContext";
+import { useDarkMode, useUser } from '../../context/'
 import useStateScreen from "../../hooks/UseSizeScreen";
 import { Options } from '../common'
 import { stringToColor } from "../../utils/StringToColor";
