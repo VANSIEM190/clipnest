@@ -2,7 +2,7 @@
 import { Suspense, lazy, useEffect , useState} from "react";
 import { Routes, Route } from "react-router-dom";
 
-import { Loader } from '../components/index.js'
+import { Loader } from '../components/common/Loader.jsx'
 import { requestFCMToken, onMessageListener } from '../utils/firebase-utils.js'
 import { useNetworkStatus } from '../context/networkStatusContext.jsx'
 import OfflineStatus from '../pages/OfflineStatus.jsx'
