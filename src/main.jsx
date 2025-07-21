@@ -3,9 +3,11 @@ import { createRoot } from 'react-dom/client'
 import './styles/index.css'
 import { BrowserRouter } from 'react-router-dom'
 import RouterApp from './router/RouterApp'
-import { UserProvider } from './context'
-import { DarkModeProvider } from './context'
-import { NetworkStatusProvider } from './context'
+import {
+  NetworkStatusProvider,
+  DarkModeProvider,
+  UserProvider,
+} from './context'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
