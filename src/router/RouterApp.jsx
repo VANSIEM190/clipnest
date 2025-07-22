@@ -13,7 +13,7 @@ import {
 } from '../components'
 
 // context
-import { useNetworkStatus } from '../context/networkStatusContext.jsx'
+import { useNetworkStatus } from '../context/NetworkStatusContext.jsx'
 
 // pages
 import OfflineStatus from '../pages/OfflineStatus.jsx'
