@@ -5,7 +5,7 @@ import { doc, getDoc } from 'firebase/firestore'
 
 const UserContext = createContext()
 
-export const UserProvider = ({ children }) => {
+const UserProvider = ({ children }) => {
   const [initials, setInitials] = useState('')
   const [user, setUser] = useState({})
   const [isLoading, setIsLoading] = useState(true)
@@ -62,4 +62,6 @@ export const UserProvider = ({ children }) => {
   )
 }
 
-export const useUser = () => useContext(UserContext);
+const useUser = () => useContext(UserContext);
+
+export {UserProvider , useUser}
