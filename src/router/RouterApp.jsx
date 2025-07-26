@@ -13,7 +13,7 @@ import {
 } from '../components'
 
 // context
-import { useNetworkStatus } from '../context/NetworkStatusContext.jsx'
+// import { useNetworkStatus } from '../context/NetworkStatusContext.jsx'
 
 // pages
 import OfflineStatus from '../pages/OfflineStatus.jsx'
@@ -38,7 +38,7 @@ const SectionDeCommentaire = lazy(() =>
 
 const RouterApp = () => {
   const [fcmToken, setFcmToken] = useState(null)
-  const { isOnline, isOnlineStatus } = useNetworkStatus()
+  // const { isOnline, isOnlineStatus } = useNetworkStatus()
 
   useEffect(() => {
     const requestPermission = async () => {
@@ -58,7 +58,7 @@ const RouterApp = () => {
 
   return (
     <Suspense fallback={<Loader />}>
-      {isOnline && isOnlineStatus ? (
+      
         <Routes>
           <Route path="/" element={<LadingPage />} />
           <Route path="/Àpropos" element={<Apropos />} />
@@ -75,9 +75,7 @@ const RouterApp = () => {
           <Route path="/code-id/:codeId" element={<SectionDeCommentaire />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
-      ) : (
-        <OfflineStatus />
-      )}
+      
     </Suspense>
   )
 }
