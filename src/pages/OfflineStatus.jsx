@@ -1,4 +1,4 @@
-import { useDarkMode } from '../context/DarkModeContext.jsx'
+import { useDarkMode } from '../Context/DarkModeContext'
 import { RiWifiOffLine } from 'react-icons/ri'
 
 const OfflineStatus = () => {
