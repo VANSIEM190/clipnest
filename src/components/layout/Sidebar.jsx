@@ -8,7 +8,7 @@ import {
 import React from 'react'
 import { BiCodeBlock } from 'react-icons/bi'
 import { useNavigate } from 'react-router-dom'
-import { useDarkMode } from '../../context/DarkModeContext'
+import { useDarkMode } from '../../context/DarkModeContext.jsx'
 
 const Sidebar = () => {
   const { isDarkMode } = useDarkMode()

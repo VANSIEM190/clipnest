@@ -1,4 +1,4 @@
-import { useDarkMode } from '../context'
+import { useDarkMode } from '../context/DarkModeContext'
 
 const ErrorPage = () => {
   const { isDarkMode } = useDarkMode()

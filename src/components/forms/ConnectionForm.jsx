@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../services/firebaseconfig"; 
 import { useNavigate } from "react-router-dom";
-import { useDarkMode } from "../../context/DarkModeContext";
+import { useDarkMode } from '../../context/DarkModeContext.jsx'
 import { Link } from "react-router-dom";
 import { Navbar } from "../layout";
 

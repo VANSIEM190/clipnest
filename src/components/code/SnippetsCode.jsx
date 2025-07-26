@@ -1,6 +1,6 @@
-import { useDarkMode } from '../../context'
-import { Navbar , Sidebar } from '../layout'
-import CodeEditor from './CodeEditor'
+import { useDarkMode } from '../../context/DarkModeContext.jsx'
+import { Navbar, Sidebar } from '../layout'
+import CodeEditor from './CodeEditor.jsx'
 import { ToastContainer } from 'react-toastify'
 
 const SnippetsCode = () => {

@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { EditorModal } from '../code'
 import { MessageModal } from '../messages'
 import { ToastContainer } from 'react-toastify'
-import AfficheCommentairesUsers from './AfficheCommentaireUsers'
+import AfficheCommentairesUsers from './AfficheCommentaireUsers.jsx'
 import { IoReturnUpBack } from 'react-icons/io5'
 
 const CommentsUsers = ({ codeId }) => {

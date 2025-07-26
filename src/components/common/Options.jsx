@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FiBell, FiSun, FiMoon, FiMenu } from "react-icons/fi";
-import { useDarkMode, useUser } from '../../context'
-import { stringToColor } from '../../utils/StringToColor';
-import { UserStatus } from '../users/UserStatut'
+import { useDarkMode } from '../../context/DarkModeContext.jsx'
+import { useUser } from '../../context/UserContext.jsx'
+import { stringToColor } from '../../utils/StringToColor.js'
+import { UserStatus } from '../users/UserStatut.jsx'
 
 const Options = () => {
   const { isDarkMode, toggleDarkMode } = useDarkMode()

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useDarkMode, useUser } from '../context'
+import { useDarkMode } from '../context/DarkModeContext'
+import { useUser } from '../context/UserContext'
 import Typed from 'typed.js'
 import { Navbar } from '../components'
 

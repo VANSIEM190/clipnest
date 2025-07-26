@@ -1,4 +1,4 @@
-import useUserStatus from '../../hooks/useUserStatus'
+import useUserStatus from '../../hooks/useUserStatus.js'
 
 const AutreUsersStatus = ({ userId }) => {
   const { state } = useUserStatus(userId)

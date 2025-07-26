@@ -8,12 +8,12 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { db } from "../../services/firebaseconfig";
-import { useDarkMode } from "../../context/DarkModeContext";
-import usePagination from '../../hooks/usePagination'
+import { useDarkMode } from '../../context/DarkModeContext.jsx'
+import usePagination from '../../hooks/usePagination.js'
 import { ButtonPagination } from '../common'
 import { IoReturnUpBack } from 'react-icons/io5'
-import MessagesUsers from './AfficheMessagesUser'
-import MessageModal from "./MessageModal";
+import MessagesUsers from './AfficheMessagesUser.jsx'
+import MessageModal from './MessageModal.jsx'
 
 const ResponseList = ({ messageId }) => {
   const [responses, setResponses] = useState([])

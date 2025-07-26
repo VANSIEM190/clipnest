@@ -3,7 +3,7 @@ import { addDoc , collection ,  serverTimestamp  } from "firebase/firestore";
 import { db } from "../../services/firebaseconfig";
 import { FaRegComment } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { useUser } from "../../context/UserContext";
+import { useUser } from '../../context/UserContext.jsx'
 
 const MessageModal = ({itemId , collectionName }) =>{
   const [open , setOpen] = useState(false);

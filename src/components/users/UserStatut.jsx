@@ -1,4 +1,4 @@
-import useOnlineStatus from '../../hooks/useOnlineStatus'
+import useOnlineStatus from '../../hooks/useOnlineStatus.js'
 
 export const UserStatus = ({ userId }) => {
   const { isOnline } = useOnlineStatus(userId)

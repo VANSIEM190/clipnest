@@ -9,7 +9,8 @@ import {
   query,
 } from 'firebase/firestore'
 import { ToastContainer, toast } from 'react-toastify'
-import { useDarkMode, useUser } from '../../context/'
+import { useDarkMode } from '../../context/DarkModeContext.jsx'
+import { useUser } from '../../context/UserContext.jsx'
 import { Navbar, Sidebar } from '../layout'
 import { stringToColor } from '../../utils/StringToColor'
 import { FaCopy, FaCommentDots, FaTrash } from 'react-icons/fa'

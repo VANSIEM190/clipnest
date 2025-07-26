@@ -1,10 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
 import { FiBell, FiSun, FiMoon } from "react-icons/fi";
-import { useDarkMode, useUser } from '../../context/'
-import useStateScreen from "../../hooks/UseSizeScreen";
+import { useDarkMode } from '../../context/DarkModeContext.jsx'
+import { useUser } from '../../context/UserContext.jsx'
+import useStateScreen from '../../hooks/UseSizeScreen.js'
 import { Options } from '../common'
-import { stringToColor } from "../../utils/StringToColor";
-import { UserStatus } from '../users/UserStatut'
+import { stringToColor } from '../../utils/StringToColor.js'
+import { UserStatus } from '../users/UserStatut.jsx'
 
 const Navbar = () => {
   const { user } = useUser()

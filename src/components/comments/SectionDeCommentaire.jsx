@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getDoc , doc  } from "firebase/firestore";
-import { useDarkMode } from '../../context'
-import { db } from "../../services/firebaseconfig";
-import {  toast } from "react-toastify";
-import { stringToColor } from "../../utils/StringToColor";
+import { useDarkMode } from '../../context/DarkModeContext.jsx'
+import { db } from '../../services/firebaseconfig'
+import { toast } from 'react-toastify'
+import { stringToColor } from '../../utils/StringToColor.js'
 import { FileurLoader } from '../common'
-import { FaCopy } from "react-icons/fa";
+import { FaCopy } from 'react-icons/fa'
 import Prism from 'prismjs'
-import "../../utils/prismLanguages"
+import '../../utils/prismLanguages'
 import 'prismjs/themes/prism-tomorrow.css'
-import { Navbar } from "../layout";
-import CommentsUsers from "./commentairesUsers";
-import formatDate from '../../utils/formatDate'
+import { Navbar } from '../layout'
+import CommentsUsers from './commentairesUsers.jsx'
+import formatDate from '../../utils/formatDate.js'
 
 const SectionDeCommentaire = () => {
   const [isCodeToComment, setIsCodeToComment] = useState(null)
