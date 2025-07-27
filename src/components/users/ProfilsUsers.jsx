@@ -1,5 +1,4 @@
-import { useDarkMode } from '../../context/DarkModeContext.jsx'
-import { useUser } from '../../context/UserContext.jsx'
+import { useDarkMode, useUser } from '../../context'
 import { stringToColor } from '../../utils/StringToColor.js'
 import formatDate from '../../utils/formatDate.js'
 import { useNavigate } from 'react-router-dom'

@@ -5,8 +5,8 @@ import { addDoc , collection  , serverTimestamp} from "firebase/firestore";
 import { db } from "../../services/firebaseconfig";
 import { FaCode , FaChevronDown } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { useDarkMode } from '../../context/DarkModeContext.jsx'
-import { useUser } from '../../context/UserContext.jsx'
+import { useDarkMode, useUser } from '../../context'
+
 
 const EditorModal = ({codeId})=>{
   const [open , setOpen] = useState(false);
