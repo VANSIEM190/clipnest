@@ -4,7 +4,6 @@ import { db } from '../../services/firebaseconfig'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import useStateScreen from '../../hooks/UseSizeScreen'
 import { useDarkMode, useUser } from '../../context'
-import axios from 'axios'
 import { toast } from 'react-toastify'
 import { Navbar, Sidebar } from '../layout'
 
@@ -51,15 +50,15 @@ const RichTextEditor = () => {
           body: content,
         })
 
-        await axios.post(
-          'https://clipnest-app.onrender.com/api/firebase/send-notification',
-          {
-            deviceToken:
-              'cv10YCMGCXuMAYLQOz6OBg:APA91bHKmu462FdmXImoFYYWmejRKWEaHgAIkG_-GuO4msDzNm18waq-4F3bbuUXVDz7uKiFi25wwGaLt8owROsHVBC-1SQNCgneA61gEcHELptRCWFNFgw',
-            title: user?.fullName,
-            body: content,
-          }
-        )
+        // await axios.post(
+        //   'https://clipnest-app.onrender.com/api/firebase/send-notification',
+        //   {
+        //     deviceToken:
+        //       'cv10YCMGCXuMAYLQOz6OBg:APA91bHKmu462FdmXImoFYYWmejRKWEaHgAIkG_-GuO4msDzNm18waq-4F3bbuUXVDz7uKiFi25wwGaLt8owROsHVBC-1SQNCgneA61gEcHELptRCWFNFgw',
+        //     title: user?.fullName,
+        //     body: content,
+        //   }
+        // )
 
         toast.success(
           `
