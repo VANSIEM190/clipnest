@@ -47,14 +47,16 @@ const RouterApp = () => {
         setFcmToken(token)
       }
     }
+    onMessageListener()
+      .then(payload => {
+        console.log('Message reçu :', payload)
+        alert(payload.title)
+      })
+      .catch(err => console.log('Erreur de réception du message :', err))
     requestPermission()
   }, [])
 
-  onMessageListener()
-    .then(payload => {
-      console.log('Message reçu :', payload, fcmToken)
-    })
-    .catch(err => console.log('Erreur de réception du message :', err))
+  
 
   return (
     <Suspense fallback={<Loader />}>

@@ -44,7 +44,6 @@ const Navbar = () => {
           >
             À propos
           </Link>
-          <FiBell className="text-2xl" />
           <button
             onClick={toggleDarkMode}
             className="text-xl focus:outline-none cursor-pointer"

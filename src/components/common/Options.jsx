@@ -53,12 +53,6 @@ const Options = () => {
               </Link>
             </div>
 
-            {/* Notifications */}
-            <div className="flex items-center justify-center gap-x-2 py-2 text-sm  hover:bg-gray-100">
-              <FiBell className="text-xl" />
-              <span>Notifications</span>
-            </div>
-
             {/* Mode sombre/clair */}
             <div className="w-full text-center py-2 text-sm  hover:bg-gray-100">
               <button
