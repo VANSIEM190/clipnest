@@ -1,7 +1,8 @@
 // router/RouterApp.jsx
-import { Suspense, lazy, useEffect , useState} from "react";
+import { Suspense, lazy, useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
-import { requestFCMToken, onMessageListener } from '../utils/firebase-utils.js'
+import { onMessageListener } from '../utils/firebase-utils.js'
+import { useFCMToken } from '../hooks'
 
 // components
 import {
@@ -37,26 +38,28 @@ const SectionDeCommentaire = lazy(() =>
 )
 
 const RouterApp = () => {
-  const [fcmToken, setFcmToken] = useState(null)
   const { isOnline, isOnlineStatus } = useNetworkStatus()
+  const { fcmToken, error: fcmError } = useFCMToken()
 
   useEffect(() => {
-    const requestPermission = async () => {
-      const token = await requestFCMToken()
-      if (token) {
-        setFcmToken(token)
-      }
-    }
+    // Écouter les messages reçus
     onMessageListener()
       .then(payload => {
         console.log('Message reçu :', payload)
         alert(payload.title)
       })
       .catch(err => console.log('Erreur de réception du message :', err))
-    requestPermission()
   }, [])
 
-  
+  // Log pour debug
+  useEffect(() => {
+    if (fcmToken) {
+      console.log('Token FCM disponible:', fcmToken)
+    }
+    if (fcmError) {
+      console.error('Erreur FCM:', fcmError)
+    }
+  }, [fcmToken, fcmError])
 
   return (
     <Suspense fallback={<Loader />}>

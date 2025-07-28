@@ -6,6 +6,10 @@ import useStateScreen from '../../hooks/UseSizeScreen'
 import { useDarkMode, useUser } from '../../context'
 import { toast } from 'react-toastify'
 import { Navbar, Sidebar } from '../layout'
+import {
+  sendPushNotification,
+  sendLocalNotification,
+} from '../../utils/notification-utils'
 
 const RichTextEditor = () => {
   const [content, setContent] = useState('')
@@ -41,36 +45,32 @@ const RichTextEditor = () => {
       setContent('')
       navigate('/salon')
 
-      // 2. Demander la permission de notification
-      const permission = await Notification.requestPermission()
+      // 2. Envoyer la notification locale
+      sendLocalNotification(user?.fullName, content)
 
-      if (permission === 'granted') {
-        // 3. Envoyer la notif locale
-        new Notification(user?.fullName, {
-          body: content,
-        })
-
-        // await axios.post(
-        //   'https://clipnest-app.onrender.com/api/firebase/send-notification',
-        //   {
-        //     deviceToken:
-        //       'cv10YCMGCXuMAYLQOz6OBg:APA91bHKmu462FdmXImoFYYWmejRKWEaHgAIkG_-GuO4msDzNm18waq-4F3bbuUXVDz7uKiFi25wwGaLt8owROsHVBC-1SQNCgneA61gEcHELptRCWFNFgw',
-        //     title: user?.fullName,
-        //     body: content,
-        //   }
-        // )
-
-        toast.success(
-          `
-        ${user?.fullName} a été notifié avec succès.
-        ${content}
-        `
+      // 3. Envoyer la notification push via le backend
+      if (user?.fcmToken) {
+        const pushSuccess = await sendPushNotification(
+          user.fcmToken,
+          user?.fullName,
+          content
         )
-        setdisabled(false)
+
+        if (pushSuccess) {
+          toast.success(
+            `
+          ${user?.fullName} a été notifié avec succès.
+          ${content}
+          `
+          )
+        } else {
+          toast.warning('Message envoyé mais notification push échouée.')
+        }
       } else {
-        toast.error('Permission de notification non accordée.')
-        setdisabled(false)
+        toast.warning('Token FCM non disponible pour les notifications push.')
       }
+
+      setdisabled(false)
     } catch (error) {
       console.error('Erreur :', error)
       toast.error("Erreur lors de l'envoi du message ou de la notification.")
