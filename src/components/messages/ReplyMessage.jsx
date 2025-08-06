@@ -40,6 +40,7 @@ const ReplyMessage = () => {
           <FileurLoader />
         ) : (
           message && (
+            <>
             <div
               className={` w-2/4  max-sm:w-full  border p-4 rounded-lg shadow
           ${
@@ -54,9 +55,10 @@ const ReplyMessage = () => {
                 Posté par {message.name} ({message.email})
               </div>
             </div>
+            <ResponseList messageId={messageId} />
+            </>
           )
         )}
-        <ResponseList messageId={messageId} />
       </div>
     </>
   )

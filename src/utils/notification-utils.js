@@ -13,7 +13,7 @@ const BACKEND_URL = 'https://clipnest-app.onrender.com/api/firebase/send-notific
  */
 export const sendPushNotification = async (deviceToken, title, body) => {
   if (!deviceToken) {
-    console.error('Token FCM manquant pour l\'envoi de notification')
+    console.error("Token FCM manquant pour l'envoi de notification")
     return false
   }
 
@@ -34,11 +34,14 @@ export const sendPushNotification = async (deviceToken, title, body) => {
       console.log('Notification push envoyée avec succès')
       return true
     } else {
-      console.error('Erreur lors de l\'envoi de la notification push:', response.status)
+      console.error(
+        "Erreur lors de l'envoi de la notification push:",
+        response.status
+      )
       return false
     }
   } catch (error) {
-    console.error('Erreur lors de l\'envoi de la notification push:', error)
+    console.error("Erreur lors de l'envoi de la notification push:", error)
     return false
   }
 }
@@ -50,17 +53,22 @@ export const sendPushNotification = async (deviceToken, title, body) => {
  * @param {string} body - Le contenu de la notification
  * @returns {Promise<Array<boolean>>} - Array des résultats d'envoi
  */
-export const sendPushNotificationToMultiple = async (deviceTokens, title, body) => {
+export const sendPushNotificationToMultiple = async (
+  deviceTokens,
+  title,
+  body
+) => {
   if (!Array.isArray(deviceTokens) || deviceTokens.length === 0) {
-    console.error('Aucun token FCM fourni pour l\'envoi de notification')
+    console.error("Aucun token FCM fourni pour l'envoi de notification")
     return []
   }
-
   const results = await Promise.allSettled(
     deviceTokens.map(token => sendPushNotification(token, title, body))
   )
 
-  return results.map(result => result.status === 'fulfilled' ? result.value : false)
+  return results.map(result =>
+    result.status === 'fulfilled' ? result.value : false
+  )
 }
 
 /**

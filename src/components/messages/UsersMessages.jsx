@@ -26,18 +26,17 @@ const UsersMessages = () => {
   const [responseCounts, setResponseCounts] = useState({})
   const [onlineStatuses, setOnlineStatuses] = useState({})
   const [users, setUsers] = useState([])
+  const [currentIndex, setCurrentIndex] = useState(0)
   const realTimeDb = getDatabase()
   const navigate = useNavigate()
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [visibleUsers] = useState(10) // nombre d'utilisateurs visibles à la fois
-
+  const visibleUsers = 10;
   const maxMessagesPerPage = 20
-  const minLengthToPaginate = 6
+  const minLengthToPaginate = 15
 
   const {
     currentPage,
     totalPages,
-    currentData: paginatedMessages,
+    currentData : paginatedMessages,
     goToNextPage,
     goToPreviousPage,
   } = usePagination(messageList, maxMessagesPerPage)
@@ -73,13 +72,13 @@ const UsersMessages = () => {
           const formattedStatuses = {}
 
           Object.entries(statuses).forEach(([userId, status]) => {
+            
             formattedStatuses[userId] = {
               isOnline: status.isActivelyUsing === true,
               lastSeen: status.lastActivity,
               state: status.state,
             }
           })
-
           setOnlineStatuses(formattedStatuses)
         }
       })
@@ -101,14 +100,16 @@ const UsersMessages = () => {
       try {
         const responsesRef = collection(db, 'responses')
         const snapshot = await getDocs(responsesRef)
+        const snapDocs = snapshot.docs
         const counts = {}
-        snapshot.forEach(doc => {
-          const data = doc.data()
-          if (data.itemId) {
-            counts[data.itemId] = (counts[data.itemId] || 0) + 1
-          }
-        })
-        setResponseCounts(counts)
+
+        for(let snapshotItem of snapDocs ){
+          const data = snapshotItem.data();
+          const messageId = data.itemId;
+          if(!messageId) return 
+          counts[messageId] = (counts[messageId] || 0 ) +1 ;
+          setResponseCounts(counts)
+        }
       } catch {
         toast.error('Erreur lors de la récupération des réponses')
       }
@@ -116,7 +117,7 @@ const UsersMessages = () => {
 
     fetchResponseCounts()
   }, [messageList])
-  
+
   useEffect(() => {
     // Récupérer tous les utilisateurs de Firestore avec leur dernière connexion
     const fetchUsers = async () => {
@@ -171,7 +172,7 @@ const UsersMessages = () => {
       <div
         className={` ${
           isDarkMode ? 'bg-gray-900 bg-fixed' : 'bg-gray-100'
-        } min-w-screen  `}
+        } min-w-screen  min-h-screen `}
       >
         <div className={`p-4 sm:p-6 max-w-4xl mx-auto space-y-6`}>
           {paginatedMessages.length === 0 ? (
@@ -199,7 +200,7 @@ const UsersMessages = () => {
                     {users
                       .filter(user => onlineStatuses[user.id]?.isOnline)
                       .slice(currentIndex, currentIndex + visibleUsers)
-                      .map((user, idUser) => (
+                      .map(({ nom, prenom }, idUser) => (
                         <div className="flex items-center gap-2" key={idUser}>
                           <div
                             className="relative w-7 h-7 sm:w-10 sm:h-10 rounded-full flex items-center mx-2
@@ -207,11 +208,11 @@ const UsersMessages = () => {
                             title="en ligne"
                             style={{
                               backgroundColor: stringToColor(
-                                `${user.prenom} ${user.nom}`
+                                `${prenom} ${nom}`
                               ),
                             }}
                           >
-                            {`${user.prenom.charAt(0)} ${user.nom.charAt(
+                            {`${prenom.charAt(0)} ${nom.charAt(
                               0
                             )}`.toUpperCase()}
                             <div className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 border-white bg-green-500" />
@@ -231,10 +232,10 @@ const UsersMessages = () => {
 
               {/* card message */}
               <div className=" w-full flex  flex-col items-end  sm:items-center justify-center p-1 gap-2 ">
-                {paginatedMessages.map(message => {
+                {paginatedMessages.map(({name , nameProfil , timestamp , id , userId , message , email}) => {
                   return (
                     <div
-                      key={message.id}
+                      key={id}
                       className={` flex flex-col items gap-3 rounded-2xl p-2 sm:p-5  transition-all duration-300  w-[85%] truncate
             ${
               isDarkMode
@@ -245,27 +246,27 @@ const UsersMessages = () => {
           `}
                     >
                       <MessagesUsers
-                        userName={message?.name}
-                        userProfil={message?.nameProfil}
-                        timestamp={message?.timestamp}
-                        messageId={message?.id}
-                        userId={message?.userId}
+                        userName={name}
+                        userProfil={nameProfil}
+                        timestamp={timestamp}
+                        messageId={id}
+                        userId={userId}
                         collectionName={'messages'}
-                        messageText={message?.message}
+                        messageText={message}
                       />
                       <div className="flex justify-between items-center gap-2 mt-2 flex-wrap">
-                        {user?.fullName !== message?.name ? (
+                        {user?.fullName !== name ? (
                           <div className="flex items-center justify-center  gap-2">
-                            <a href={`mailto:${message?.email}`}>
+                            <a href={`mailto:${email}`}>
                               <FaEnvelope size={18} />
                             </a>
                             <button
                               type="button"
                               className="relative cursor-pointer"
-                              onClick={() => toggleResponseView(message?.id)}
+                              onClick={() => toggleResponseView(id)}
                             >
                               <span className="absolute left-2.5 bottom-2.5 flex items-center justify-center text-sm w-4 h-4 rounded-full bg-red-500 text-white">
-                                {responseCounts[message?.id] || 0}
+                                {responseCounts[id] || 0}
                               </span>
                               <FaCommentDots size={18} />
                             </button>
@@ -274,10 +275,10 @@ const UsersMessages = () => {
                           <button
                             type="button"
                             className="relative cursor-pointer"
-                            onClick={() => toggleResponseView(message.id)}
+                            onClick={() => toggleResponseView(id)}
                           >
                             <span className="absolute left-2.5 bottom-2.5 flex items-center justify-center text-sm w-4 h-4 rounded-full bg-red-500 text-white">
-                              {responseCounts[message?.id] || 0}
+                              {responseCounts[id] || 0}
                             </span>
                             <FaCommentDots size={18} />
                           </button>

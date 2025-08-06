@@ -3,12 +3,12 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { auth, db } from '../../services/firebaseconfig'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
-import { doc, setDoc } from 'firebase/firestore'
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom'
 import { useDarkMode } from '../../context/DarkModeContext.jsx'
 import { FileurLoader } from '../common'
 import { Navbar } from '../layout'
-import { ToastContainer , toast } from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify'
 
 const validationSchema = Yup.object({
   nom: Yup.string()
@@ -66,7 +66,7 @@ const FormulaireInscription = () => {
   const { isDarkMode } = useDarkMode()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
-  
+
   const onSubmit = async (values, { resetForm }) => {
     setLoading(true)
     try {
@@ -84,7 +84,7 @@ const FormulaireInscription = () => {
         email: values.email,
         niveau: values.niveau,
         nationalite: values.nationalite,
-        createdAt: new Date(),
+        createdAt: serverTimestamp(),
       })
       setLoading(false)
       navigate('/salon')
@@ -103,8 +103,8 @@ const FormulaireInscription = () => {
 
   return (
     <>
-    <ToastContainer/>
-    <Navbar/>
+      <ToastContainer />
+      <Navbar />
       <div
         className={`flex items-center justify-center min-h-screen ${
           isDarkMode ? 'dark:bg-gray-900' : 'bg-gray-100'

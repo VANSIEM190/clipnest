@@ -43,9 +43,7 @@ const ResponseList = ({ messageId }) => {
         id: doc.id,
         ...doc.data(),
       }))
-      setResponses(responseData)
-      console.log(responseData);
-      
+      setResponses(responseData) 
     })
       
     return () => unsubscribe()
@@ -64,9 +62,9 @@ const ResponseList = ({ messageId }) => {
         </h2>
 
         <div className="space-y-2">
-          {paginatedMessages.map(response => (
+          {paginatedMessages.map(({userName , userProfil , id , timestamp , userId , commentaire}) => (
             <div
-              key={response.id}
+              key={id}
               className={`rounded-2xl p-2 sm:p-5 text-sm transition-all duration-300
           ${
             isDarkMode
@@ -76,13 +74,13 @@ const ResponseList = ({ messageId }) => {
           `}
             >
               <MessagesUsers
-                userName={response.userName}
-                userProfil={response.userProfil}
-                timestamp={response.timestamp}
-                messageId={response.id}
-                userId={response.userId}
+                userName={userName}
+                userProfil={userProfil}
+                timestamp={timestamp}
+                messageId={id}
+                userId={userId}
                 collectionName={'responses'}
-                messageText={response.commentaire}
+                messageText={commentaire}
               />
             </div>
           ))}

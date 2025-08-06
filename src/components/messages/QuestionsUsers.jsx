@@ -49,7 +49,7 @@ const RichTextEditor = () => {
       sendLocalNotification(user?.fullName, content)
 
       // 3. Envoyer la notification push via le backend
-      if (user?.fcmToken) {
+      if (user?.uid) {
         const pushSuccess = await sendPushNotification(
           user.fcmToken,
           user?.fullName,

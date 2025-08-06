@@ -24,10 +24,10 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className="absolute z-50 top-4 transition-all duration-300 left-1"></div>
+      <div className="absolute z-50 top-4  transition-all duration-300 left-1"></div>
 
       <div
-        className={`z-40 w-12 h-screen flex flex-col items-center shadow-lg transition-all duration-300 ease-in-out  fixed top-15 left-0
+        className={`z-40 w-12 h-screen flex flex-col items-center shadow-lg transition-all duration-300 ease-in-out  fixed top-15 max-xn:top-26 left-0
           ${sidebarClass}
           `}
       >
