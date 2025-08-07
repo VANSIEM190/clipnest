@@ -11,7 +11,7 @@ import 'prismjs/themes/prism-tomorrow.css'
 import { FaTrash, FaCopy } from 'react-icons/fa'
 import formatDate from "../../utils/formatDate";
 
-const AfficheCommentairesUsers = ({codeId}) =>{
+const AfficheCommentairesUsers = ({itemId}) =>{
 
   const [CommentsUsers, setCommentsUsers] = useState([]);
   const [isLoading , setIsLoading] = useState(true)
@@ -23,7 +23,7 @@ const AfficheCommentairesUsers = ({codeId}) =>{
     try{
     const queryCommentsUsers = query(
       collection(db , "commentCode"),
-      where('itemId' , '==', codeId),
+      where('itemId' , '==', itemId),
       orderBy('timestamp', 'asc')
     )
 
@@ -41,7 +41,7 @@ const AfficheCommentairesUsers = ({codeId}) =>{
   catch{
     toast.error("une erreur s'est produit lors du chargement veillez actualiser la page")
   }
-  },[codeId])
+  },[itemId])
 
   useEffect(() => {
     Prism.highlightAll()
@@ -89,43 +89,54 @@ const AfficheCommentairesUsers = ({codeId}) =>{
           >
             Commentaires
           </h3>
-          {CommentsUsers.map((comment, ind) => (
+          {CommentsUsers.map(({
+            id , 
+            userName ,
+             userProfil , 
+             timestamp , 
+             language , 
+             code , 
+             commentaireCode ,
+              commentaire,
+              isCode,
+              userId
+            }) => (
             <div
               className={`${
                 isDarkMode ? 'bg-gray-900' : 'bg-gray-200'
               } relative w-2/4 max-sm:w-3/4 rounded-lg shadow-md p-4 mt-5`}
-              key={ind}
+              key={id}
             >
               <div className="flex gap-3 sm:gap-5">
                 <div
                   className="relative w-7 h-7 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-white text-sm sm:text-xl shadow-inner shrink-0"
                   style={{
-                    backgroundColor: stringToColor(`${comment?.userName}`),
+                    backgroundColor: stringToColor(`${userName}`),
                   }}
                 >
-                  {comment?.userProfil}
+                  {userProfil}
                 </div>
-                <div className="flex flex-col">
+                <div className="flex flex-col overflwo-hidden">
                   <span
                     className={`${
                       isDarkMode ? 'text-gray-100' : 'text-gray-900'
                     } font-semibold text-sm sm:text-base truncate`}
                   >
-                    {`${comment.userName}`}
+                    {`${userName}`}
                   </span>
                   <div className="text-[10px] sm:text-xs text-gray-400 truncate">
-                    {formatDate(comment.timestamp)}
+                    {formatDate(timestamp)}
                   </div>
                 </div>
               </div>
-              {comment?.isCode ? (
+              {isCode ? (
                 <>
                   <div
                     className={`${
                       isDarkMode ? 'text-gray-100' : 'text-gray-900'
                     } flex justify-between mt-7`}
                   >
-                    <p className="text-sm">{comment?.language}</p>
+                    <p className="text-sm">{language}</p>
                     <button
                       type="button"
                       className="cursor-pointer  flex justify-center items-center"
@@ -138,8 +149,8 @@ const AfficheCommentairesUsers = ({codeId}) =>{
                   </div>
 
                   <pre className="bg-transparent max-h-100 p-4 rounded-lg overflow-auto">
-                    <code className={`language-${comment?.language}`}>
-                      {comment?.code}
+                    <code className={`language-${language}`}>
+                      {code}
                     </code>
                   </pre>
                   <div
@@ -149,7 +160,7 @@ const AfficheCommentairesUsers = ({codeId}) =>{
                   >
                     <p className="text-xs sm:text-sm leading-relaxed mt-1 text-wrap break-words whitespace-pre-wrap">
                       mon commentaire :{' '}
-                      {comment.commentaireCode || 'pas de commentaire'}
+                      {commentaireCode}
                     </p>
                   </div>
                 </>
@@ -159,14 +170,14 @@ const AfficheCommentairesUsers = ({codeId}) =>{
                     isDarkMode ? 'text-gray-200' : 'text-gray-900'
                   } max-h-100 overflow-auto`}
                 >
-                  {comment?.commentaire}
+                  {commentaire}
                 </div>
               )}
-              {comment?.userId.includes(user?.uid) ? (
+              {userId.includes(user?.uid) ? (
                 <button
                   type="button"
                   className="text-red-400 absolute  bottom-2 right-3 cursor-pointer"
-                  onClick={() => deleteComment(comment.id)}
+                  onClick={() => deleteComment(id)}
                 >
                   <FaTrash size={18} />
                 </button>

@@ -11,9 +11,9 @@ const CommentsUsers = ({ codeId }) => {
     <>
       <ToastContainer />
       <div className=" w-full flex justify-center items-center flex-col">
-        <AfficheCommentairesUsers codeId={codeId} dataBaseName={"commentCode"} />
+        <AfficheCommentairesUsers itemId={codeId} dataBaseName={"commentCode"} />
         <div className="py-2 px-3 flex justify-center items-center gap-2 ">
-          <EditorModal codeId={codeId} />
+          <EditorModal itemId={codeId} />
           <MessageModal itemId={codeId}  collectionName={"commentCode"}/>
           <button
             type="button"

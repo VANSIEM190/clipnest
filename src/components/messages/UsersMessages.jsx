@@ -106,6 +106,7 @@ const UsersMessages = () => {
         for(let snapshotItem of snapDocs ){
           const data = snapshotItem.data();
           const messageId = data.itemId;
+          
           if(!messageId) return 
           counts[messageId] = (counts[messageId] || 0 ) +1 ;
           setResponseCounts(counts)
@@ -266,7 +267,7 @@ const UsersMessages = () => {
                               onClick={() => toggleResponseView(id)}
                             >
                               <span className="absolute left-2.5 bottom-2.5 flex items-center justify-center text-sm w-4 h-4 rounded-full bg-red-500 text-white">
-                                {responseCounts[id] || 0}
+                                {responseCounts[id] || 0 }
                               </span>
                               <FaCommentDots size={18} />
                             </button>

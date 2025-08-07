@@ -31,7 +31,6 @@ const Sidebar = () => {
           ${sidebarClass}
           `}
       >
-        {/* Navigation */}
         <div className="space-y-2 flex-1 mt-4">
           <NavItem
             icon={<FaHome size={20} />}

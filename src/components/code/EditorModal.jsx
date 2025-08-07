@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { useDarkMode, useUser } from '../../context'
 
 
-const EditorModal = ({codeId})=>{
+const EditorModal = ({itemId})=>{
   const [open , setOpen] = useState(false);
   const [detailsIsOpen , setDetailsIsOpen] = useState(false)
   const [commentaire , setCommentaire] = useState()
@@ -23,11 +23,11 @@ const EditorModal = ({codeId})=>{
         if(!code.trim()) return
         const codeCommentRef = collection(db, "commentCode")
         await addDoc(codeCommentRef, {
-          codeId,
+          itemId,
           isCode:true,
           code : code,
           language: language,
-          commentaireCode : commentaire,
+          commentaireCode : commentaire || "pas de commentaire",
           userName: user?.fullName || "anonyme",
           userProfil : user?.initials || "X",
           userId : user?.uid,

@@ -37,11 +37,12 @@ const LoginForm = () => {
     <>
       <Navbar />
       <div
-        className={`flex items-center justify-center min-h-screen ${
+        className={`h-full ${
           isDarkMode ? 'dark:bg-gray-900' : 'bg-gray-100'
         }`}
       >
-        <div className="w-2/4 max-sm:w-5/6 mx-auto mt-10 p-6 bg-white rounded-xl shadow-md">
+        <div className = "flex items-center justify-center h-[85%]">
+        <div className="w-2/4 h-max max-sm:w-5/6 mx-auto mt-10 p-6 bg-white rounded-xl shadow-md">
           <h2 className="text-2xl font-bold text-center mb-6 text-indigo-600">
             Connexion
           </h2>
@@ -99,6 +100,7 @@ const LoginForm = () => {
               S'inscrire ici
             </Link>
           </p>
+        </div>
         </div>
       </div>
     </>

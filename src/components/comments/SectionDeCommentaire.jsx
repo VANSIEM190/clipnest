@@ -57,7 +57,7 @@ const SectionDeCommentaire = () => {
           <div
             className={`${
               isDarkMode ? 'bg-gray-900' : 'bg-gray-100'
-            }  min-h-screen flex justify-center flex-col items-center gap-2 overflow-hidden`}
+            }  min-h-screen flex justify-center flex-col items-center gap-2`}
           >
             <div
               className={`${
@@ -95,7 +95,7 @@ const SectionDeCommentaire = () => {
                   isDarkMode ? 'text-gray-100' : 'text-gray-900'
                 } flex justify-between mt-7`}
               >
-                <p className="text-sm mb-4">{isCodeToComment.language}</p>
+                <p className="text-sm mb-4">{language}</p>
                 <button type="button" className="flex justify-center items-center cursor-pointer">
                   <FaCopy size={18}/>
                   copier

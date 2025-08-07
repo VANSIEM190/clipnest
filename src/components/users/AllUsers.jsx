@@ -60,17 +60,18 @@ const ContactCard = () => {
   return (
   <>
     <Navbar />
-    <Sidebar />
+   
     <ToastContainer position="top-right" autoClose={3000} />
    {loading ? (
     <FileurLoader />
   ) : (
       <div
-        className={`min-w-auto min-h-full ${
+        className={`w-full min-h-full  flex justify-end pr-6 ${
           isDarkMode ? 'bg-gray-900 text-gray-200' : 'bg-gray-100 text-gray-900'
         }`}
       >
-        <div className=" max-sm:w-[80%] max-xl:mx-auto flex justify-center items-center flex-col ml-">
+         <Sidebar />
+        <div className="w-[80%] ">
             <h2 className="text-lg sm:text-2xl font-bold mb-2 sm:mb-4">
               Liste des utilisateurs
             </h2>
@@ -79,12 +80,12 @@ const ContactCard = () => {
               placeholder="Recherche"
               onChange={e => setSearch(e.target.value)}
               value={search}
-              className={` w-md max-sm:w-[65%] rounded-md bg-transparent px-3.5 py-2 text-sm sm:text-base ${
+              className={` w-2/3  rounded-md bg-transparent px-3.5 py-2 text-sm sm:text-base ${
                 isDarkMode ? 'text-white' : 'text-gray-900'
               } outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-blue-500 mb-4`}
             />
 
-            <div className="w-[70%] max-xl:w-[85%] grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-4">
+            <div className=" grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-4">
               {filteredUsers.map(user => {
                 return (
                   <div
